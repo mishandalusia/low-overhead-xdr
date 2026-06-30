@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -176,3 +177,30 @@ Route::post('/logout', function (Request $request) {
 
     return redirect('/login');
 })->name('logout');
+
+Route::get('/profile/my-account', [ProfileController::class, 'myAccount'])->name('profile.myAccount');
+
+Route::get('/profile/account-settings', [ProfileController::class, 'settings'])->name('profile.settings');
+
+Route::get('/profile/security', [ProfileController::class, 'security'])->name('profile.security');
+
+Route::get('/profile/activity', [ProfileController::class, 'activity'])->name('profile.activity');
+
+Route::get('/profile/switch', [ProfileController::class, 'switch'])->name('profile.switch');
+
+/* UPDATE PROFILE */
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+/* UPDATE PASSWORD */
+Route::put('/profile/password', [ProfileController::class, 'password'])->name('profile.password');
+
+Route::middleware('auth')->group(function () {
+
+    Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])
+        ->name('profile.update');
+
+    Route::put('/password', [App\Http\Controllers\ProfileController::class, 'updatePassword'])
+        ->name('password.update');
+
+});
+
