@@ -1,58 +1,147 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Low-Overhead XDR (Extended Detection and Response)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Low-Overhead XDR is a cross-layer security monitoring system designed to provide real-time threat detection, behavioral anomaly analysis, and automated response with minimal system overhead.
 
-## About Laravel
+The system integrates host monitoring, network analysis, and application log correlation to detect both signature-based and behavior-based cyber threats.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Project Objective
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+To deliver a lightweight XDR system that provides:
+- Cross-layer visibility (host, network, application)
+- Behavioral anomaly detection
+- Automated incident response
+without degrading endpoint performance.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+## 🏗️ System Architecture
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+This project is built using a distributed multi-device architecture:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Wazuh Server (Ubuntu)**
+  - Wazuh Manager
+  - Wazuh Indexer
+  - Wazuh Dashboard
+  - Python Detection Service
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+- **Target Server (Ubuntu)**
+  - Wazuh Agent
+  - Osquery
+  - Apache2 (or application services)
 
-## Agentic Development
+- **Attacker Machine (Kali Linux)**
+  - Nmap
+  - Hydra
+  - SQLMap
+  - Nikto
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+- **Web Dashboard**
+  - Authentication system
+  - Security monitoring UI
+  - Analytics & reporting system
 
-```bash
-composer require laravel/boost --dev
 
-php artisan boost:install
-```
+## 🧠 Core Features
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 🔐 Authentication Module
+- Secure login/logout
+- Session management
+- Role-based access control
 
-## Contributing
+### 📊 Dashboard Overview
+- Total events
+- Active alerts
+- Blocked IPs
+- Open incidents
+- Threat severity distribution
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 🖥️ Agent Monitoring
+- Agent status tracking
+- Connected devices overview
+- Last seen activity
+- Agent health monitoring
 
-## Code of Conduct
+### 📡 Event Monitoring
+- Host, network, and application logs
+- Real-time event filtering and search
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 🚨 Alert & Threat Management
+- Alert classification by severity
+- Threat detection history
+- Anomaly scoring
 
-## Security Vulnerabilities
+### ⚙️ Incident & Response
+- Incident tracking lifecycle
+- Automated IP blocking
+- Response history logs
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 📈 Analytics & Reporting
+- Attack trends visualization
+- Severity distribution
+- Security reports export (PDF)
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🛡️ Security Capabilities
+
+- Cross-layer correlation (host + network + application)
+- Behavioral anomaly detection (Python + ML)
+- Automated remediation playbooks
+- MITRE ATT&CK mapping (planned/optional)
+- eBPF-based packet filtering (advanced feature)
+
+
+## 👥 Team Roles
+
+- Project Lead & ML Engineer: anomaly detection, scoring model
+- Frontend Developer: dashboard UI/UX
+- Security Engineer: Wazuh configuration & detection rules
+- Backend Engineer: data pipeline & API integration
+- DevOps & QA: deployment, Osquery, automation
+
+
+## 📦 Tech Stack
+
+- Wazuh (SIEM/XDR Engine)
+- Osquery (Host Monitoring)
+- Python (Scikit-learn anomaly detection)
+- Laravel / Web Dashboard
+- Ubuntu Server
+- Kali Linux (penetration testing)
+
+
+## ⚙️ Installation (Basic Flow)
+
+1. Install Wazuh Manager (Server)
+2. Deploy Wazuh Agent (Target Machine)
+3. Connect agent to manager
+4. Install Osquery on endpoint
+5. Run Python detection microservice
+6. Connect dashboard to Wazuh API
+
+
+## 📊 Backlog Overview
+
+- Environment Setup (Wazuh + Agents)
+- Log Collection & Normalization
+- Cross-layer Correlation Engine
+- Threat Detection Rules
+- Dashboard Development
+- Automated Response System
+
+
+## 📁 Project Reference
+
+Based on system design documentation:
+- Multi-device architecture (Ubuntu + Kali + Web Dashboard)
+- Distributed security monitoring system :contentReference[oaicite:0]{index=0}
+
+## 📌 Future Improvements
+
+- Real-time streaming alerts (WebSocket)
+- AI-based threat prediction
+- eBPF kernel-level blocking
+- Cloud deployment (Docker/Kubernetes)
+
+
+## 📜 License
+
+For educational and research purposes.
