@@ -2,8 +2,9 @@
     use Illuminate\Support\Facades\Auth;
 
     $activeUser = Auth::user();
+    $activeEmail = $activeUser?->email ?? 'dev@lox.com';
 
-    $roleLabel = match ($activeUser->email) {
+    $roleLabel = match ($activeEmail) {
         'lead@lox.com' => 'Group Leader',
         'webadmin@lox.com' => 'Developer',
         'analyst@lox.com' => 'Security Analyst',
@@ -19,87 +20,90 @@
     <title>LOX Dashboard</title>
     <link rel="stylesheet" href="{{ asset('css/lox-dashboard.css') }}">
 </head>
+
 <body class="dashboard-enter">
+
+
     <div class="app">
-        <aside class="sidebar">
-            <div class="logo">
-                <img src="{{ asset('images/lox-logo.png') }}" class="logo-image" alt="LOX Logo">
+    <aside class="sidebar collapsed" id="sidebar">
 
-                <div class="logo-text">
-                    <h2>LOX</h2>
-                    <p>Low-Overhead XDR</p>
-                </div>
+        <!-- LOGO -->
+        <div class="logo">
+            <img src="{{ asset('images/lox-logo.png') }}" class="logo-image">
+            <div class="logo-text">
+                <h2>LOX</h2>
+                <p>Low-Overhead XDR</p>
             </div>
+        </div>
 
-            <p class="menu-title">Menu</p>
+        <p class="menu-title">MENU</p>
 
-            <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <span class="nav-icon">⌂</span>
-                <span class="nav-text">Dashboard</span>
-            </a>
+        <!-- DASHBOARD -->
+        <a href="{{ route('dashboard') }}"
+        class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <span class="nav-icon">⌂</span>
+            <span class="nav-text">Dashboard</span>
+        </a>
 
-            <a href="{{ route('agent.monitoring') }}" class="nav-link {{ request()->routeIs('agent.monitoring') ? 'active' : '' }}">
-                <span class="nav-icon">▣</span>
-                <span class="nav-text">Agent Monitoring</span>
-            </a>
+        <!-- AGENT -->
+        <a href="{{ route('agent.monitoring') }}"
+        class="nav-item {{ request()->routeIs('agent.monitoring') ? 'active' : '' }}">
+            <span class="nav-icon">▣</span>
+            <span class="nav-text">Agent Monitoring</span>
+        </a>
 
-            <a href="{{ route('threat.detection') }}" class="nav-link {{ request()->routeIs('threat.detection') ? 'active' : '' }}">
-                <span class="nav-icon">◇</span>
-                <span class="nav-text">Threat Detection</span>
-            </a>
+        <!-- EVENT -->
+        <a href="{{ route('event.monitoring') }}"
+        class="nav-item {{ request()->routeIs('event.monitoring') ? 'active' : '' }}">
+            <span class="nav-icon">☷</span>
+            <span class="nav-text">Event Monitoring</span>
+        </a>
 
-            <a href="{{ route('alert.management') }}" class="nav-link {{ request()->routeIs('alert.management') ? 'active' : '' }}">
-                <span class="nav-icon">♧</span>
-                <span class="nav-text">Alert Management</span>
-            </a>
+        <!-- ALERT -->
+        <a href="{{ route('alert.management') }}"
+        class="nav-item {{ request()->routeIs('alert.management') ? 'active' : '' }}">
+            <span class="nav-icon">♧</span>
+            <span class="nav-text">Alert Management</span>
+        </a>
 
-            <a href="{{ route('incident.tracking') }}" class="nav-link {{ request()->routeIs('incident.tracking') ? 'active' : '' }}">
-                <span class="nav-icon">▤</span>
-                <span class="nav-text">Incident Tracking</span>
-            </a>
+        <!-- THREAT -->
+        <a href="{{ route('threat.detection') }}"
+        class="nav-item {{ request()->routeIs('threat.detection') ? 'active' : '' }}">
+            <span class="nav-icon">◇</span>
+            <span class="nav-text">Threat Detection</span>
+        </a>
 
-            <a href="{{ route('response.management') }}" class="nav-link {{ request()->routeIs('response.management') ? 'active' : '' }}">
-                <span class="nav-icon">⛨</span>
-                <span class="nav-text">Response Management</span>
-            </a>
+        <!-- INCIDENT -->
+        <a href="{{ route('incident.tracking') }}"
+        class="nav-item {{ request()->routeIs('incident.tracking') ? 'active' : '' }}">
+            <span class="nav-icon">▤</span>
+            <span class="nav-text">Incident Tracking</span>
+        </a>
 
-            <a href="{{ route('analytics') }}" class="nav-link {{ request()->routeIs('analytics') ? 'active' : '' }}">
-                <span class="nav-icon">▥</span>
-                <span class="nav-text">Analytics</span>
-            </a>
+        <!-- RESPONSE -->
+        <a href="{{ route('response.management') }}"
+        class="nav-item {{ request()->routeIs('response.management') ? 'active' : '' }}">
+            <span class="nav-icon">⛨</span>
+            <span class="nav-text">Response Management</span>
+        </a>
 
-            <a href="{{ route('settings') }}" class="nav-link {{ request()->routeIs('settings') ? 'active' : '' }}">
-                <span class="nav-icon">⚙</span>
-                <span class="nav-text">Settings</span>
-            </a>
+        <!-- ANALYTICS -->
+        <a href="{{ route('analytics') }}"
+        class="nav-item {{ request()->routeIs('analytics') ? 'active' : '' }}">
+            <span class="nav-icon">▥</span>
+            <span class="nav-text">Analytics</span>
+        </a>
 
-            <p class="menu-title">Support</p>
-
-            <a href="#" class="nav-link">
-                <span class="nav-icon">☰</span>
-                <span class="nav-text">Documentation</span>
-            </a>
-
-            <a href="#" class="nav-link">
-                <span class="nav-icon">?</span>
-                <span class="nav-text">Help Center</span>
-            </a>
-
-            <a href="#" class="nav-link">
-                <span class="nav-icon">✎</span>
-                <span class="nav-text">Feedback</span>
-            </a>
-
-            <div class="theme-switch-container">
-                <label class="onoff-switch">
-                    <input type="checkbox" id="themeSwitch" onchange="toggleThemeSwitch()">
-                    <span class="onoff-slider">
-                        <span class="switch-ball"></span>
-                    </span>
-                </label>
-            </div>
-        </aside>
-
+        <!-- THEME TOGGLE (FIXED ON/OFF SWITCH) -->
+<div class="theme-switch-container">
+    <label class="onoff-switch">
+        <input type="checkbox" id="themeSwitch" onchange="toggleThemeSwitch()">
+        <span class="onoff-slider">
+            <span class="switch-ball"></span>
+        </span>
+    </label>
+</div>
+    </aside>
         <main class="main">
             <div class="topbar">
                 <div class="page-title">
@@ -152,7 +156,7 @@
                             <div class="avatar"></div>
                             <div>
                                 <h4>{{ $roleLabel }}</h4>
-                                <p>{{ $activeUser->email }}</p>
+                                <p>{{ $activeEmail }}</p>
                             </div>
                         </div>
 
@@ -161,15 +165,11 @@
                                 <div class="avatar small-avatar"></div>
                                 <div>
                                     <h4>{{ $roleLabel }}</h4>
-                                    <p>{{ $activeUser->email }}</p>
+                                    <p>{{ $activeEmail }}</p>
                                 </div>
                             </div>
 
-                            <a href="{{ route('my.account') }}">My Account</a>
-                            <a href="{{ route('account.settings') }}">Account Settings</a>
-                            <a href="{{ route('security.profile') }}">Security Profile</a>
-                            <a href="{{ route('activity.log') }}">Activity Log</a>
-                            <a href="{{ route('switch.account') }}">Switch Account</a>
+                            <a href="#">My Account</a>
 
                             <hr>
 
@@ -187,5 +187,31 @@
     </div>
 
     <script src="{{ asset('js/lox-dashboard.js') }}"></script>
+
+<script>
+function toggleThemeSwitch() {
+    const body = document.body;
+
+    body.classList.toggle("dark");
+
+    // simpan status theme
+    if (body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
+    }
+}
+
+// auto load theme saat halaman dibuka
+window.onload = function () {
+    if (localStorage.getItem("theme") === "dark") {
+        document.body.classList.add("dark");
+
+        // sync toggle UI
+        const toggle = document.getElementById("themeSwitch");
+        if (toggle) toggle.checked = true;
+    }
+};
+</script>
 </body>
 </html>

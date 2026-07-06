@@ -2,51 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Models\User;
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-Route::get('/agent-monitoring', function () {
-    return view('pages.agent-monitoring');
-})->name('agent.monitoring');
-
-Route::get('/threat-detection', function () {
-    return view('pages.threat-detection');
-})->name('threat.detection');
-
-Route::get('/alert-management', function () {
-    return view('pages.alert-management');
-})->name('alert.management');
-
-Route::get('/incident-tracking', function () {
-    return view('pages.incident-tracking');
-})->name('incident.tracking');
-
-Route::get('/response-management', function () {
-    return view('pages.response-management');
-})->name('response.management');
-
-Route::get('/analytics', function () {
-    return view('pages.analytics');
-})->name('analytics');
-
-Route::get('/settings', function () {
-    return view('pages.settings');
-})->name('settings');
+/*
+|--------------------------------------------------------------------------
+| LOGIN
+|--------------------------------------------------------------------------
+*/
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
 Route::get('/login', function () {
+    if (Auth::check()) {
+        return redirect()->route('dashboard');
+    }
+
     return view('auth.login');
 })->name('login');
 
 Route::post('/login', function (Request $request) {
+
     $credentials = $request->validate([
         'email' => ['required', 'email'],
         'password' => ['required'],
@@ -54,125 +31,139 @@ Route::post('/login', function (Request $request) {
 
     if (Auth::attempt($credentials)) {
         $request->session()->regenerate();
-        return redirect()->route('dashboard')->with('login_success', true);
+
+        return redirect()->route('dashboard');
     }
 
-    return back()
-        ->withErrors(['email' => 'Email atau password salah.'])
-        ->withInput();
+    return back()->withErrors([
+        'email' => 'Invalid email or password.'
+    ])->withInput();
+
 })->name('login.post');
 
-Route::post('/signup', function (Request $request) {
-    $request->validate([
-        'name' => ['required', 'string', 'max:255'],
-        'email' => ['required', 'email', 'unique:users,email'],
-        'password' => ['required', 'min:6', 'confirmed'],
-    ]);
 
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
+/*
+|--------------------------------------------------------------------------
+| AUTH ROUTES
+|--------------------------------------------------------------------------
+*/
 
-    return redirect()
-        ->route('login')
-        ->with('success', 'Akun berhasil dibuat. Silakan login.');
-})->name('signup.post');
+Route::middleware('auth')->group(function () {
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware('auth')->name('dashboard');
+    /*
+    |--------------------------------------------------------------------------
+    | DASHBOARD
+    |--------------------------------------------------------------------------
+    */
 
-Route::post('/logout', function (Request $request) {
-    Auth::logout();
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+    /*
+    |--------------------------------------------------------------------------
+    | SECURITY MODULES
+    |--------------------------------------------------------------------------
+    */
 
-    return redirect()->route('login');
-})->name('logout');
+    Route::get('/agent-monitoring', fn () => view('pages.agent-monitoring'))
+        ->name('agent.monitoring');
 
-Route::get('/my-account', function () {
-    return view('pages.my-account');
-})->name('my.account');
+    Route::get('/event-monitoring', fn () => view('pages.event-monitoring'))
+        ->name('event.monitoring');
 
-Route::get('/account-settings', function () {
-    return view('pages.account-settings');
-})->name('account.settings');
+    Route::get('/alert-management', fn () => view('pages.alert-management'))
+        ->name('alert.management');
 
-Route::get('/security-profile', function () {
-    return view('pages.security-profile');
-})->name('security.profile');
+    Route::get('/threat-detection', fn () => view('pages.threat-detection'))
+        ->name('threat.detection');
 
-Route::get('/activity-log', function () {
-    return view('pages.activity-log');
-})->name('activity.log');
+    Route::get('/incident-tracking', fn () => view('pages.incident-tracking'))
+        ->name('incident.tracking');
 
-Route::get('/switch-account', function () {
-    return view('pages.switch-account');
-})->name('switch.account');
+    Route::get('/response-management', fn () => view('pages.response-management'))
+        ->name('response.management');
 
-Route::post('/logout', function () {
-    Auth::logout();
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
+    Route::get('/analytics', fn () => view('pages.analytics'))
+        ->name('analytics');
 
-    return redirect('/login');
-})->name('logout');
+    Route::get('/settings', function () {
+    return view('pages.settings');
+})->name('settings');
+    /*
+    |--------------------------------------------------------------------------
+    | ACCOUNT MODULE
+    |--------------------------------------------------------------------------
+    */
 
-Route::get('/switch-user/{role}', function ($role) {
-    $users = [
-        'leader' => [
-            'name' => 'Group Leader',
-            'email' => 'lead@lox.com',
-            'role' => 'Group Leader',
-        ],
-        'webadmin' => [
-            'name' => 'Web Administrator',
-            'email' => 'webadmin@lox.com',
-            'role' => 'Web Administrator',
-        ],
-        'analyst' => [
-            'name' => 'Security Analyst',
-            'email' => 'analyst@lox.com',
-            'role' => 'Security Analyst',
-        ],
-    ];
+    Route::get('/my-account', fn () => view('pages.my-account'))
+        ->name('my.account');
 
-    if (!array_key_exists($role, $users)) {
-        abort(404);
-    }
+    Route::get('/account-settings', fn () => view('pages.account-settings'))
+        ->name('account.settings');
 
-    session(['active_user' => $users[$role]]);
+    Route::get('/security-profile', fn () => view('pages.security-profile'))
+        ->name('security.profile');
 
-    return redirect()->route('dashboard');
-})->name('switch.user');
+    Route::get('/activity-log', fn () => view('pages.activity-log'))
+        ->name('activity.log');
 
-Route::get('/my-account', function () {
-    return view('pages.my-account');
-})->name('my.account');
+    Route::get('/switch-account', fn () => view('pages.switch-account'))
+        ->name('switch.account');
 
-Route::get('/account-settings', function () {
-    return view('pages.account-settings');
-})->name('account.settings');
 
-Route::get('/security-profile', function () {
-    return view('pages.security-profile');
-})->name('security.profile');
+    /*
+    |--------------------------------------------------------------------------
+    | SWITCH USER (SIMULASI ROLE)
+    |--------------------------------------------------------------------------
+    */
 
-Route::get('/activity-log', function () {
-    return view('pages.activity-log');
-})->name('activity.log');
+    Route::get('/switch-user/{role}', function ($role) {
 
-Route::get('/switch-account', function () {
-    return view('pages.switch-account');
-})->name('switch.account');
+        $users = [
+            'leader' => [
+                'name' => 'Group Leader',
+                'email' => 'lead@lox.com',
+                'role' => 'leader',
+            ],
+            'webadmin' => [
+                'name' => 'Web Administrator',
+                'email' => 'webadmin@lox.com',
+                'role' => 'webadmin',
+            ],
+            'analyst' => [
+                'name' => 'Security Analyst',
+                'email' => 'analyst@lox.com',
+                'role' => 'analyst',
+            ],
+        ];
 
-Route::post('/logout', function (Request $request) {
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
+        if (!isset($users[$role])) {
+            abort(404);
+        }
 
-    return redirect('/login');
-})->name('logout');
+        session(['active_user' => $users[$role]]);
+
+        return redirect()->route('dashboard');
+
+    })->name('switch.user');
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | LOGOUT
+    |--------------------------------------------------------------------------
+    */
+
+    Route::post('/logout', function (Request $request) {
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+
+    })->name('logout');
+
+});

@@ -1161,3 +1161,928 @@ body.dark .logout-button:hover {
         filter: blur(0);
     }
 }
+/* ===================================================== */
+/* LOX GLOBAL DARK MODE FIX */
+/* Berlaku untuk Dashboard, Agent, Threat, Alert, dll */
+/* ===================================================== */
+
+body.dark-mode,
+body.dark,
+body.dark-theme,
+html.dark,
+html.dark-mode,
+[data-theme="dark"] {
+    background: #0b1120 !important;
+    color: #f8fafc !important;
+}
+
+/* Main Layout */
+body.dark-mode .app-layout,
+body.dark-mode .dashboard-layout,
+body.dark-mode .main-wrapper,
+body.dark-mode .main-content,
+body.dark-mode .content-wrapper,
+body.dark-mode .page-content,
+body.dark-mode .dashboard-content,
+body.dark-mode .agent-monitoring-page,
+body.dark-mode .alert-management-page,
+body.dark-mode .threat-detection-page,
+body.dark-mode .incident-tracking-page,
+body.dark-mode .response-management-page,
+body.dark-mode .analytics-page,
+body.dark-mode .settings-page,
+
+body.dark .app-layout,
+body.dark .dashboard-layout,
+body.dark .main-wrapper,
+body.dark .main-content,
+body.dark .content-wrapper,
+body.dark .page-content,
+body.dark .dashboard-content,
+body.dark .agent-monitoring-page,
+body.dark .alert-management-page,
+body.dark .threat-detection-page,
+body.dark .incident-tracking-page,
+body.dark .response-management-page,
+body.dark .analytics-page,
+body.dark .settings-page,
+
+body.dark-theme .app-layout,
+body.dark-theme .dashboard-layout,
+body.dark-theme .main-wrapper,
+body.dark-theme .main-content,
+body.dark-theme .content-wrapper,
+body.dark-theme .page-content,
+body.dark-theme .dashboard-content,
+body.dark-theme .agent-monitoring-page,
+body.dark-theme .alert-management-page,
+body.dark-theme .threat-detection-page,
+body.dark-theme .incident-tracking-page,
+body.dark-theme .response-management-page,
+body.dark-theme .analytics-page,
+body.dark-theme .settings-page {
+    background: #0b1120 !important;
+    color: #f8fafc !important;
+}
+
+/* Sidebar */
+body.dark-mode .sidebar,
+body.dark-mode .side-bar,
+body.dark-mode .app-sidebar,
+body.dark-mode .lox-sidebar,
+body.dark-mode aside,
+
+body.dark .sidebar,
+body.dark .side-bar,
+body.dark .app-sidebar,
+body.dark .lox-sidebar,
+body.dark aside,
+
+body.dark-theme .sidebar,
+body.dark-theme .side-bar,
+body.dark-theme .app-sidebar,
+body.dark-theme .lox-sidebar,
+body.dark-theme aside {
+    background: #0f172a !important;
+    border-color: #243044 !important;
+}
+
+/* Sidebar Text */
+body.dark-mode .sidebar a,
+body.dark-mode .sidebar span,
+body.dark-mode .sidebar p,
+body.dark-mode .side-bar a,
+body.dark-mode .side-bar span,
+body.dark-mode .side-bar p,
+body.dark-mode .app-sidebar a,
+body.dark-mode .app-sidebar span,
+body.dark-mode .app-sidebar p,
+body.dark-mode aside a,
+body.dark-mode aside span,
+body.dark-mode aside p,
+
+body.dark .sidebar a,
+body.dark .sidebar span,
+body.dark .sidebar p,
+body.dark .side-bar a,
+body.dark .side-bar span,
+body.dark .side-bar p,
+body.dark .app-sidebar a,
+body.dark .app-sidebar span,
+body.dark .app-sidebar p,
+body.dark aside a,
+body.dark aside span,
+body.dark aside p,
+
+body.dark-theme .sidebar a,
+body.dark-theme .sidebar span,
+body.dark-theme .sidebar p,
+body.dark-theme .side-bar a,
+body.dark-theme .side-bar span,
+body.dark-theme .side-bar p,
+body.dark-theme .app-sidebar a,
+body.dark-theme .app-sidebar span,
+body.dark-theme .app-sidebar p,
+body.dark-theme aside a,
+body.dark-theme aside span,
+body.dark-theme aside p {
+    color: #94a3b8 !important;
+}
+
+/* Sidebar Active Menu */
+body.dark-mode .sidebar a.active,
+body.dark-mode .sidebar .active,
+body.dark-mode .side-bar a.active,
+body.dark-mode .side-bar .active,
+body.dark-mode .app-sidebar a.active,
+body.dark-mode .app-sidebar .active,
+body.dark-mode aside a.active,
+body.dark-mode aside .active,
+
+body.dark .sidebar a.active,
+body.dark .sidebar .active,
+body.dark .side-bar a.active,
+body.dark .side-bar .active,
+body.dark .app-sidebar a.active,
+body.dark .app-sidebar .active,
+body.dark aside a.active,
+body.dark aside .active,
+
+body.dark-theme .sidebar a.active,
+body.dark-theme .sidebar .active,
+body.dark-theme .side-bar a.active,
+body.dark-theme .side-bar .active,
+body.dark-theme .app-sidebar a.active,
+body.dark-theme .app-sidebar .active,
+body.dark-theme aside a.active,
+body.dark-theme aside .active {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(217, 70, 239, 0.28)) !important;
+    color: #f8fafc !important;
+}
+
+/* Page Title */
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode h4,
+body.dark-mode .page-heading h1,
+body.dark-mode .agent-page-title h1,
+
+body.dark h1,
+body.dark h2,
+body.dark h3,
+body.dark h4,
+body.dark .page-heading h1,
+body.dark .agent-page-title h1,
+
+body.dark-theme h1,
+body.dark-theme h2,
+body.dark-theme h3,
+body.dark-theme h4,
+body.dark-theme .page-heading h1,
+body.dark-theme .agent-page-title h1 {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .page-heading p,
+body.dark-mode .agent-page-title p,
+body.dark-mode p,
+body.dark-mode small,
+
+body.dark .page-heading p,
+body.dark .agent-page-title p,
+body.dark p,
+body.dark small,
+
+body.dark-theme .page-heading p,
+body.dark-theme .agent-page-title p,
+body.dark-theme p,
+body.dark-theme small {
+    color: #94a3b8 !important;
+}
+
+/* Semua Card / Panel Module */
+body.dark-mode .card,
+body.dark-mode .dashboard-card,
+body.dark-mode .summary-card,
+body.dark-mode .agent-panel,
+body.dark-mode .agent-main-status,
+body.dark-mode .agent-side-panel,
+body.dark-mode .agent-info-panel,
+body.dark-mode .alert-panel,
+body.dark-mode .threat-panel,
+body.dark-mode .incident-panel,
+body.dark-mode .response-panel,
+body.dark-mode .analytics-panel,
+body.dark-mode .settings-panel,
+body.dark-mode .module-card,
+body.dark-mode .content-card,
+body.dark-mode .table-card,
+
+body.dark .card,
+body.dark .dashboard-card,
+body.dark .summary-card,
+body.dark .agent-panel,
+body.dark .agent-main-status,
+body.dark .agent-side-panel,
+body.dark .agent-info-panel,
+body.dark .alert-panel,
+body.dark .threat-panel,
+body.dark .incident-panel,
+body.dark .response-panel,
+body.dark .analytics-panel,
+body.dark .settings-panel,
+body.dark .module-card,
+body.dark .content-card,
+body.dark .table-card,
+
+body.dark-theme .card,
+body.dark-theme .dashboard-card,
+body.dark-theme .summary-card,
+body.dark-theme .agent-panel,
+body.dark-theme .agent-main-status,
+body.dark-theme .agent-side-panel,
+body.dark-theme .agent-info-panel,
+body.dark-theme .alert-panel,
+body.dark-theme .threat-panel,
+body.dark-theme .incident-panel,
+body.dark-theme .response-panel,
+body.dark-theme .analytics-panel,
+body.dark-theme .settings-panel,
+body.dark-theme .module-card,
+body.dark-theme .content-card,
+body.dark-theme .table-card {
+    background: #111827 !important;
+    border-color: #243044 !important;
+    color: #f8fafc !important;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.28) !important;
+}
+
+/* Inner Card */
+body.dark-mode .health-item,
+body.dark-mode .activity-card,
+body.dark-mode .alert-item,
+body.dark-mode .detail-item,
+body.dark-mode .status-note,
+body.dark-mode .threat-item,
+body.dark-mode .history-item,
+body.dark-mode .risk-current,
+body.dark-mode .seen-item,
+body.dark-mode .agent-row,
+body.dark-mode .status-box,
+body.dark-mode .severity-row,
+body.dark-mode .risk-scale-item,
+
+body.dark .health-item,
+body.dark .activity-card,
+body.dark .alert-item,
+body.dark .detail-item,
+body.dark .status-note,
+body.dark .threat-item,
+body.dark .history-item,
+body.dark .risk-current,
+body.dark .seen-item,
+body.dark .agent-row,
+body.dark .status-box,
+body.dark .severity-row,
+body.dark .risk-scale-item,
+
+body.dark-theme .health-item,
+body.dark-theme .activity-card,
+body.dark-theme .alert-item,
+body.dark-theme .detail-item,
+body.dark-theme .status-note,
+body.dark-theme .threat-item,
+body.dark-theme .history-item,
+body.dark-theme .risk-current,
+body.dark-theme .seen-item,
+body.dark-theme .agent-row,
+body.dark-theme .status-box,
+body.dark-theme .severity-row,
+body.dark-theme .risk-scale-item {
+    background: #162033 !important;
+    border-color: #243044 !important;
+    color: #f8fafc !important;
+}
+
+/* Text dalam Card */
+body.dark-mode .summary-card h2,
+body.dark-mode .summary-card p,
+body.dark-mode .summary-card span,
+body.dark-mode .panel-header h3,
+body.dark-mode .panel-header p,
+body.dark-mode .panel-title h2,
+body.dark-mode .panel-title p,
+body.dark-mode .agent-name strong,
+body.dark-mode .agent-name span,
+body.dark-mode .health-item strong,
+body.dark-mode .health-item span,
+body.dark-mode .activity-card strong,
+body.dark-mode .activity-card p,
+body.dark-mode .alert-main strong,
+body.dark-mode .alert-main small,
+body.dark-mode .detail-item strong,
+body.dark-mode .detail-item small,
+body.dark-mode .threat-item strong,
+body.dark-mode .threat-item small,
+body.dark-mode .history-content strong,
+body.dark-mode .history-content p,
+body.dark-mode .risk-current h3,
+body.dark-mode .risk-current p,
+body.dark-mode .score-info strong,
+body.dark-mode .score-info p,
+
+body.dark .summary-card h2,
+body.dark .summary-card p,
+body.dark .summary-card span,
+body.dark .panel-header h3,
+body.dark .panel-header p,
+body.dark .panel-title h2,
+body.dark .panel-title p,
+body.dark .agent-name strong,
+body.dark .agent-name span,
+body.dark .health-item strong,
+body.dark .health-item span,
+body.dark .activity-card strong,
+body.dark .activity-card p,
+body.dark .alert-main strong,
+body.dark .alert-main small,
+body.dark .detail-item strong,
+body.dark .detail-item small,
+body.dark .threat-item strong,
+body.dark .threat-item small,
+body.dark .history-content strong,
+body.dark .history-content p,
+body.dark .risk-current h3,
+body.dark .risk-current p,
+body.dark .score-info strong,
+body.dark .score-info p,
+
+body.dark-theme .summary-card h2,
+body.dark-theme .summary-card p,
+body.dark-theme .summary-card span,
+body.dark-theme .panel-header h3,
+body.dark-theme .panel-header p,
+body.dark-theme .panel-title h2,
+body.dark-theme .panel-title p,
+body.dark-theme .agent-name strong,
+body.dark-theme .agent-name span,
+body.dark-theme .health-item strong,
+body.dark-theme .health-item span,
+body.dark-theme .activity-card strong,
+body.dark-theme .activity-card p,
+body.dark-theme .alert-main strong,
+body.dark-theme .alert-main small,
+body.dark-theme .detail-item strong,
+body.dark-theme .detail-item small,
+body.dark-theme .threat-item strong,
+body.dark-theme .threat-item small,
+body.dark-theme .history-content strong,
+body.dark-theme .history-content p,
+body.dark-theme .risk-current h3,
+body.dark-theme .risk-current p,
+body.dark-theme .score-info strong,
+body.dark-theme .score-info p {
+    color: #f8fafc !important;
+}
+
+/* Muted Text */
+body.dark-mode .summary-card p,
+body.dark-mode .panel-header p,
+body.dark-mode .panel-title p,
+body.dark-mode .agent-name span,
+body.dark-mode .health-item span,
+body.dark-mode .activity-card p,
+body.dark-mode .activity-card small,
+body.dark-mode .alert-main small,
+body.dark-mode .detail-item small,
+body.dark-mode .threat-item small,
+body.dark-mode .history-content p,
+body.dark-mode .history-content b,
+body.dark-mode .risk-current p,
+body.dark-mode .score-info p,
+
+body.dark .summary-card p,
+body.dark .panel-header p,
+body.dark .panel-title p,
+body.dark .agent-name span,
+body.dark .health-item span,
+body.dark .activity-card p,
+body.dark .activity-card small,
+body.dark .alert-main small,
+body.dark .detail-item small,
+body.dark .threat-item small,
+body.dark .history-content p,
+body.dark .history-content b,
+body.dark .risk-current p,
+body.dark .score-info p,
+
+body.dark-theme .summary-card p,
+body.dark-theme .panel-header p,
+body.dark-theme .panel-title p,
+body.dark-theme .agent-name span,
+body.dark-theme .health-item span,
+body.dark-theme .activity-card p,
+body.dark-theme .activity-card small,
+body.dark-theme .alert-main small,
+body.dark-theme .detail-item small,
+body.dark-theme .threat-item small,
+body.dark-theme .history-content p,
+body.dark-theme .history-content b,
+body.dark-theme .risk-current p,
+body.dark-theme .score-info p {
+    color: #94a3b8 !important;
+}
+
+/* Purple Label */
+body.dark-mode .section-label,
+body.dark-mode .panel-title span,
+body.dark-mode .history-content small,
+
+body.dark .section-label,
+body.dark .panel-title span,
+body.dark .history-content small,
+
+body.dark-theme .section-label,
+body.dark-theme .panel-title span,
+body.dark-theme .history-content small {
+    color: #c084fc !important;
+}
+
+/* Table */
+body.dark-mode table,
+body.dark .table,
+body.dark-theme table {
+    background: #111827 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode th,
+body.dark-mode td,
+body.dark .th,
+body.dark td,
+body.dark-theme th,
+body.dark-theme td {
+    background: transparent !important;
+    color: #f8fafc !important;
+    border-color: #243044 !important;
+}
+
+body.dark-mode th,
+body.dark th,
+body.dark-theme th {
+    color: #94a3b8 !important;
+}
+
+/* Table Hover */
+body.dark-mode tbody tr:hover,
+body.dark tbody tr:hover,
+body.dark-theme tbody tr:hover {
+    background: rgba(139, 92, 246, 0.12) !important;
+}
+
+/* Input, Select, Button Search */
+body.dark-mode input,
+body.dark-mode select,
+body.dark-mode textarea,
+body.dark-mode .search-box,
+
+body.dark input,
+body.dark select,
+body.dark textarea,
+body.dark .search-box,
+
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea,
+body.dark-theme .search-box {
+    background: #162033 !important;
+    border-color: #243044 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode input::placeholder,
+body.dark-mode textarea::placeholder,
+body.dark input::placeholder,
+body.dark textarea::placeholder,
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Progress Bar Background */
+body.dark-mode .health-bar,
+body.dark-mode .health-track,
+body.dark-mode .score-bar,
+body.dark-mode .status-line,
+
+body.dark .health-bar,
+body.dark .health-track,
+body.dark .score-bar,
+body.dark .status-line,
+
+body.dark-theme .health-bar,
+body.dark-theme .health-track,
+body.dark-theme .score-bar,
+body.dark-theme .status-line {
+    background: #263247 !important;
+}
+
+/* Score Ring Dark Center */
+body.dark-mode .score-ring,
+body.dark .score-ring,
+body.dark-theme .score-ring {
+    background: radial-gradient(circle at center, #111827 58%, transparent 59%),
+                conic-gradient(#ef4444 0deg 338deg, #263247 338deg 360deg) !important;
+}
+
+/* Active / Hover Item */
+body.dark-mode .alert-item:hover,
+body.dark-mode .alert-item.active,
+body.dark-mode .threat-item:hover,
+body.dark-mode .threat-item.active,
+
+body.dark .alert-item:hover,
+body.dark .alert-item.active,
+body.dark .threat-item:hover,
+body.dark .threat-item.active,
+
+body.dark-theme .alert-item:hover,
+body.dark-theme .alert-item.active,
+body.dark-theme .threat-item:hover,
+body.dark-theme .threat-item.active {
+    background: rgba(139, 92, 246, 0.16) !important;
+    border-color: #7c3aed !important;
+}
+
+/* Badge Dark Mode */
+body.dark-mode .status-badge.online,
+body.dark-mode .status-pill.closed,
+body.dark-mode .risk-badge.low,
+
+body.dark .status-badge.online,
+body.dark .status-pill.closed,
+body.dark .risk-badge.low,
+
+body.dark-theme .status-badge.online,
+body.dark-theme .status-pill.closed,
+body.dark-theme .risk-badge.low {
+    background: rgba(34, 197, 94, 0.16) !important;
+    color: #4ade80 !important;
+}
+
+body.dark-mode .status-badge.warning,
+body.dark-mode .risk-badge.medium,
+
+body.dark .status-badge.warning,
+body.dark .risk-badge.medium,
+
+body.dark-theme .status-badge.warning,
+body.dark-theme .risk-badge.medium {
+    background: rgba(245, 158, 11, 0.16) !important;
+    color: #fbbf24 !important;
+}
+
+body.dark-mode .status-badge.offline,
+body.dark-mode .status-pill.open,
+body.dark-mode .risk-badge.critical,
+
+body.dark .status-badge.offline,
+body.dark .status-pill.open,
+body.dark .risk-badge.critical,
+
+body.dark-theme .status-badge.offline,
+body.dark-theme .status-pill.open,
+body.dark-theme .risk-badge.critical {
+    background: rgba(239, 68, 68, 0.16) !important;
+    color: #f87171 !important;
+}
+
+body.dark-mode .status-pill.progress,
+body.dark-mode .risk-badge.high,
+
+body.dark .status-pill.progress,
+body.dark .risk-badge.high,
+
+body.dark-theme .status-pill.progress,
+body.dark-theme .risk-badge.high {
+    background: rgba(59, 130, 246, 0.16) !important;
+    color: #60a5fa !important;
+}
+
+/* Toggle Area */
+body.dark-mode .theme-toggle,
+body.dark-mode .toggle-theme,
+body.dark-mode .dark-mode-toggle,
+
+body.dark .theme-toggle,
+body.dark .toggle-theme,
+body.dark .dark-mode-toggle,
+
+body.dark-theme .theme-toggle,
+body.dark-theme .toggle-theme,
+body.dark-theme .dark-mode-toggle {
+    background: #1e293b !important;
+}
+
+/* Icon Box */
+body.dark-mode .summary-icon,
+body.dark-mode .device-icon,
+body.dark .summary-icon,
+body.dark .device-icon,
+body.dark-theme .summary-icon,
+body.dark-theme .device-icon {
+    background: rgba(168, 85, 247, 0.18) !important;
+    color: #c084fc !important;
+}
+
+/* ===== Fix profile topbar shape ===== */
+
+.profile-wrapper {
+    position: relative;
+}
+
+.user-profile {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 6px 14px 6px 6px !important;
+    border-radius: 999px !important;
+    background: rgba(255, 255, 255, 0.58) !important;
+    border: 1px solid rgba(226, 232, 240, 0.65) !important;
+    box-shadow: 0 12px 26px rgba(148, 163, 184, 0.10) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    cursor: pointer;
+}
+
+.user-profile .avatar,
+.avatar {
+    width: 48px !important;
+    height: 48px !important;
+    min-width: 48px !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #a855f7, #ec4899) !important;
+    box-shadow: 0 10px 24px rgba(168, 85, 247, 0.22) !important;
+}
+
+.user-profile h4 {
+    margin: 0 !important;
+    font-size: 15px !important;
+    font-weight: 900 !important;
+    color: #020617 !important;
+    line-height: 1.1 !important;
+    white-space: nowrap;
+}
+
+.user-profile p {
+    margin: 3px 0 0 !important;
+    font-size: 13px !important;
+    color: #64748b !important;
+    line-height: 1.1 !important;
+    white-space: nowrap;
+}
+
+.profile-menu {
+    border-radius: 24px !important;
+}
+
+.profile-card {
+    border-radius: 18px !important;
+}
+
+.sidebar{
+    width: 260px;
+    height: 100vh;
+    background: linear-gradient(180deg, #7c3aed, #ec4899);
+    color: white;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .logo h2{
+    margin: 0;
+    font-size: 22px;
+}
+
+.sidebar .logo p{
+    font-size: 12px;
+    opacity: .8;
+}
+
+/* MENU TITLE */
+.menu-title{
+    margin-top: 20px;
+    font-size: 11px;
+    opacity: .7;
+}
+
+/* NAV ITEM DEFAULT */
+.nav-item{
+    padding: 12px 14px;
+    margin: 6px 0;
+    border-radius: 12px;
+    color: rgba(255,255,255,.85);
+    text-decoration: none;
+    display: block;
+    transition: .25s ease;
+}
+
+/* HOVER */
+.nav-item:hover{
+    background: rgba(255,255,255,.15);
+    transform: translateX(6px);
+}
+
+/* ACTIVE (YANG KAYAK GAMBAR 1) */
+.nav-item.active{
+    background: white;
+    color: #7c3aed;
+    font-weight: bold;
+    box-shadow: 0 10px 25px rgba(0,0,0,.2);
+}
+
+/* ICON STYLE */
+.nav-item::before{
+    margin-right: 10px;
+}
+
+.sidebar{
+    width: 260px;
+    height: 100vh;
+    transition: 0.3s ease;
+    overflow: hidden;
+}
+
+.sidebar.collapsed{
+    width: 78px;
+}
+
+/* ICON CENTER MODE */
+.sidebar.collapsed .nav-item{
+    justify-content: center;
+}
+
+/* HIDE TEXT TOTAL (INI FIX UTAMA KAMU) */
+.sidebar.collapsed .nav-text{
+    display: none;
+}
+
+/* LOGO TEXT HIDE */
+.sidebar.collapsed .logo-text{
+    display: none;
+}
+
+/* HOVER EXPAND */
+.sidebar.collapsed:hover{
+    width: 260px;
+}
+
+.sidebar.collapsed:hover .nav-text{
+    display: inline;
+}
+
+/* ACTIVE STYLE (UNGU PINK CLEAN) */
+.nav-item.active{
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+    color: white;
+    border-radius: 12px;
+}
+
+/* NAV ITEM BASE */
+.nav-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+/* =========================
+   LOX ULTIMATE THEME OVERRIDE
+   (FORCE ALL WHITE TO GRADIENT GLASS)
+========================= */
+
+/* RESET TOTAL BACKGROUND */
+html, body {
+    background: linear-gradient(135deg, #f3e8ff, #ffe4f1) !important;
+    min-height: 100vh;
+}
+
+/* FORCE SEMUA CONTAINER */
+* {
+    background-color: transparent;
+}
+
+/* FORCE MAIN WRAPPER */
+.main, .app, main, .dashboard-container {
+    background: transparent !important;
+}
+
+/* FORCE CARD LARAVEL / UI APAPUN */
+div, section {
+    background: transparent;
+}
+
+/* TARGET CARD SPESIFIK (INI KUNCI UTAMA) */
+div[class*="bg-white"],
+div[class*="card"],
+.bg-white,
+.card,
+.shadow,
+.rounded-lg,
+.rounded-xl {
+    background: rgba(255,255,255,0.95) !important;
+    backdrop-filter: blur(18px) !important;
+    border: 1px solid rgba(124,58,237,0.15) !important;
+    box-shadow: 0 15px 40px rgba(124,58,237,0.12) !important;
+}
+
+/* SIDEBAR BOOST */
+.sidebar {
+    background: linear-gradient(180deg, #7c3aed, #ec4899) !important;
+    box-shadow: 0 0 60px rgba(124,58,237,0.4) !important;
+}
+
+/* ACTIVE STATE */
+.nav-item.active {
+    background: white !important;
+    color: #7c3aed !important;
+}
+.theme-switch-container{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+/* SWITCH OUTER */
+.onoff-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+}
+
+/* HIDE CHECKBOX */
+.onoff-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* SLIDER BACKGROUND */
+.onoff-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ddd;
+    transition: .4s;
+    border-radius: 50px;
+}
+
+/* BALL */
+.switch-ball {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+/* CHECKED STATE */
+input:checked + .onoff-slider {
+    background: linear-gradient(135deg, #7c3aed, #ec4899);
+}
+
+input:checked + .onoff-slider .switch-ball {
+    transform: translateX(24px);
+}
+
+/* Biar tulisan Low-Overhead XDR di logo kelihatan */
+.sidebar .logo .logo-text h2 {
+    color: #ffffff !important;
+    font-weight: 900 !important;
+}
+
+.sidebar .logo .logo-text p {
+    color: rgba(255, 255, 255, 0.88) !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    letter-spacing: 0.2px !important;
+}
+
+/* Kalau sidebar lagi mode terang */
+body:not(.dark-mode) .sidebar .logo .logo-text p {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Biar logo lebih jelas di background ungu */
+.sidebar .logo-image {
+    filter: drop-shadow(0 4px 10px rgba(255, 255, 255, 0.18));
+}
