@@ -148,36 +148,49 @@
                     </div>
 
                     <div class="profile-wrapper">
-                        <div class="user-profile">
-                            <div class="avatar"></div>
-                            <div>
-                                <h4>{{ $roleLabel }}</h4>
-                                <p>{{ $activeUser->email }}</p>
-                            </div>
-                        </div>
+<div class="user-profile flex items-center gap-3">
 
-                        <div class="profile-menu">
-                            <div class="profile-card">
-                                <div class="avatar small-avatar"></div>
-                                <div>
-                                    <h4>{{ $roleLabel }}</h4>
-                                    <p>{{ $activeUser->email }}</p>
-                                </div>
-                            </div>
+<!-- AVATAR PROFIL -->
+@if($activeUser->avatar)
+    <img src="{{ asset('storage/avatars/'.$activeUser->avatar) }}"
+         class="w-10 h-10 rounded-full object-cover border border-white shadow">
+@else
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 via-pink-500 to-purple-700 flex items-center justify-center text-white font-bold shadow">
+        {{ strtoupper(substr($activeUser->name ?? 'U', 0, 1)) }}
+    </div>
+@endif
 
-                            <a href="{{ route('my.account') }}">My Account</a>
-                            <a href="{{ route('account.settings') }}">Account Settings</a>
-                            <a href="{{ route('security.profile') }}">Security Profile</a>
-                            <a href="{{ route('activity.log') }}">Activity Log</a>
-                            <a href="{{ route('switch.account') }}">Switch Account</a>
+    <!-- INFO USER -->
+    <div>
+        <h4 class="font-semibold text-sm text-gray-800">
+            {{ $roleLabel }}
+        </h4>
+        <p class="text-xs text-gray-500">
+            {{ $activeUser->email }}
+        </p>
+    </div>
 
-                            <hr>
+</div>
 
-                            <form action="{{ route('logout') }}" method="POST">
-                                @csrf
-                                <button type="submit" class="logout-button">Logout</button>
-                            </form>
-                        </div>
+        <div class="profile-menu">
+            <div class="profile-card">
+                <div class="avatar small-avatar"></div>
+                <div>
+                    <h4>{{ $roleLabel }}</h4>
+                    <p>{{ $activeUser->email }}</p>
+                </div>
+            </div>
+
+            <a href="{{ route('my.account') }}">My Account</a>
+
+
+            <hr>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-button">Logout</button>
+            </form>
+        </div>
                     </div>
                 </div>
             </div>
