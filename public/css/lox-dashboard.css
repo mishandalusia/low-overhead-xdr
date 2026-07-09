@@ -2142,39 +2142,33 @@ body:not(.dark-mode) .sidebar .logo .logo-text p {
         break-inside: avoid;
     }
 }
-/* Kurangi jarak kosong dari topbar ke konten fitur */
+
 .main {
     padding-top: 28px !important;
 }
 
-/* Kalau ada wrapper content */
 .content,
 .main-content,
 .dashboard-content {
     padding-top: 18px !important;
 }
 
-/* Jarak antara search/profile atas dengan judul halaman */
 .topbar {
     margin-bottom: 28px !important;
 }
 
-/* Judul halaman biar naik */
 .page-heading {
     margin-top: 0 !important;
     margin-bottom: 26px !important;
 }
 
-/* Khusus halaman Analytics */
 .analytics-page {
     margin-top: -35px !important;
 }
-/* Kurangi jarak atas semua halaman fitur */
 .main {
     padding-top: 24px !important;
 }
 
-/* Kalau layout kamu punya content wrapper */
 .content,
 .main-content,
 .dashboard-content,
@@ -2183,20 +2177,17 @@ body:not(.dark-mode) .sidebar .logo .logo-text p {
     margin-top: 0 !important;
 }
 
-/* Kurangi jarak topbar ke judul fitur */
 .topbar,
 .header,
 .dashboard-header {
     margin-bottom: 24px !important;
 }
 
-/* Judul halaman semua fitur */
 .page-heading {
     margin-top: 0 !important;
     margin-bottom: 24px !important;
 }
 
-/* Wrapper halaman fitur */
 .dashboard-page,
 .agent-monitoring-page,
 .event-monitoring-page,

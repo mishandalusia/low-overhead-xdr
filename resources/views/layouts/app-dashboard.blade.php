@@ -52,19 +52,6 @@
             <span class="nav-text">Agent Monitoring</span>
         </a>
 
-        <!-- EVENT -->
-        <a href="{{ route('event.monitoring') }}"
-        class="nav-item {{ request()->routeIs('event.monitoring') ? 'active' : '' }}">
-            <span class="nav-icon">☷</span>
-            <span class="nav-text">Event Monitoring</span>
-        </a>
-
-        <!-- ALERT -->
-        <a href="{{ route('alert.management') }}"
-        class="nav-item {{ request()->routeIs('alert.management') ? 'active' : '' }}">
-            <span class="nav-icon">♧</span>
-            <span class="nav-text">Alert Management</span>
-        </a>
 
         <!-- THREAT -->
         <a href="{{ route('threat.detection') }}"
@@ -73,25 +60,19 @@
             <span class="nav-text">Threat Detection</span>
         </a>
 
-        <!-- INCIDENT -->
-        <a href="{{ route('incident.tracking') }}"
-        class="nav-item {{ request()->routeIs('incident.tracking') ? 'active' : '' }}">
-            <span class="nav-icon">▤</span>
-            <span class="nav-text">Incident Tracking</span>
-        </a>
 
         <!-- RESPONSE -->
         <a href="{{ route('response.management') }}"
         class="nav-item {{ request()->routeIs('response.management') ? 'active' : '' }}">
             <span class="nav-icon">⛨</span>
-            <span class="nav-text">Response Management</span>
+            <span class="nav-text">Bloced IP</span>
         </a>
 
         <!-- ANALYTICS -->
         <a href="{{ route('analytics') }}"
         class="nav-item {{ request()->routeIs('analytics') ? 'active' : '' }}">
             <span class="nav-icon">▥</span>
-            <span class="nav-text">Analytics & Reports</span>
+            <span class="nav-text">Reports</span>
         </a>
 
         <!-- THEME TOGGLE (FIXED ON/OFF SWITCH) -->
