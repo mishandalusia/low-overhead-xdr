@@ -2086,3 +2086,124 @@ body:not(.dark-mode) .sidebar .logo .logo-text p {
 .sidebar .logo-image {
     filter: drop-shadow(0 4px 10px rgba(255, 255, 255, 0.18));
 }
+
+.analytics-heading-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.analytics-export-btn {
+    border: none;
+    outline: none;
+    padding: 15px 28px;
+    border-radius: 18px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #8b5cf6, #d946ef);
+    box-shadow: 0 16px 34px rgba(168, 85, 247, 0.25);
+    transition: 0.2s ease;
+}
+
+.analytics-export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 42px rgba(217, 70, 239, 0.32);
+}
+
+@media (max-width: 768px) {
+    .analytics-heading-row {
+        flex-direction: column;
+    }
+
+    .analytics-export-btn {
+        width: 100%;
+    }
+}
+
+@media print {
+    .sidebar,
+    .topbar,
+    .analytics-export-btn,
+    .theme-switch-container {
+        display: none !important;
+    }
+
+    .main {
+        margin: 0 !important;
+        padding: 20px !important;
+        background: #ffffff !important;
+    }
+
+    .analytics-panel {
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+}
+/* Kurangi jarak kosong dari topbar ke konten fitur */
+.main {
+    padding-top: 28px !important;
+}
+
+/* Kalau ada wrapper content */
+.content,
+.main-content,
+.dashboard-content {
+    padding-top: 18px !important;
+}
+
+/* Jarak antara search/profile atas dengan judul halaman */
+.topbar {
+    margin-bottom: 28px !important;
+}
+
+/* Judul halaman biar naik */
+.page-heading {
+    margin-top: 0 !important;
+    margin-bottom: 26px !important;
+}
+
+/* Khusus halaman Analytics */
+.analytics-page {
+    margin-top: -35px !important;
+}
+/* Kurangi jarak atas semua halaman fitur */
+.main {
+    padding-top: 24px !important;
+}
+
+/* Kalau layout kamu punya content wrapper */
+.content,
+.main-content,
+.dashboard-content,
+.page-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Kurangi jarak topbar ke judul fitur */
+.topbar,
+.header,
+.dashboard-header {
+    margin-bottom: 24px !important;
+}
+
+/* Judul halaman semua fitur */
+.page-heading {
+    margin-top: 0 !important;
+    margin-bottom: 24px !important;
+}
+
+/* Wrapper halaman fitur */
+.dashboard-page,
+.agent-monitoring-page,
+.event-monitoring-page,
+.alert-management-page,
+.threat-detection-page,
+.incident-tracking-page,
+.response-management-page,
+.analytics-page {
+    margin-top: -35px !important;
+}

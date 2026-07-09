@@ -8,10 +8,6 @@
             <h1>Dashboard Overview</h1>
             <p>Overview monitoring for events, alerts, incidents, blocked IPs, and threat severity.</p>
         </div>
-
-        <button type="button" class="export-btn" onclick="window.print()">
-            Export PDF
-        </button>
     </div>
 
     <div class="dashboard-stats-grid">

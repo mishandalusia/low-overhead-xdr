@@ -3,11 +3,15 @@
 @section('content')
 <div class="analytics-page">
 
-    <div class="page-heading">
+    <div class="page-heading analytics-heading-row">
         <div>
             <h1>Analytics & Reports</h1>
             <p>Analyze attack trends, severity distribution, and response performance.</p>
         </div>
+
+        <button type="button" class="analytics-export-btn" onclick="window.print()">
+            Export PDF
+        </button>
     </div>
 
     <div class="analytics-layout">

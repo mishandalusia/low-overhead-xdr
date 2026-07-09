@@ -91,7 +91,7 @@
         <a href="{{ route('analytics') }}"
         class="nav-item {{ request()->routeIs('analytics') ? 'active' : '' }}">
             <span class="nav-icon">▥</span>
-            <span class="nav-text">Analytics</span>
+            <span class="nav-text">Analytics & Reports</span>
         </a>
 
         <!-- THEME TOGGLE (FIXED ON/OFF SWITCH) -->

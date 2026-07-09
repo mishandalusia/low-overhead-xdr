@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AgentController;
 
+Route::get('/agent-monitoring', [AgentController::class, 'index'])->name('agent.monitoring');
 /*
 |--------------------------------------------------------------------------
 | LOGIN
