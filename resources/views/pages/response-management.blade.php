@@ -2,224 +2,303 @@
 
 @section('content')
 
-<div class="blocked-ip-page">
+<div class="brp-page" id="blockedIpPage">
 
-    <div class="page-heading">
+    <div class="brp-heading">
         <h1>Blocked IP</h1>
-        <p>Manage suspicious IP addresses, block reasons, blocked time, and unblock actions.</p>
+        <p>Manage suspicious IP addresses with filters, pending status, block and unblock actions.</p>
     </div>
 
-    <!-- Summary Cards -->
-    <div class="blocked-summary-grid">
-        <div class="blocked-summary-card red">
-            <div class="blocked-icon">IP</div>
-            <div>
-                <span>Total Blocked IPs</span>
-                <h2>84</h2>
-                <p>Blocked suspicious sources</p>
-            </div>
+    <!-- Filter -->
+    <div class="brp-filter-panel">
+        <div class="brp-filter-group">
+            <label>Filter Date</label>
+            <input type="date" id="filterDate" onchange="filterBlockedIp()">
         </div>
 
-        <div class="blocked-summary-card orange">
-            <div class="blocked-icon">NM</div>
-            <div>
-                <span>Nmap Scan</span>
-                <h2>21</h2>
-                <p>Reconnaissance attempts</p>
-            </div>
+        <div class="brp-filter-group">
+            <label>Filter Alert</label>
+            <select id="filterAlert" onchange="filterBlockedIp()">
+                <option value="all">All Alerts</option>
+                <option value="Nmap Reconnaissance">Nmap Reconnaissance</option>
+                <option value="Brute Force Login Attempt">Brute Force Login Attempt</option>
+                <option value="Malware Communication">Malware Communication</option>
+                <option value="SQL Injection Attempt">SQL Injection Attempt</option>
+            </select>
         </div>
 
-        <div class="blocked-summary-card purple">
-            <div class="blocked-icon">BF</div>
-            <div>
-                <span>Brute Force</span>
-                <h2>38</h2>
-                <p>Repeated login attempts</p>
-            </div>
+        <div class="brp-filter-group">
+            <label>Filter Category</label>
+            <select id="filterCategory" onchange="filterBlockedIp()">
+                <option value="all">All Categories</option>
+                <option value="Reconnaissance">Reconnaissance</option>
+                <option value="Authentication Attack">Authentication Attack</option>
+                <option value="Malware">Malware</option>
+                <option value="Web Attack">Web Attack</option>
+            </select>
         </div>
 
-        <div class="blocked-summary-card green">
-            <div class="blocked-icon">UB</div>
-            <div>
-                <span>Unblocked Today</span>
-                <h2>6</h2>
-                <p>Trusted sources restored</p>
-            </div>
+        <button type="button" class="brp-reset-btn" onclick="resetBlockedFilter()">Reset Filter</button>
+    </div>
+
+    <!-- Summary -->
+    <div class="brp-summary-grid">
+        <div class="brp-summary-card">
+            <span>Total Blocked IPs</span>
+            <h2 id="totalBlockedCount">3</h2>
+            <p>Currently blocked sources</p>
+        </div>
+
+        <div class="brp-summary-card">
+            <span>Pending Actions</span>
+            <h2 id="pendingCount">0</h2>
+            <p>Waiting for confirmation</p>
+        </div>
+
+        <div class="brp-summary-card">
+            <span>Success Actions</span>
+            <h2 id="successCount">0</h2>
+            <p>Completed today</p>
         </div>
     </div>
 
-    <div class="blocked-content-grid">
+    <div class="brp-main-grid">
 
-        <!-- Blocked IP List -->
-        <div class="blocked-panel">
-            <div class="panel-header">
-                <div>
-                    <h3>Blocked IP List</h3>
-                    <p>Suspicious IP addresses blocked by security response action.</p>
-                </div>
+        <!-- IP Response List -->
+        <div class="brp-panel">
+            <div class="brp-panel-header">
+                <h3>IP Response List</h3>
+                <p>Suspicious IP addresses detected from security alerts.</p>
             </div>
 
-            <div class="blocked-table-wrapper">
-                <table class="blocked-table">
-                    <thead>
-                        <tr>
-                            <th>IP Address</th>
-                            <th>Reason</th>
-                            <th>Blocked At</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr data-ip="10.67.xx.xx" data-reason="Nmap Reconnaissance" data-status="Blocked">
-                            <td>
-                                <div class="ip-box">
-                                    <div class="ip-avatar red">IP</div>
-                                    <div>
-                                        <strong>10.67.xx.xx</strong>
-                                        <small>External suspicious source</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Nmap Reconnaissance</td>
-                            <td>11:20</td>
-                            <td><span class="ip-status blocked">Blocked</span></td>
-                            <td>
-                                <button class="unblock-btn" onclick="selectBlockedIP(this)">Unblock</button>
-                            </td>
-                        </tr>
-
-                        <tr data-ip="192.168.1.20" data-reason="Brute Force Login Attempt" data-status="Blocked">
-                            <td>
-                                <div class="ip-box">
-                                    <div class="ip-avatar purple">IP</div>
-                                    <div>
-                                        <strong>192.168.1.20</strong>
-                                        <small>Web server source</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Brute Force Login Attempt</td>
-                            <td>11:32</td>
-                            <td><span class="ip-status blocked">Blocked</span></td>
-                            <td>
-                                <button class="unblock-btn" onclick="selectBlockedIP(this)">Unblock</button>
-                            </td>
-                        </tr>
-
-                        <tr data-ip="192.168.1.45" data-reason="Malware Communication" data-status="Blocked">
-                            <td>
-                                <div class="ip-box">
-                                    <div class="ip-avatar pink">IP</div>
-                                    <div>
-                                        <strong>192.168.1.45</strong>
-                                        <small>Database server source</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>Malware Communication</td>
-                            <td>11:40</td>
-                            <td><span class="ip-status blocked">Blocked</span></td>
-                            <td>
-                                <button class="unblock-btn" onclick="selectBlockedIP(this)">Unblock</button>
-                            </td>
-                        </tr>
-
-                        <tr data-ip="172.16.xx.xx" data-reason="SQL Injection Attempt" data-status="Blocked">
-                            <td>
-                                <div class="ip-box">
-                                    <div class="ip-avatar orange">IP</div>
-                                    <div>
-                                        <strong>172.16.xx.xx</strong>
-                                        <small>Application request source</small>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>SQL Injection Attempt</td>
-                            <td>11:46</td>
-                            <td><span class="ip-status blocked">Blocked</span></td>
-                            <td>
-                                <button class="unblock-btn" onclick="selectBlockedIP(this)">Unblock</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Selected IP -->
-        <div class="blocked-panel selected-panel">
-            <div class="panel-header">
-                <div>
-                    <h3>Selected IP</h3>
-                    <p>Review the selected IP before applying an unblock action.</p>
-                </div>
+            <div class="brp-list-header">
+                <span>Date</span>
+                <span>IP Address</span>
+                <span>Alert</span>
+                <span>Category</span>
+                <span>Status</span>
+                <span>Action</span>
             </div>
 
-            <div class="selected-ip-card">
-                <div class="selected-ip-gradient">
-                    <span>Selected IP</span>
-                    <h2 id="selectedIp">10.67.xx.xx</h2>
-                </div>
+            <div class="brp-ip-list" id="ipList">
 
-                <div class="selected-detail-list">
-                    <div class="selected-detail">
-                        <small>Block Reason</small>
-                        <strong id="selectedReason">Nmap Reconnaissance</strong>
+                <div class="brp-ip-row purple"
+                    data-date="2026-07-15"
+                    data-ip="10.67.xx.xx"
+                    data-time="11:20"
+                    data-alert="Nmap Reconnaissance"
+                    data-category="Reconnaissance"
+                    data-status="blocked"
+                    data-source="External suspicious source"
+                >
+                    <div>
+                        <small>Date</small>
+                        <strong>2026-07-15</strong>
+                        <em>11:20</em>
                     </div>
 
-                    <div class="selected-detail">
-                        <small>Response Status</small>
-                        <strong id="selectedStatus">Blocked</strong>
+                    <div>
+                        <small>IP Address</small>
+                        <strong>10.67.xx.xx</strong>
+                        <em>External suspicious source</em>
                     </div>
 
-                    <div class="selected-detail">
-                        <small>Action Type</small>
-                        <strong>Ready to Unblock</strong>
+                    <div>
+                        <small>Alert</small>
+                        <strong>Nmap Reconnaissance</strong>
+                    </div>
+
+                    <div>
+                        <small>Category</small>
+                        <strong>Reconnaissance</strong>
+                    </div>
+
+                    <div>
+                        <span class="brp-status blocked">Blocked</span>
+                    </div>
+
+                    <div>
+                        <button type="button" class="brp-action-btn unblock" onclick="handleIpAction(this)">Unblock</button>
                     </div>
                 </div>
 
-                <button class="confirm-unblock-btn" onclick="confirmUnblock()">
-                    Confirm Unblock
-                </button>
+                <div class="brp-ip-row violet"
+                    data-date="2026-07-15"
+                    data-ip="192.168.1.20"
+                    data-time="11:32"
+                    data-alert="Brute Force Login Attempt"
+                    data-category="Authentication Attack"
+                    data-status="blocked"
+                    data-source="Web server source"
+                >
+                    <div>
+                        <small>Date</small>
+                        <strong>2026-07-15</strong>
+                        <em>11:32</em>
+                    </div>
+
+                    <div>
+                        <small>IP Address</small>
+                        <strong>192.168.1.20</strong>
+                        <em>Web server source</em>
+                    </div>
+
+                    <div>
+                        <small>Alert</small>
+                        <strong>Brute Force Login Attempt</strong>
+                    </div>
+
+                    <div>
+                        <small>Category</small>
+                        <strong>Authentication Attack</strong>
+                    </div>
+
+                    <div>
+                        <span class="brp-status blocked">Blocked</span>
+                    </div>
+
+                    <div>
+                        <button type="button" class="brp-action-btn unblock" onclick="handleIpAction(this)">Unblock</button>
+                    </div>
+                </div>
+
+                <div class="brp-ip-row red"
+                    data-date="2026-07-15"
+                    data-ip="192.168.1.45"
+                    data-time="11:40"
+                    data-alert="Malware Communication"
+                    data-category="Malware"
+                    data-status="blocked"
+                    data-source="Database server source"
+                >
+                    <div>
+                        <small>Date</small>
+                        <strong>2026-07-15</strong>
+                        <em>11:40</em>
+                    </div>
+
+                    <div>
+                        <small>IP Address</small>
+                        <strong>192.168.1.45</strong>
+                        <em>Database server source</em>
+                    </div>
+
+                    <div>
+                        <small>Alert</small>
+                        <strong>Malware Communication</strong>
+                    </div>
+
+                    <div>
+                        <small>Category</small>
+                        <strong>Malware</strong>
+                    </div>
+
+                    <div>
+                        <span class="brp-status blocked">Blocked</span>
+                    </div>
+
+                    <div>
+                        <button type="button" class="brp-action-btn unblock" onclick="handleIpAction(this)">Unblock</button>
+                    </div>
+                </div>
+
+                <div class="brp-ip-row blue"
+                    data-date="2026-07-15"
+                    data-ip="172.16.xx.xx"
+                    data-time="11:46"
+                    data-alert="SQL Injection Attempt"
+                    data-category="Web Attack"
+                    data-status="unblocked"
+                    data-source="Application request source"
+                >
+                    <div>
+                        <small>Date</small>
+                        <strong>2026-07-15</strong>
+                        <em>11:46</em>
+                    </div>
+
+                    <div>
+                        <small>IP Address</small>
+                        <strong>172.16.xx.xx</strong>
+                        <em>Application request source</em>
+                    </div>
+
+                    <div>
+                        <small>Alert</small>
+                        <strong>SQL Injection Attempt</strong>
+                    </div>
+
+                    <div>
+                        <small>Category</small>
+                        <strong>Web Attack</strong>
+                    </div>
+
+                    <div>
+                        <span class="brp-status unblocked">Unblocked</span>
+                    </div>
+
+                    <div>
+                        <button type="button" class="brp-action-btn block" onclick="handleIpAction(this)">Block</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Action Detail -->
+        <div class="brp-panel brp-action-panel">
+            <div class="brp-panel-header">
+                <h3>Action Detail</h3>
+                <p>Selected IP action process.</p>
+            </div>
+
+            <div class="brp-selected-card">
+                <div class="brp-selected-hero">
+                    <small>Selected IP</small>
+                    <h2 id="selectedIp">-</h2>
+                </div>
+
+                <div class="brp-detail-box">
+                    <small>Alert Type</small>
+                    <strong id="selectedAlert">-</strong>
+                </div>
+
+                <div class="brp-detail-box">
+                    <small>Category</small>
+                    <strong id="selectedCategory">-</strong>
+                </div>
+
+                <div class="brp-detail-box">
+                    <small>Current Process</small>
+                    <strong id="selectedProcess">Waiting for action</strong>
+                </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Response History -->
-    <div class="blocked-panel history-panel">
-        <div class="panel-header">
-            <div>
-                <h3>Response History</h3>
-                <p>Latest block and unblock actions recorded by the system.</p>
-            </div>
+    <!-- History -->
+    <div class="brp-panel brp-history-panel">
+        <div class="brp-panel-header">
+            <h3>Response History</h3>
+            <p>History of block, unblock, pending, and success actions.</p>
         </div>
 
-        <div class="history-list" id="historyList">
-            <div class="history-row">
+        <div class="brp-history-list" id="historyList">
+            <div class="brp-history-row">
                 <div>
                     <strong>10.67.xx.xx blocked</strong>
-                    <small>Nmap Reconnaissance detected</small>
+                    <span>Nmap Reconnaissance • 11:20</span>
                 </div>
-                <span>11:20</span>
+                <b>Success</b>
             </div>
 
-            <div class="history-row">
+            <div class="brp-history-row">
                 <div>
                     <strong>192.168.1.20 blocked</strong>
-                    <small>Brute force login attempt</small>
+                    <span>Brute Force Login Attempt • 11:32</span>
                 </div>
-                <span>11:32</span>
-            </div>
-
-            <div class="history-row">
-                <div>
-                    <strong>192.168.1.45 blocked</strong>
-                    <small>Malware communication detected</small>
-                </div>
-                <span>11:40</span>
+                <b>Success</b>
             </div>
         </div>
     </div>
@@ -227,599 +306,911 @@
 </div>
 
 <style>
-    .blocked-ip-page {
+    .brp-page {
         width: 100%;
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
     }
 
-    .page-heading {
-        margin-bottom: 28px;
+    .brp-heading {
+        margin-bottom: 26px;
     }
 
-    .page-heading h1 {
+    .brp-heading h1 {
         margin: 0;
-        color: #0f172a;
+        color: #0f172a !important;
         font-size: 32px;
         font-weight: 950;
         letter-spacing: -0.8px;
     }
 
-    .page-heading p {
+    .brp-heading p {
         margin: 8px 0 0;
-        color: #64748b;
+        color: #64748b !important;
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 650;
     }
 
-    .blocked-summary-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 22px;
-        margin-bottom: 24px;
-    }
-
-    .blocked-summary-card {
+    .brp-filter-panel {
         position: relative;
         overflow: hidden;
-        min-height: 126px;
-        padding: 24px;
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        gap: 18px;
-        border: 1px solid rgba(168, 85, 247, 0.16);
-        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr auto;
+        gap: 16px;
+        align-items: end;
+        margin-bottom: 24px;
+        padding: 22px 24px;
+        border-radius: 26px;
+        background:
+            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
+            rgba(255, 255, 255, 0.92) !important;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10) !important;
     }
 
-    .blocked-summary-card::before {
-        content: "";
+    .brp-filter-panel::after {
+        content: "🔎";
         position: absolute;
-        width: 110px;
-        height: 110px;
-        right: -30px;
-        top: -34px;
-        border-radius: 50%;
-        background: rgba(168, 85, 247, 0.22);
+        right: 30px;
+        top: 18px;
+        font-size: 52px;
+        opacity: 0.07;
+        pointer-events: none;
     }
 
-    .blocked-summary-card::after {
-        content: "";
-        position: absolute;
-        width: 88px;
-        height: 88px;
-        right: 28px;
-        bottom: -42px;
-        border-radius: 50%;
-        background: rgba(236, 72, 153, 0.17);
-    }
-
-    .blocked-summary-card.red {
-        background: linear-gradient(135deg, #ffffff, #fee2e2);
-    }
-
-    .blocked-summary-card.orange {
-        background: linear-gradient(135deg, #ffffff, #ffedd5);
-    }
-
-    .blocked-summary-card.purple {
-        background: linear-gradient(135deg, #ffffff, #f3e8ff);
-    }
-
-    .blocked-summary-card.green {
-        background: linear-gradient(135deg, #ffffff, #dcfce7);
-    }
-
-    .blocked-icon {
-        position: relative;
-        z-index: 2;
-        width: 52px;
-        height: 52px;
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        color: #8b5cf6;
-        background: rgba(255, 255, 255, 0.86);
-        font-size: 13px;
-        font-weight: 950;
-        box-shadow: 0 14px 30px rgba(168, 85, 247, 0.14);
-    }
-
-    .blocked-summary-card div {
+    .brp-filter-group {
         position: relative;
         z-index: 2;
     }
 
-    .blocked-summary-card span {
-        color: #64748b;
+    .brp-filter-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #64748b !important;
         font-size: 13px;
         font-weight: 900;
     }
 
-    .blocked-summary-card h2 {
-        margin: 7px 0 4px;
-        color: #0f172a;
+    .brp-filter-group input,
+    .brp-filter-group select {
+        width: 100%;
+        height: 50px;
+        padding: 0 16px;
+        border-radius: 16px;
+        border: 1px solid rgba(168, 85, 247, 0.22) !important;
+        background: rgba(255, 255, 255, 0.92) !important;
+        color: #0f172a !important;
+        font-size: 14px;
+        font-weight: 800;
+        outline: none;
+    }
+
+    .brp-reset-btn {
+        position: relative;
+        z-index: 2;
+        height: 50px;
+        padding: 0 22px;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 950;
+        background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
+        box-shadow: 0 14px 30px rgba(168, 85, 247, 0.22);
+    }
+
+    .brp-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+        margin-bottom: 24px;
+    }
+
+    .brp-summary-card {
+        position: relative;
+        overflow: hidden;
+        min-height: 126px;
+        padding: 24px;
+        border-radius: 26px;
+        background:
+            radial-gradient(circle at top right, rgba(168, 85, 247, 0.20), transparent 36%),
+            radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 36%),
+            linear-gradient(135deg, #ffffff, #f8f3ff) !important;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10) !important;
+    }
+
+    .brp-summary-card::before {
+        content: "";
+        position: absolute;
+        width: 135px;
+        height: 135px;
+        right: -45px;
+        top: -48px;
+        border-radius: 50%;
+        background: rgba(168, 85, 247, 0.18);
+    }
+
+    .brp-summary-card::after {
+        content: "";
+        position: absolute;
+        width: 95px;
+        height: 95px;
+        right: 28px;
+        bottom: -44px;
+        border-radius: 50%;
+        background: rgba(236, 72, 153, 0.15);
+    }
+
+    .brp-summary-card span,
+    .brp-summary-card h2,
+    .brp-summary-card p {
+        position: relative;
+        z-index: 2;
+    }
+
+    .brp-summary-card span {
+        color: #64748b !important;
+        font-size: 13px;
+        font-weight: 900;
+    }
+
+    .brp-summary-card h2 {
+        margin: 8px 0 4px;
+        color: #0f172a !important;
         font-size: 32px;
         font-weight: 950;
-        letter-spacing: -0.8px;
     }
 
-    .blocked-summary-card p {
+    .brp-summary-card p {
         margin: 0;
-        color: #64748b;
+        color: #64748b !important;
         font-size: 13px;
-        font-weight: 600;
+        font-weight: 650;
     }
 
-    .blocked-content-grid {
+    .brp-main-grid {
         display: grid;
-        grid-template-columns: 1.45fr 0.85fr;
+        grid-template-columns: 1.55fr 0.8fr;
         gap: 24px;
         align-items: start;
     }
 
-    .blocked-panel {
-        border-radius: 26px;
+    .brp-panel {
+        position: relative;
+        overflow: hidden;
+        border-radius: 30px;
         padding: 26px;
         background:
             radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
             radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 35%),
-            rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(168, 85, 247, 0.18);
-        box-shadow: 0 24px 55px rgba(168, 85, 247, 0.13);
-        backdrop-filter: blur(14px);
+            rgba(255, 255, 255, 0.92) !important;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 24px 55px rgba(168, 85, 247, 0.13) !important;
     }
 
-    .panel-header h3 {
+    .brp-panel::before {
+        content: "🚫";
+        position: absolute;
+        top: 18px;
+        right: 28px;
+        font-size: 58px;
+        opacity: 0.08;
+        pointer-events: none;
+    }
+
+    .brp-action-panel::before {
+        content: "🛡️";
+    }
+
+    .brp-history-panel::before {
+        content: "📜";
+    }
+
+    .brp-panel-header {
+        position: relative;
+        z-index: 2;
+        margin-bottom: 24px;
+    }
+
+    .brp-panel-header h3 {
         margin: 0;
-        color: #0f172a;
-        font-size: 22px;
+        color: #0f172a !important;
+        font-size: 23px;
         font-weight: 950;
-        letter-spacing: -0.4px;
     }
 
-    .panel-header h3::after {
+    .brp-panel-header h3::after {
         content: "";
         display: block;
         width: 50px;
         height: 4px;
-        margin-top: 9px;
+        margin-top: 10px;
         border-radius: 999px;
         background: linear-gradient(90deg, #8b5cf6, #ec4899);
     }
 
-    .panel-header p {
-        margin: 9px 0 0;
-        color: #64748b;
+    .brp-panel-header p {
+        margin: 10px 0 0;
+        color: #64748b !important;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 650;
     }
 
-    .blocked-table-wrapper {
-        margin-top: 22px;
-        overflow-x: auto;
-    }
-
-    .blocked-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 14px;
-    }
-
-    .blocked-table th {
-        text-align: left;
-        color: #64748b;
+    .brp-list-header {
+        display: grid;
+        grid-template-columns: 0.75fr 1.2fr 1.35fr 1.15fr 0.8fr 0.65fr;
+        gap: 14px;
+        padding: 0 16px 10px;
+        color: #64748b !important;
         font-size: 13px;
         font-weight: 950;
-        padding: 0 18px 4px;
     }
 
-    .blocked-table td {
-        padding: 18px;
-        background: linear-gradient(135deg, #ffffff, #fbf5ff);
-        border-top: 1px solid rgba(168, 85, 247, 0.16);
-        border-bottom: 1px solid rgba(168, 85, 247, 0.16);
-        color: #0f172a;
-        font-size: 14px;
-        font-weight: 800;
+    .brp-ip-list {
+        display: grid;
+        gap: 14px;
     }
 
-    .blocked-table tbody tr:nth-child(1) td {
-        background: linear-gradient(135deg, #ffffff, #fff7ed);
-    }
-
-    .blocked-table tbody tr:nth-child(2) td {
-        background: linear-gradient(135deg, #ffffff, #f3e8ff);
-    }
-
-    .blocked-table tbody tr:nth-child(3) td {
-        background: linear-gradient(135deg, #ffffff, #fff1f2);
-    }
-
-    .blocked-table tbody tr:nth-child(4) td {
-        background: linear-gradient(135deg, #ffffff, #fef3c7);
-    }
-
-    .blocked-table td:first-child {
-        border-left: 1px solid rgba(168, 85, 247, 0.16);
-        border-radius: 18px 0 0 18px;
-    }
-
-    .blocked-table td:last-child {
-        border-right: 1px solid rgba(168, 85, 247, 0.16);
-        border-radius: 0 18px 18px 0;
-    }
-
-    .ip-box {
-        display: flex;
+    .brp-ip-row {
+        display: grid;
+        grid-template-columns: 0.75fr 1.2fr 1.35fr 1.15fr 0.8fr 0.65fr;
         align-items: center;
-        gap: 13px;
+        gap: 14px;
+        min-height: 78px;
+        padding: 18px 16px;
+        border-radius: 20px;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
     }
 
-    .ip-avatar {
-        width: 45px;
-        height: 45px;
-        border-radius: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        font-weight: 950;
-        box-shadow: 0 10px 24px rgba(168, 85, 247, 0.14);
+    .brp-ip-row.purple {
+        background: linear-gradient(135deg, #ffffff, #f3e8ff) !important;
     }
 
-    .ip-avatar.red {
-        color: #dc2626;
-        background: linear-gradient(135deg, #fee2e2, #ffffff);
+    .brp-ip-row.violet {
+        background: linear-gradient(135deg, #ffffff, #f8f3ff) !important;
     }
 
-    .ip-avatar.purple {
-        color: #7c3aed;
-        background: linear-gradient(135deg, #f3e8ff, #ffffff);
+    .brp-ip-row.red {
+        background: linear-gradient(135deg, #ffffff, #fff1f2) !important;
     }
 
-    .ip-avatar.pink {
-        color: #db2777;
-        background: linear-gradient(135deg, #fce7f3, #ffffff);
+    .brp-ip-row.blue {
+        background: linear-gradient(135deg, #ffffff, #dbeafe) !important;
     }
 
-    .ip-avatar.orange {
-        color: #ea580c;
-        background: linear-gradient(135deg, #ffedd5, #ffffff);
-    }
-
-    .ip-box strong {
+    .brp-ip-row small,
+    .brp-detail-box small {
         display: block;
-        color: #0f172a;
+        margin-bottom: 5px;
+        color: #64748b !important;
+        font-size: 12px;
+        font-weight: 850;
+    }
+
+    .brp-ip-row strong,
+    .brp-detail-box strong {
+        display: block;
+        color: #0f172a !important;
         font-size: 14px;
         font-weight: 950;
     }
 
-    .ip-box small {
+    .brp-ip-row em {
         display: block;
         margin-top: 5px;
-        color: #64748b;
+        color: #64748b !important;
+        font-style: normal;
         font-size: 12px;
         font-weight: 700;
     }
 
-    .ip-status {
+    .brp-status {
         display: inline-flex;
-        align-items: center;
         justify-content: center;
-        min-width: 86px;
-        padding: 9px 14px;
+        min-width: 92px;
+        padding: 10px 16px;
         border-radius: 999px;
         font-size: 12px;
         font-weight: 950;
     }
 
-    .ip-status.blocked {
-        color: #dc2626;
-        background: #fee2e2;
+    .brp-status.blocked {
+        background: #fee2e2 !important;
+        color: #dc2626 !important;
     }
 
-    .ip-status.unblocked {
-        color: #059669;
-        background: #dcfce7;
+    .brp-status.unblocked {
+        background: #dcfce7 !important;
+        color: #059669 !important;
     }
 
-    .unblock-btn {
+    .brp-status.pending {
+        background: #fef3c7 !important;
+        color: #d97706 !important;
+    }
+
+    .brp-action-btn {
         border: none;
-        outline: none;
         cursor: pointer;
-        padding: 10px 16px;
+        min-width: 88px;
+        padding: 10px 14px;
         border-radius: 999px;
-        color: #7c3aed;
-        background: linear-gradient(135deg, #f3e8ff, #fce7f3);
         font-size: 12px;
         font-weight: 950;
         transition: 0.2s ease;
     }
 
-    .unblock-btn:hover:not(:disabled) {
-        color: #ffffff;
-        background: linear-gradient(135deg, #8b5cf6, #d946ef);
-        transform: translateY(-2px);
+    .brp-action-btn.unblock {
+        background: #f3e8ff !important;
+        color: #7c3aed !important;
     }
 
-    .unblock-btn:disabled {
-        opacity: 0.55;
+    .brp-action-btn.block {
+        background: #fee2e2 !important;
+        color: #dc2626 !important;
+    }
+
+    .brp-action-btn.pending {
+        background: #fef3c7 !important;
+        color: #d97706 !important;
         cursor: not-allowed;
     }
 
-    .selected-ip-card {
-        margin-top: 22px;
+    .brp-action-btn:hover:not(.pending) {
+        transform: translateY(-2px);
+        background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
+        color: #ffffff !important;
     }
 
-    .selected-ip-gradient {
-        padding: 26px;
-        border-radius: 22px;
+    .brp-selected-card {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        gap: 14px;
+    }
+
+    .brp-selected-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        border-radius: 24px;
         color: #ffffff;
         background:
-            radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 35%),
-            linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899);
-        box-shadow: 0 18px 38px rgba(168, 85, 247, 0.24);
+            radial-gradient(circle at top right, rgba(255,255,255,0.24), transparent 35%),
+            linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899) !important;
+        box-shadow: 0 18px 42px rgba(217, 70, 239, 0.24);
     }
 
-    .selected-ip-gradient span {
+    .brp-selected-hero::after {
+        content: "";
+        position: absolute;
+        width: 115px;
+        height: 115px;
+        right: -35px;
+        bottom: -45px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.18);
+    }
+
+    .brp-selected-hero small {
         display: block;
-        color: rgba(255, 255, 255, 0.82);
+        color: rgba(255,255,255,0.88) !important;
         font-size: 13px;
-        font-weight: 850;
+        font-weight: 900;
     }
 
-    .selected-ip-gradient h2 {
-        margin: 8px 0 0;
-        font-size: 30px;
+    .brp-selected-hero h2 {
+        margin: 10px 0 0;
+        color: #ffffff !important;
+        font-size: 28px;
         font-weight: 950;
     }
 
-    .selected-detail-list {
-        display: grid;
-        gap: 12px;
-        margin-top: 16px;
-    }
-
-    .selected-detail {
-        padding: 16px;
+    .brp-detail-box {
+        padding: 18px;
         border-radius: 18px;
-        background: linear-gradient(135deg, #ffffff, #fbf5ff);
-        border: 1px solid rgba(168, 85, 247, 0.16);
-        box-shadow: 0 10px 22px rgba(168, 85, 247, 0.06);
+        background: linear-gradient(135deg, #ffffff, #f8f3ff) !important;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
     }
 
-    .selected-detail small {
-        display: block;
-        color: #94a3b8;
-        font-size: 12px;
-        font-weight: 850;
-        margin-bottom: 6px;
-    }
-
-    .selected-detail strong {
-        color: #0f172a;
-        font-size: 14px;
-        font-weight: 950;
-    }
-
-    .confirm-unblock-btn {
-        width: 100%;
-        margin-top: 16px;
-        border: none;
-        outline: none;
-        cursor: pointer;
-        padding: 15px 20px;
-        border-radius: 18px;
-        color: #ffffff;
-        background: linear-gradient(135deg, #111827, #2e174f);
-        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.20);
-        font-size: 14px;
-        font-weight: 950;
-        transition: 0.2s ease;
-    }
-
-    .confirm-unblock-btn:hover {
-        transform: translateY(-2px);
-        background: linear-gradient(135deg, #8b5cf6, #d946ef);
-    }
-
-    .history-panel {
+    .brp-history-panel {
         margin-top: 24px;
     }
 
-    .history-list {
+    .brp-history-list {
         display: grid;
         gap: 14px;
-        margin-top: 20px;
+        position: relative;
+        z-index: 2;
     }
 
-    .history-row {
+    .brp-history-row {
         display: flex;
+        align-items: center;
         justify-content: space-between;
         gap: 18px;
-        align-items: center;
         padding: 18px 20px;
-        border-radius: 18px;
-        background: linear-gradient(135deg, #ffffff, #fbf5ff);
-        border: 1px solid rgba(168, 85, 247, 0.16);
-        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.07);
+        border-radius: 20px;
+        background: linear-gradient(135deg, #ffffff, #f8f3ff) !important;
+        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
     }
 
-    .history-row:nth-child(odd) {
-        background: linear-gradient(135deg, #ffffff, #f3e8ff);
-    }
-
-    .history-row:nth-child(even) {
-        background: linear-gradient(135deg, #ffffff, #fff1f2);
-    }
-
-    .history-row strong {
+    .brp-history-row strong {
         display: block;
-        color: #0f172a;
+        color: #0f172a !important;
         font-size: 14px;
         font-weight: 950;
     }
 
-    .history-row small {
+    .brp-history-row span {
         display: block;
         margin-top: 5px;
-        color: #64748b;
+        color: #64748b !important;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 750;
     }
 
-    .history-row span {
-        color: #7c3aed;
-        font-size: 13px;
+    .brp-history-row b {
+        padding: 9px 14px;
+        border-radius: 999px;
+        background: #dcfce7 !important;
+        color: #059669 !important;
+        font-size: 12px;
         font-weight: 950;
-        white-space: nowrap;
     }
 
-    body.dark-mode .page-heading h1,
-    body.dark .page-heading h1,
-    body.dark-theme .page-heading h1,
-    body.dark-mode .panel-header h3,
-    body.dark .panel-header h3,
-    body.dark-theme .panel-header h3,
-    body.dark-mode .blocked-summary-card h2,
-    body.dark .blocked-summary-card h2,
-    body.dark-theme .blocked-summary-card h2,
-    body.dark-mode .blocked-table td,
-    body.dark .blocked-table td,
-    body.dark-theme .blocked-table td,
-    body.dark-mode .ip-box strong,
-    body.dark .ip-box strong,
-    body.dark-theme .ip-box strong,
-    body.dark-mode .selected-detail strong,
-    body.dark .selected-detail strong,
-    body.dark-theme .selected-detail strong,
-    body.dark-mode .history-row strong,
-    body.dark .history-row strong,
-    body.dark-theme .history-row strong {
-        color: #f8fafc !important;
+    /* =============================== */
+    /* DARK MODE AUTO SUPPORT */
+    /* =============================== */
+
+    body.dark-mode .brp-heading h1,
+    body.dark .brp-heading h1,
+    body.dark-theme .brp-heading h1,
+    .brp-page.brp-dark .brp-heading h1 {
+        color: #ffffff !important;
+        text-shadow: 0 5px 18px rgba(15, 23, 42, 0.35);
     }
 
-    body.dark-mode .page-heading p,
-    body.dark .page-heading p,
-    body.dark-theme .page-heading p,
-    body.dark-mode .panel-header p,
-    body.dark .panel-header p,
-    body.dark-theme .panel-header p,
-    body.dark-mode .blocked-summary-card span,
-    body.dark .blocked-summary-card span,
-    body.dark-theme .blocked-summary-card span,
-    body.dark-mode .blocked-summary-card p,
-    body.dark .blocked-summary-card p,
-    body.dark-theme .blocked-summary-card p,
-    body.dark-mode .blocked-table th,
-    body.dark .blocked-table th,
-    body.dark-theme .blocked-table th,
-    body.dark-mode .ip-box small,
-    body.dark .ip-box small,
-    body.dark-theme .ip-box small,
-    body.dark-mode .history-row small,
-    body.dark .history-row small,
-    body.dark-theme .history-row small {
-        color: #94a3b8 !important;
+    body.dark-mode .brp-heading p,
+    body.dark .brp-heading p,
+    body.dark-theme .brp-heading p,
+    .brp-page.brp-dark .brp-heading p {
+        color: #cbd5e1 !important;
     }
 
-    body.dark-mode .blocked-panel,
-    body.dark .blocked-panel,
-    body.dark-theme .blocked-panel,
-    body.dark-mode .blocked-summary-card,
-    body.dark .blocked-summary-card,
-    body.dark-theme .blocked-summary-card,
-    body.dark-mode .blocked-table td,
-    body.dark .blocked-table td,
-    body.dark-theme .blocked-table td,
-    body.dark-mode .selected-detail,
-    body.dark .selected-detail,
-    body.dark-theme .selected-detail,
-    body.dark-mode .history-row,
-    body.dark .history-row,
-    body.dark-theme .history-row {
+    body.dark-mode .brp-filter-panel,
+    body.dark .brp-filter-panel,
+    body.dark-theme .brp-filter-panel,
+    body.dark-mode .brp-summary-card,
+    body.dark .brp-summary-card,
+    body.dark-theme .brp-summary-card,
+    body.dark-mode .brp-panel,
+    body.dark .brp-panel,
+    body.dark-theme .brp-panel,
+    .brp-page.brp-dark .brp-filter-panel,
+    .brp-page.brp-dark .brp-summary-card,
+    .brp-page.brp-dark .brp-panel {
+        background:
+            radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 34%),
+            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 35%),
+            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        border-color: rgba(168, 85, 247, 0.30) !important;
+        box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
+    }
+
+    body.dark-mode .brp-filter-group input,
+    body.dark .brp-filter-group input,
+    body.dark-theme .brp-filter-group input,
+    body.dark-mode .brp-filter-group select,
+    body.dark .brp-filter-group select,
+    body.dark-theme .brp-filter-group select,
+    .brp-page.brp-dark .brp-filter-group input,
+    .brp-page.brp-dark .brp-filter-group select {
+        background: #111827 !important;
+        border-color: #334155 !important;
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .brp-filter-group label,
+    body.dark .brp-filter-group label,
+    body.dark-theme .brp-filter-group label,
+    body.dark-mode .brp-summary-card span,
+    body.dark .brp-summary-card span,
+    body.dark-theme .brp-summary-card span,
+    body.dark-mode .brp-summary-card p,
+    body.dark .brp-summary-card p,
+    body.dark-theme .brp-summary-card p,
+    body.dark-mode .brp-panel-header p,
+    body.dark .brp-panel-header p,
+    body.dark-theme .brp-panel-header p,
+    body.dark-mode .brp-list-header,
+    body.dark .brp-list-header,
+    body.dark-theme .brp-list-header,
+    .brp-page.brp-dark .brp-filter-group label,
+    .brp-page.brp-dark .brp-summary-card span,
+    .brp-page.brp-dark .brp-summary-card p,
+    .brp-page.brp-dark .brp-panel-header p,
+    .brp-page.brp-dark .brp-list-header {
+        color: #cbd5e1 !important;
+    }
+
+    body.dark-mode .brp-summary-card h2,
+    body.dark .brp-summary-card h2,
+    body.dark-theme .brp-summary-card h2,
+    body.dark-mode .brp-panel-header h3,
+    body.dark .brp-panel-header h3,
+    body.dark-theme .brp-panel-header h3,
+    .brp-page.brp-dark .brp-summary-card h2,
+    .brp-page.brp-dark .brp-panel-header h3 {
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .brp-ip-row.purple,
+    body.dark .brp-ip-row.purple,
+    body.dark-theme .brp-ip-row.purple,
+    .brp-page.brp-dark .brp-ip-row.purple {
+        background: linear-gradient(135deg, #111827, #2e1a26) !important;
+    }
+
+    body.dark-mode .brp-ip-row.violet,
+    body.dark .brp-ip-row.violet,
+    body.dark-theme .brp-ip-row.violet,
+    .brp-page.brp-dark .brp-ip-row.violet {
+        background: linear-gradient(135deg, #111827, #25163d) !important;
+    }
+
+    body.dark-mode .brp-ip-row.red,
+    body.dark .brp-ip-row.red,
+    body.dark-theme .brp-ip-row.red,
+    .brp-page.brp-dark .brp-ip-row.red {
+        background: linear-gradient(135deg, #111827, #3b1a2c) !important;
+    }
+
+    body.dark-mode .brp-ip-row.blue,
+    body.dark .brp-ip-row.blue,
+    body.dark-theme .brp-ip-row.blue,
+    .brp-page.brp-dark .brp-ip-row.blue {
+        background: linear-gradient(135deg, #111827, #172554) !important;
+    }
+
+    body.dark-mode .brp-ip-row,
+    body.dark .brp-ip-row,
+    body.dark-theme .brp-ip-row,
+    body.dark-mode .brp-detail-box,
+    body.dark .brp-detail-box,
+    body.dark-theme .brp-detail-box,
+    body.dark-mode .brp-history-row,
+    body.dark .brp-history-row,
+    body.dark-theme .brp-history-row,
+    .brp-page.brp-dark .brp-ip-row,
+    .brp-page.brp-dark .brp-detail-box,
+    .brp-page.brp-dark .brp-history-row {
+        border-color: rgba(168, 85, 247, 0.27) !important;
+        color: #ffffff !important;
+    }
+
+    body.dark-mode .brp-detail-box,
+    body.dark .brp-detail-box,
+    body.dark-theme .brp-detail-box,
+    body.dark-mode .brp-history-row,
+    body.dark .brp-history-row,
+    body.dark-theme .brp-history-row,
+    .brp-page.brp-dark .brp-detail-box,
+    .brp-page.brp-dark .brp-history-row {
         background: linear-gradient(135deg, #111827, #241638) !important;
-        border-color: #3b2a55 !important;
     }
 
-    @media (max-width: 1200px) {
-        .blocked-summary-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    body.dark-mode .brp-ip-row strong,
+    body.dark .brp-ip-row strong,
+    body.dark-theme .brp-ip-row strong,
+    body.dark-mode .brp-detail-box strong,
+    body.dark .brp-detail-box strong,
+    body.dark-theme .brp-detail-box strong,
+    body.dark-mode .brp-history-row strong,
+    body.dark .brp-history-row strong,
+    body.dark-theme .brp-history-row strong,
+    .brp-page.brp-dark .brp-ip-row strong,
+    .brp-page.brp-dark .brp-detail-box strong,
+    .brp-page.brp-dark .brp-history-row strong {
+        color: #ffffff !important;
+    }
 
-        .blocked-content-grid {
+    body.dark-mode .brp-ip-row small,
+    body.dark .brp-ip-row small,
+    body.dark-theme .brp-ip-row small,
+    body.dark-mode .brp-ip-row em,
+    body.dark .brp-ip-row em,
+    body.dark-theme .brp-ip-row em,
+    body.dark-mode .brp-detail-box small,
+    body.dark .brp-detail-box small,
+    body.dark-theme .brp-detail-box small,
+    body.dark-mode .brp-history-row span,
+    body.dark .brp-history-row span,
+    body.dark-theme .brp-history-row span,
+    .brp-page.brp-dark .brp-ip-row small,
+    .brp-page.brp-dark .brp-ip-row em,
+    .brp-page.brp-dark .brp-detail-box small,
+    .brp-page.brp-dark .brp-history-row span {
+        color: #cbd5e1 !important;
+    }
+
+    @media (max-width: 1300px) {
+        .brp-main-grid {
             grid-template-columns: 1fr;
         }
+
+        .brp-list-header,
+        .brp-ip-row {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
     }
 
-    @media (max-width: 768px) {
-        .blocked-summary-grid {
+    @media (max-width: 900px) {
+        .brp-filter-panel,
+        .brp-summary-grid,
+        .brp-list-header,
+        .brp-ip-row {
             grid-template-columns: 1fr;
         }
 
-        .history-row {
-            align-items: flex-start;
-            flex-direction: column;
+        .brp-list-header {
+            display: none;
         }
     }
+
+    /* ================================================= */
+/* FIX Action Detail supaya ikut dark mode penuh */
+/* Paste paling bawah style response-management.blade.php */
+/* ================================================= */
+
+body.dark-mode .brp-selected-card,
+body.dark .brp-selected-card,
+body.dark-theme .brp-selected-card,
+.brp-page.brp-dark .brp-selected-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Hilangkan kotak putih yang membungkus Action Detail */
+body.dark-mode .brp-action-panel .brp-selected-card,
+body.dark .brp-action-panel .brp-selected-card,
+body.dark-theme .brp-action-panel .brp-selected-card,
+.brp-page.brp-dark .brp-action-panel .brp-selected-card {
+    background: transparent !important;
+}
+
+/* Selected IP tetap gradient, tapi tanpa background putih luar */
+body.dark-mode .brp-selected-hero,
+body.dark .brp-selected-hero,
+body.dark-theme .brp-selected-hero,
+.brp-page.brp-dark .brp-selected-hero {
+    background:
+        radial-gradient(circle at top right, rgba(255,255,255,0.22), transparent 35%),
+        linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+}
+
+/* Detail box dark */
+body.dark-mode .brp-detail-box,
+body.dark .brp-detail-box,
+body.dark-theme .brp-detail-box,
+.brp-page.brp-dark .brp-detail-box {
+    background:
+        radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
+        linear-gradient(135deg, #111827, #241638) !important;
+    border: 1px solid rgba(168, 85, 247, 0.28) !important;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18) !important;
+    color: #ffffff !important;
+}
+
+/* Text detail */
+body.dark-mode .brp-detail-box small,
+body.dark .brp-detail-box small,
+body.dark-theme .brp-detail-box small,
+.brp-page.brp-dark .brp-detail-box small {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .brp-detail-box strong,
+body.dark .brp-detail-box strong,
+body.dark-theme .brp-detail-box strong,
+.brp-page.brp-dark .brp-detail-box strong {
+    color: #ffffff !important;
+}
+
+/* Paksa semua div dalam action detail tidak punya background putih */
+body.dark-mode .brp-action-panel div,
+body.dark .brp-action-panel div,
+body.dark-theme .brp-action-panel div,
+.brp-page.brp-dark .brp-action-panel div {
+    border-color: rgba(168, 85, 247, 0.28) !important;
+}
+
+/* Kalau ada style lama yang kasih background putih */
+body.dark-mode .brp-action-panel .selected-detail,
+body.dark .brp-action-panel .selected-detail,
+body.dark-theme .brp-action-panel .selected-detail,
+body.dark-mode .brp-action-panel .selected-card,
+body.dark .brp-action-panel .selected-card,
+body.dark-theme .brp-action-panel .selected-card {
+    background: transparent !important;
+    border: none !important;
+}
 </style>
 
 <script>
-    let selectedRow = null;
+    function filterBlockedIp() {
+        const date = document.getElementById('filterDate').value;
+        const alert = document.getElementById('filterAlert').value;
+        const category = document.getElementById('filterCategory').value;
 
-    function selectBlockedIP(button) {
-        selectedRow = button.closest('tr');
+        const rows = document.querySelectorAll('.brp-ip-row');
 
-        const ip = selectedRow.dataset.ip;
-        const reason = selectedRow.dataset.reason;
-        const status = selectedRow.dataset.status;
+        rows.forEach(row => {
+            const matchDate = !date || row.dataset.date === date;
+            const matchAlert = alert === 'all' || row.dataset.alert === alert;
+            const matchCategory = category === 'all' || row.dataset.category === category;
 
-        document.getElementById('selectedIp').innerText = ip;
-        document.getElementById('selectedReason').innerText = reason;
-        document.getElementById('selectedStatus').innerText = status;
+            row.style.display = matchDate && matchAlert && matchCategory ? '' : 'none';
+        });
     }
 
-    function confirmUnblock() {
-        if (!selectedRow) {
-            selectedRow = document.querySelector('.blocked-table tbody tr');
-        }
+    function resetBlockedFilter() {
+        document.getElementById('filterDate').value = '';
+        document.getElementById('filterAlert').value = 'all';
+        document.getElementById('filterCategory').value = 'all';
 
-        const ip = selectedRow.dataset.ip;
-        const reason = selectedRow.dataset.reason;
+        filterBlockedIp();
+    }
 
-        selectedRow.dataset.status = 'Unblocked';
+    function updateSummaryCounts() {
+        const rows = document.querySelectorAll('.brp-ip-row');
 
-        const statusBadge = selectedRow.querySelector('.ip-status');
-        statusBadge.innerText = 'Unblocked';
-        statusBadge.classList.remove('blocked');
-        statusBadge.classList.add('unblocked');
+        let blocked = 0;
+        let pending = 0;
 
-        const button = selectedRow.querySelector('.unblock-btn');
-        button.innerText = 'Unblocked';
-        button.disabled = true;
+        rows.forEach(row => {
+            if (row.dataset.status === 'blocked') blocked++;
+            if (row.dataset.status === 'pending') pending++;
+        });
 
-        document.getElementById('selectedStatus').innerText = 'Unblocked';
+        document.getElementById('totalBlockedCount').innerText = blocked;
+        document.getElementById('pendingCount').innerText = pending;
+    }
 
+    function setActionDetail(row, processText) {
+        document.getElementById('selectedIp').innerText = row.dataset.ip;
+        document.getElementById('selectedAlert').innerText = row.dataset.alert;
+        document.getElementById('selectedCategory').innerText = row.dataset.category;
+        document.getElementById('selectedProcess').innerText = processText;
+    }
+
+    function addHistory(ip, alert, action, status) {
         const historyList = document.getElementById('historyList');
-        const newHistory = document.createElement('div');
-        newHistory.className = 'history-row';
-        newHistory.innerHTML = `
+
+        const item = document.createElement('div');
+        item.className = 'brp-history-row';
+        item.innerHTML = `
             <div>
-                <strong>${ip} unblocked</strong>
-                <small>${reason} marked as trusted source</small>
+                <strong>${ip} ${action}</strong>
+                <span>${alert} • just now</span>
             </div>
-            <span>Now</span>
+            <b>${status}</b>
         `;
 
-        historyList.prepend(newHistory);
+        historyList.prepend(item);
+    }
+
+    function handleIpAction(button) {
+        const row = button.closest('.brp-ip-row');
+        const statusBadge = row.querySelector('.brp-status');
+
+        const currentStatus = row.dataset.status;
+        const nextAction = currentStatus === 'blocked' ? 'unblock' : 'block';
+
+        row.dataset.status = 'pending';
+        statusBadge.className = 'brp-status pending';
+        statusBadge.innerText = 'Pending';
+
+        button.className = 'brp-action-btn pending';
+        button.innerText = 'Pending';
+        button.disabled = true;
+
+        setActionDetail(row, `${nextAction.charAt(0).toUpperCase() + nextAction.slice(1)} pending`);
+        addHistory(row.dataset.ip, row.dataset.alert, `${nextAction} pending`, 'Pending');
+        updateSummaryCounts();
+
+        setTimeout(() => {
+            if (nextAction === 'unblock') {
+                row.dataset.status = 'unblocked';
+                statusBadge.className = 'brp-status unblocked';
+                statusBadge.innerText = 'Unblocked';
+
+                button.className = 'brp-action-btn block';
+                button.innerText = 'Block';
+                button.disabled = false;
+
+                setActionDetail(row, 'Unblock success');
+                addHistory(row.dataset.ip, row.dataset.alert, 'unblocked', 'Success');
+            } else {
+                row.dataset.status = 'blocked';
+                statusBadge.className = 'brp-status blocked';
+                statusBadge.innerText = 'Blocked';
+
+                button.className = 'brp-action-btn unblock';
+                button.innerText = 'Unblock';
+                button.disabled = false;
+
+                setActionDetail(row, 'Block success');
+                addHistory(row.dataset.ip, row.dataset.alert, 'blocked', 'Success');
+            }
+
+            const successCount = document.getElementById('successCount');
+            successCount.innerText = Number(successCount.innerText) + 1;
+
+            updateSummaryCounts();
+        }, 900);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
-        const firstButton = document.querySelector('.unblock-btn');
-        if (firstButton) {
-            selectBlockedIP(firstButton);
+        const page = document.getElementById('blockedIpPage');
+
+        function isDarkTheme() {
+            return document.body.classList.contains('dark-mode') ||
+                   document.body.classList.contains('dark') ||
+                   document.body.classList.contains('dark-theme') ||
+                   document.documentElement.classList.contains('dark-mode') ||
+                   document.documentElement.classList.contains('dark') ||
+                   document.documentElement.classList.contains('dark-theme') ||
+                   localStorage.getItem('lox_theme') === 'dark' ||
+                   localStorage.getItem('theme') === 'dark' ||
+                   localStorage.getItem('color-theme') === 'dark';
         }
+
+        function syncBlockedTheme() {
+            if (!page) return;
+
+            if (isDarkTheme()) {
+                page.classList.add('brp-dark');
+            } else {
+                page.classList.remove('brp-dark');
+            }
+        }
+
+        syncBlockedTheme();
+        updateSummaryCounts();
+
+        const observer = new MutationObserver(syncBlockedTheme);
+
+        observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+
+        const switcher = document.getElementById('sidebarThemeSwitch');
+
+        if (switcher) {
+            switcher.addEventListener('change', function () {
+                setTimeout(syncBlockedTheme, 50);
+            });
+        }
+
+        window.addEventListener('storage', syncBlockedTheme);
     });
 </script>
 
