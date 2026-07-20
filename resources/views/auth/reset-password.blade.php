@@ -1,25 +1,12 @@
 @extends('layouts.auth')
 
-@section('title', 'LOX Login')
-@section('heading', 'USER LOGIN')
-@section('subheading', 'Access your Low-Overhead XDR dashboard.')
+@section('title', 'Reset Password — LOX')
+@section('heading', 'RESET PASSWORD')
+@section('subheading', 'Set a new password for your account.')
 
 @section('auth-content')
-    <form action="{{ route('login.post') }}" method="POST">
+    <form action="{{ route('password.update') }}" method="POST">
         @csrf
-
-        <div class="form-group">
-            <div class="input-box">
-                <span>✉</span>
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email') }}"
-                    placeholder="Email address"
-                    required
-                >
-            </div>
-        </div>
 
         <div class="form-group">
             <div class="input-box">
@@ -27,7 +14,8 @@
                 <input
                     type="password"
                     name="password"
-                    placeholder="Password"
+                    placeholder="New password"
+                    minlength="8"
                     required
                 >
                 <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" aria-label="Toggle password visibility">
@@ -36,17 +24,24 @@
             </div>
         </div>
 
-        <div class="login-options">
-            <label>
-                <input type="checkbox" name="remember">
-                <span>Keep me logged in</span>
-            </label>
-
-            <a href="{{ route('password.request') }}">Forgot Password?</a>
+        <div class="form-group">
+            <div class="input-box">
+                <span>@include('partials.lock-icon')</span>
+                <input
+                    type="password"
+                    name="password_confirmation"
+                    placeholder="Confirm new password"
+                    minlength="8"
+                    required
+                >
+                <button type="button" class="toggle-password" onclick="togglePasswordVisibility(this)" aria-label="Toggle password visibility">
+                    @include('partials.password-toggle-icon')
+                </button>
+            </div>
         </div>
 
         <button type="submit" class="login-btn">
-            LOGIN
+            SAVE
         </button>
     </form>
 @endsection
