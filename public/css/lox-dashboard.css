@@ -1,10 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Outfit", sans-serif;
 }
 
 :root {
@@ -1965,9 +1962,11 @@ body.dark-theme .device-icon {
    (FORCE ALL WHITE TO GRADIENT GLASS)
 ========================= */
 
-/* RESET TOTAL BACKGROUND */
+/* RESET TOTAL BACKGROUND — solid, not gradient (references the same
+   --bg-main token as design-tokens.blade.php so there's one source of
+   truth for the page background across every dashboard page). */
 html, body {
-    background: linear-gradient(135deg, #f3e8ff, #ffe4f1) !important;
+    background: var(--bg-main, #FAF8FC) !important;
     min-height: 100vh;
 }
 

@@ -1,11 +1,16 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AgentController;
+use App\Http\Controllers\AnalyticsController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordResetController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\IncidentController;
+use App\Http\Controllers\ResponseController;
+use App\Http\Controllers\ThreatController;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/agent-monitoring', [AgentController::class, 'index'])->name('agent.monitoring');
 /*
 |--------------------------------------------------------------------------
 | LOGIN
@@ -16,33 +21,23 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/login', function () {
-    if (Auth::check()) {
-        return redirect()->route('dashboard');
-    }
+Route::get('/login', [LoginController::class, 'show'])->name('login');
+Route::post('/login', [LoginController::class, 'store'])->name('login.post');
 
-    return view('auth.login');
-})->name('login');
+/*
+|--------------------------------------------------------------------------
+| FORGOT PASSWORD
+|--------------------------------------------------------------------------
+*/
 
-Route::post('/login', function (Request $request) {
+Route::get('/forgot-password', [PasswordResetController::class, 'showEmailForm'])->name('password.request');
+Route::post('/forgot-password', [PasswordResetController::class, 'sendCode'])->name('password.email');
 
-    $credentials = $request->validate([
-        'email' => ['required', 'email'],
-        'password' => ['required'],
-    ]);
+Route::get('/forgot-password/verify', [PasswordResetController::class, 'showVerifyForm'])->name('password.verify');
+Route::post('/forgot-password/verify', [PasswordResetController::class, 'verifyCode'])->name('password.verify.submit');
 
-    if (Auth::attempt($credentials)) {
-        $request->session()->regenerate();
-
-        return redirect()->route('dashboard');
-    }
-
-    return back()->withErrors([
-        'email' => 'Invalid email or password.'
-    ])->withInput();
-
-})->name('login.post');
-
+Route::get('/password-reset', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password-reset', [PasswordResetController::class, 'resetPassword'])->name('password.update');
 
 /*
 |--------------------------------------------------------------------------
@@ -58,9 +53,7 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     /*
     |--------------------------------------------------------------------------
@@ -68,38 +61,54 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/agent-monitoring', fn () => view('pages.agent-monitoring'))
+    Route::get('/agent-monitoring', [AgentController::class, 'index'])
         ->name('agent.monitoring');
 
-    Route::get('/event-monitoring', fn () => view('pages.event-monitoring'))
-        ->name('event.monitoring');
-
-    Route::get('/alert-management', fn () => view('pages.alert-management'))
-        ->name('alert.management');
-
-    Route::get('/threat-detection', fn () => view('pages.threat-detection'))
+    Route::get('/threat-detection', [ThreatController::class, 'index'])
         ->name('threat.detection');
 
-    Route::get('/incident-tracking', fn () => view('pages.incident-tracking'))
-        ->name('incident.tracking');
+    Route::get('/incident-management', [IncidentController::class, 'index'])
+        ->name('incident.management');
 
-    Route::get('/response-management', fn () => view('pages.response-management'))
+    Route::post('/incident-management/assign', [IncidentController::class, 'assign'])
+        ->name('incident.assign');
+
+    Route::post('/incident-management/status', [IncidentController::class, 'updateStatus'])
+        ->name('threat.incident.update');
+
+    Route::get('/response-management', [ResponseController::class, 'index'])
         ->name('response.management');
 
-    Route::get('/analytics', fn () => view('pages.analytics'))
+    Route::post('/response-management/block', [ResponseController::class, 'block'])
+        ->name('response.block');
+
+    Route::post('/response-management/unblock', [ResponseController::class, 'unblock'])
+        ->name('response.unblock');
+
+    Route::get('/analytics', [AnalyticsController::class, 'index'])
         ->name('analytics');
 
+    Route::get('/analytics/export/pdf', [AnalyticsController::class, 'exportPdf'])
+        ->name('analytics.export.pdf');
+
+    Route::get('/analytics/export/csv', [AnalyticsController::class, 'exportCsv'])
+        ->name('analytics.export.csv');
+
     Route::get('/settings', function () {
-    return view('pages.settings');
-})->name('settings');
+        return view('pages.settings');
+    })->name('settings');
     /*
     |--------------------------------------------------------------------------
     | ACCOUNT MODULE
     |--------------------------------------------------------------------------
     */
 
-    Route::get('/my-account', fn () => view('pages.my-account'))
+    Route::get('/my-account', [AccountController::class, 'show'])
         ->name('my.account');
+    Route::post('/my-account/profile', [AccountController::class, 'updateProfile'])
+        ->name('my.account.profile');
+    Route::post('/my-account/avatar', [AccountController::class, 'updateAvatar'])
+        ->name('my.account.avatar');
 
     Route::get('/account-settings', fn () => view('pages.account-settings'))
         ->name('account.settings');
@@ -112,7 +121,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/switch-account', fn () => view('pages.switch-account'))
         ->name('switch.account');
-
 
     /*
     |--------------------------------------------------------------------------
@@ -140,7 +148,7 @@ Route::middleware('auth')->group(function () {
             ],
         ];
 
-        if (!isset($users[$role])) {
+        if (! isset($users[$role])) {
             abort(404);
         }
 
@@ -150,22 +158,12 @@ Route::middleware('auth')->group(function () {
 
     })->name('switch.user');
 
-
     /*
     |--------------------------------------------------------------------------
     | LOGOUT
     |--------------------------------------------------------------------------
     */
 
-    Route::post('/logout', function (Request $request) {
-
-        Auth::logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login');
-
-    })->name('logout');
+    Route::post('/logout', [LoginController::class, 'destroy'])->name('logout');
 
 });

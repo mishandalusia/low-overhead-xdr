@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>LOX Dashboard</title>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700&family=Roboto+Condensed:wght@500;600;700;800;900&family=Roboto+Mono:wght@500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    @include('partials.design-tokens')
+
     <link rel="stylesheet" href="{{ asset('css/lox-dashboard.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
 
     <style>
@@ -21,11 +20,11 @@
         body {
             margin: 0;
             min-height: 100%;
-            font-family: 'Inter', 'Poppins', system-ui, sans-serif;
+            font-family: var(--font-main);
         }
 
         body {
-            background: #f8f3ff;
+            background: var(--bg-main);
             color: #0f172a;
         }
 
@@ -47,17 +46,15 @@
         /* ========================= */
 
         .main {
+            position: relative;
+            z-index: 1;
             margin-left: 86px;
             width: calc(100% - 86px);
             min-height: 100vh;
             padding: 36px 42px 46px;
             overflow: visible;
             transition: 0.25s ease;
-            background:
-                radial-gradient(circle at top left, rgba(168, 85, 247, 0.18), transparent 35%),
-                radial-gradient(circle at top right, rgba(236, 72, 153, 0.18), transparent 34%),
-                radial-gradient(circle at bottom right, rgba(96, 165, 250, 0.18), transparent 36%),
-                linear-gradient(135deg, #f8f3ff 0%, #fde7f7 48%, #e0f2fe 100%) !important;
+            background: transparent !important;
         }
 
         body.dark-mode .main,
@@ -345,7 +342,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
+            gap: 0;
             cursor: pointer;
             transition: 0.22s ease;
         }
@@ -353,6 +350,7 @@
         .sidebar:hover .sidebar-user-trigger {
             justify-content: flex-start;
             padding: 10px 12px;
+            gap: 12px;
         }
 
         body.light-mode .sidebar-user-trigger,
@@ -388,14 +386,27 @@
         .sidebar-user-icon {
             width: 42px;
             height: 42px;
-            border-radius: 15px;
+            border-radius: 50%;
             flex-shrink: 0;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #ffffff;
             background: linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899);
             box-shadow: 0 12px 26px rgba(217, 70, 239, 0.28);
+        }
+
+        .sidebar-user-initials {
+            font-size: 14px;
+            font-weight: 900;
+            letter-spacing: 0.2px;
+        }
+
+        .sidebar-user-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .sidebar:not(:hover) .sidebar-user-icon {
@@ -471,37 +482,51 @@
             color: rgba(226, 232, 240, 0.70);
         }
 
-        .sidebar-user-arrow {
-            font-size: 11px;
+        .sidebar-user-logout-form {
+            flex-shrink: 0;
             opacity: 0;
             visibility: hidden;
+            width: 0;
+            overflow: hidden;
             transition: 0.22s ease;
         }
 
-        .sidebar:hover .sidebar-user-arrow {
+        .sidebar:hover .sidebar-user-logout-form {
             opacity: 1;
             visibility: visible;
+            width: auto;
         }
 
-        .sidebar-user-menu:hover .sidebar-user-arrow {
-            transform: rotate(90deg);
+        .sidebar-user-logout-btn {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 10px;
+            background: transparent;
+            color: #ef4444;
+            cursor: pointer;
+            transition: 0.18s ease;
         }
 
-        body.light-mode .sidebar-user-arrow,
-        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-arrow {
-            color: #7c3aed;
+        .sidebar-user-logout-btn:hover {
+            background: rgba(239, 68, 68, 0.14);
         }
 
-        body.dark-mode .sidebar-user-arrow,
-        body.dark .sidebar-user-arrow,
-        body.dark-theme .sidebar-user-arrow {
-            color: rgba(226, 232, 240, 0.72);
+        body.dark-mode .sidebar-user-logout-btn,
+        body.dark .sidebar-user-logout-btn,
+        body.dark-theme .sidebar-user-logout-btn {
+            color: #fb7185;
         }
 
         .sidebar-profile-dropdown {
             position: absolute;
             left: 0;
-            top: calc(100% + 2px);
+            bottom: calc(100% + 2px);
+            top: auto;
             width: 100%;
             min-width: 230px;
             padding: 14px;
@@ -509,7 +534,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transform: translateY(-4px);
+            transform: translateY(4px);
             transition: 0.18s ease;
             z-index: 99999;
         }
@@ -539,9 +564,7 @@
             box-shadow: 0 24px 60px rgba(2, 6, 23, 0.55);
         }
 
-        .sidebar-profile-link,
-        .sidebar-theme-row,
-        .sidebar-profile-logout {
+        .sidebar-profile-link {
             width: 100%;
             min-height: 46px;
             border-radius: 16px;
@@ -557,103 +580,28 @@
             transition: 0.2s ease;
         }
 
-        .sidebar-theme-row {
-            justify-content: space-between;
-        }
-
-        .sidebar-theme-row > div {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
         body.light-mode .sidebar-profile-link,
-        body.light-mode .sidebar-theme-row,
-        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-profile-link,
-        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-theme-row {
+        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-profile-link {
             color: #2e1065;
         }
 
         body.light-mode .sidebar-profile-link:hover,
-        body.light-mode .sidebar-theme-row:hover,
-        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-profile-link:hover,
-        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-theme-row:hover {
+        body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-profile-link:hover {
             background: rgba(243, 232, 255, 0.90);
             color: #7c3aed;
         }
 
         body.dark-mode .sidebar-profile-link,
-        body.dark-mode .sidebar-theme-row,
         body.dark .sidebar-profile-link,
-        body.dark .sidebar-theme-row,
-        body.dark-theme .sidebar-profile-link,
-        body.dark-theme .sidebar-theme-row {
+        body.dark-theme .sidebar-profile-link {
             color: #e5e7eb;
         }
 
         body.dark-mode .sidebar-profile-link:hover,
-        body.dark-mode .sidebar-theme-row:hover,
         body.dark .sidebar-profile-link:hover,
-        body.dark .sidebar-theme-row:hover,
-        body.dark-theme .sidebar-profile-link:hover,
-        body.dark-theme .sidebar-theme-row:hover {
+        body.dark-theme .sidebar-profile-link:hover {
             background: rgba(99, 102, 241, 0.20);
             color: #ffffff;
-        }
-
-        .sidebar-profile-logout {
-            cursor: pointer;
-            color: #ef4444;
-        }
-
-        body.dark-mode .sidebar-profile-logout,
-        body.dark .sidebar-profile-logout,
-        body.dark-theme .sidebar-profile-logout {
-            color: #fb7185;
-        }
-
-        .sidebar-profile-logout:hover {
-            background: rgba(239, 68, 68, 0.12);
-        }
-
-        .sidebar-theme-switch {
-            position: relative;
-            width: 48px;
-            height: 26px;
-            flex-shrink: 0;
-        }
-
-        .sidebar-theme-switch input {
-            display: none;
-        }
-
-        .sidebar-theme-switch span {
-            position: absolute;
-            inset: 0;
-            border-radius: 999px;
-            cursor: pointer;
-            background: rgba(148, 163, 184, 0.35);
-            transition: 0.2s ease;
-        }
-
-        .sidebar-theme-switch span::before {
-            content: "";
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            top: 3px;
-            left: 3px;
-            border-radius: 50%;
-            background: #ffffff;
-            transition: 0.2s ease;
-        }
-
-        .sidebar-theme-switch input:checked + span {
-            background: linear-gradient(135deg, #8b5cf6, #d946ef);
-        }
-
-        .sidebar-theme-switch input:checked + span::before {
-            transform: translateX(22px);
         }
 
         /* ========================= */
@@ -854,7 +802,7 @@ button,
 input,
 select,
 textarea {
-    font-family: 'Sora', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
 }
 
 h1,
@@ -868,7 +816,7 @@ h4,
 .agp-heading h1,
 .tdx-heading h1,
 .rpt-hero h1 {
-    font-family: 'Space Grotesk', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     letter-spacing: -0.6px;
 }
 
@@ -1045,7 +993,7 @@ button,
 input,
 select,
 textarea {
-    font-family: 'Manrope', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
 }
 
 /* MAIN BACKGROUND LIGHT */
@@ -1176,7 +1124,7 @@ body:not(.dark-mode):not(.dark):not(.dark-theme) h1,
 body:not(.dark-mode):not(.dark):not(.dark-theme) h2,
 body:not(.dark-mode):not(.dark):not(.dark-theme) h3 {
     color: #1f2440 !important;
-    font-family: 'Manrope', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 900 !important;
     letter-spacing: -0.45px;
 }
@@ -1276,54 +1224,21 @@ body.light-mode .rpt-summary-card p {
     color: #1f2440 !important;
 }
 
-/* ROW / TABLE */
-body.light-mode .threat-row,
-body.light-mode .severity-row,
-body.light-mode .recent-alert-item,
-body.light-mode .history-alert-row,
-body.light-mode .agp-agent-row,
-body.light-mode .agp-health-card,
-body.light-mode .tdx-threat-row,
-body.light-mode .brp-ip-row,
+/* ROW / TABLE — the row classes now governed by the shared .data-list-row
+   zebra system (see partials/design-tokens.blade.php) were removed from
+   this selector list. They used to sit here with higher specificity than
+   .data-list-row's own rule, silently winning and making the zebra
+   striping invisible no matter what .data-list-row said. */
 body.light-mode .brp-detail-box,
-body.light-mode .brp-history-row,
-body.light-mode .rpt-activity-row,
 body.light-mode .rpt-blocked-card,
 body.light-mode .rpt-trend-summary div,
-body.light-mode .rpt-severity-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .threat-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .severity-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .recent-alert-item,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .history-alert-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .agp-agent-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .agp-health-card,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .tdx-threat-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .brp-ip-row,
 body:not(.dark-mode):not(.dark):not(.dark-theme) .brp-detail-box,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .brp-history-row,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .rpt-activity-row,
 body:not(.dark-mode):not(.dark):not(.dark-theme) .rpt-blocked-card,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .rpt-trend-summary div,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .rpt-severity-row {
+body:not(.dark-mode):not(.dark):not(.dark-theme) .rpt-trend-summary div {
     background: rgba(255, 255, 255, 0.68) !important;
     border: 1px solid rgba(180, 148, 255, 0.18) !important;
     box-shadow: 0 12px 28px rgba(155, 92, 246, 0.08) !important;
     color: #1f2440 !important;
-}
-
-/* ROW VARIATION SOFT */
-body.light-mode .brp-ip-row:nth-child(odd),
-body.light-mode .rpt-activity-row:nth-child(odd),
-body.light-mode .tdx-threat-row:nth-child(odd),
-body.light-mode .agp-agent-row:nth-child(odd) {
-    background: rgba(255, 244, 250, 0.74) !important;
-}
-
-body.light-mode .brp-ip-row:nth-child(even),
-body.light-mode .rpt-activity-row:nth-child(even),
-body.light-mode .tdx-threat-row:nth-child(even),
-body.light-mode .agp-agent-row:nth-child(even) {
-    background: rgba(240, 235, 255, 0.72) !important;
 }
 
 /* INPUT SELECT */
@@ -1362,11 +1277,15 @@ body:not(.dark-mode):not(.dark):not(.dark-theme) .severity-total {
     color: #ffffff !important;
 }
 
-/* ICON BOX */
+/* ICON BOX — .tdx-summary-icon and .agp-summary-icon used to be forced
+   into this purple-pink gradient regardless of severity/status, which is
+   also why their own page-specific color-coded backgrounds never showed:
+   this rule's higher specificity (body.light-mode + class) silently beat
+   their plain single-class rule. Each page now owns its own soft, icon-
+   color-matched tint instead (see threat-detection.blade.php,
+   agent-monitoring.blade.php) — pale background, not gradient. */
 body.light-mode .device-icon,
 body.light-mode .ip-icon,
-body.light-mode .tdx-summary-icon,
-body.light-mode .agp-summary-icon,
 body.light-mode .sidebar-user-icon {
     background: linear-gradient(135deg, #9b5cf6, #ec6bb8) !important;
     color: #ffffff !important;
@@ -1565,7 +1484,7 @@ label,
 a,
 td,
 th {
-    font-family: 'Roboto', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
 }
 
 /* Judul utama halaman */
@@ -1575,7 +1494,7 @@ h1,
 .agp-heading h1,
 .tdx-heading h1,
 .rpt-hero h1 {
-    font-family: 'Roboto Condensed', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 900 !important;
     letter-spacing: -0.8px !important;
 }
@@ -1590,7 +1509,7 @@ h3,
 .rpt-panel-header h3,
 .rpt-mode-panel h3,
 .dashboard-panel h3 {
-    font-family: 'Roboto Condensed', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 800 !important;
     letter-spacing: -0.45px !important;
 }
@@ -1600,7 +1519,7 @@ h3,
 .nav-item span,
 .sidebar-logo-text strong,
 .sidebar-user-text strong {
-    font-family: 'Roboto Condensed', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 800 !important;
     letter-spacing: 0.1px !important;
 }
@@ -1616,7 +1535,7 @@ h3,
 .agp-panel-header p,
 .tdx-panel-header p,
 .rpt-panel-header p {
-    font-family: 'Roboto', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-style: italic !important;
     font-weight: 500 !important;
     letter-spacing: 0 !important;
@@ -1635,7 +1554,7 @@ h3,
 #summaryBlocked,
 #trendActivity,
 #trendBlocked {
-    font-family: 'Roboto Mono', monospace !important;
+    font-family: var(--font-main) !important;
     font-weight: 700 !important;
     letter-spacing: -1px !important;
 }
@@ -1651,7 +1570,7 @@ h3,
 .rpt-badge,
 .brp-status,
 .brp-action-btn {
-    font-family: 'Roboto Mono', monospace !important;
+    font-family: var(--font-main) !important;
     font-weight: 700 !important;
 }
 
@@ -1663,7 +1582,7 @@ h3,
 .rpt-summary-card span,
 .brp-filter-group label,
 .menu-label {
-    font-family: 'Roboto Condensed', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 700 !important;
     letter-spacing: 0.25px !important;
 }
@@ -1675,7 +1594,7 @@ button,
 .brp-reset-btn,
 .brp-action-btn,
 .table-action {
-    font-family: 'Roboto Condensed', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 800 !important;
     letter-spacing: 0.15px !important;
 }
@@ -1691,7 +1610,7 @@ button,
 .brp-detail-box strong,
 .rpt-activity-row strong,
 .rpt-blocked-card strong {
-    font-family: 'Roboto', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-weight: 800 !important;
 }
 
@@ -1706,7 +1625,7 @@ button,
 .brp-ip-row em,
 .rpt-activity-row small,
 .rpt-blocked-card span {
-    font-family: 'Roboto', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-style: normal !important;
     font-weight: 500 !important;
 }
@@ -1718,7 +1637,7 @@ button,
 }
 
 .sidebar-logo-text span {
-    font-family: 'Roboto', system-ui, sans-serif !important;
+    font-family: var(--font-main) !important;
     font-size: 12px !important;
     font-weight: 700 !important;
     font-style: italic !important;
@@ -1728,12 +1647,15 @@ button,
 
 <body class="light-mode">
 @php
-    $activeUser = session('active_user', [
-        'name' => 'Administrator',
-        'email' => 'dev@lox.com',
-        'role' => 'Web Developer',
-    ]);
+    $activeUser = auth()->user();
+    $activeUserInitials = collect(explode(' ', trim($activeUser->name)))
+        ->filter()
+        ->map(fn ($part) => mb_strtoupper(mb_substr($part, 0, 1)))
+        ->take(2)
+        ->implode('');
 @endphp
+
+@include('partials.flickering-grid-bg')
 
 <div class="app light-mode">
 
@@ -1753,32 +1675,44 @@ button,
 
         <nav class="sidebar-nav">
             <a href="{{ route('dashboard') }}"
-               class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
-                <i class="fa-solid fa-house"></i>
+               class="nav-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"
+               title="Dashboard">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M11.47 3.84a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 1-1.06 1.06l-.44-.44v6.6a2.25 2.25 0 0 1-2.25 2.25h-3a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75h-3A2.25 2.25 0 0 1 3 19.5v-6.6l-.44.44a.75.75 0 1 1-1.06-1.06l8.69-8.69Z"/></svg></i>
                 <span>Dashboard</span>
             </a>
 
             <a href="{{ route('agent.monitoring') }}"
-               class="nav-item {{ request()->routeIs('agent.monitoring') ? 'active' : '' }}">
-                <i class="fa-regular fa-square"></i>
+               class="nav-item {{ request()->routeIs('agent.monitoring') ? 'active' : '' }}"
+               title="Agent Monitoring">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM4 13h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg></i>
                 <span>Agent Monitoring</span>
             </a>
 
             <a href="{{ route('threat.detection') }}"
-               class="nav-item {{ request()->routeIs('threat.detection') ? 'active' : '' }}">
-                <i class="fa-regular fa-gem"></i>
+               class="nav-item {{ request()->routeIs('threat.detection') ? 'active' : '' }}"
+               title="Threat Detection">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6.24 3a1 1 0 0 0-.83.445L2.13 8.4a1 1 0 0 0 .062 1.202l9.09 11.036a1 1 0 0 0 1.542 0l9.09-11.036A1 1 0 0 0 21.87 8.4l-3.28-4.955A1 1 0 0 0 17.76 3H6.24Z"/></svg></i>
                 <span>Threat Detection</span>
             </a>
 
+            <a href="{{ route('incident.management') }}"
+               class="nav-item {{ request()->routeIs('incident.management') ? 'active' : '' }}"
+               title="Incident Management">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></i>
+                <span>Incident Management</span>
+            </a>
+
             <a href="{{ route('response.management') }}"
-               class="nav-item {{ request()->routeIs('response.management') ? 'active' : '' }}">
-                <i class="fa-solid fa-shield-halved"></i>
-                <span>Blocked IP</span>
+               class="nav-item {{ request()->routeIs('response.management') ? 'active' : '' }}"
+               title="Response Management">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Z" clip-rule="evenodd"/></svg></i>
+                <span>Response Management</span>
             </a>
 
             <a href="{{ route('analytics') }}"
-               class="nav-item {{ request()->routeIs('analytics') ? 'active' : '' }}">
-                <i class="fa-solid fa-chart-column"></i>
+               class="nav-item {{ request()->routeIs('analytics') ? 'active' : '' }}"
+               title="Reports">
+                <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg></i>
                 <span>Reports</span>
             </a>
         </nav>
@@ -1786,43 +1720,32 @@ button,
         <div class="sidebar-user-menu">
             <div class="sidebar-user-trigger">
                 <div class="sidebar-user-icon">
-                    <i class="fa-solid fa-user"></i>
+                    @if ($activeUser->avatar_path)
+                        <img src="{{ asset('storage/'.$activeUser->avatar_path) }}" alt="{{ $activeUser->name }}">
+                    @else
+                        <span class="sidebar-user-initials">{{ $activeUserInitials }}</span>
+                    @endif
                 </div>
 
                 <div class="sidebar-user-text">
-                    <strong>{{ $activeUser['name'] }}</strong>
-                    <span>{{ $activeUser['email'] }}</span>
+                    <strong>{{ $activeUser->name }}</strong>
+                    <span>{{ $activeUser->email }}</span>
                 </div>
 
-                <i class="fa-solid fa-chevron-right sidebar-user-arrow"></i>
+                <form method="POST" action="{{ route('logout') }}" class="sidebar-user-logout-form">
+                    @csrf
+                    <button type="submit" class="sidebar-user-logout-btn" title="Logout" onclick="event.stopPropagation()">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>
+                    </button>
+                </form>
             </div>
 
             <div class="sidebar-profile-dropdown">
                 <a href="{{ \Illuminate\Support\Facades\Route::has('my.account') ? route('my.account') : '#' }}"
                    class="sidebar-profile-link">
-                    <i class="fa-solid fa-user-gear"></i>
+                    <i><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"/></svg></i>
                     <span>My Account</span>
                 </a>
-
-                <div class="sidebar-theme-row">
-                    <div>
-                        <i class="fa-solid fa-moon"></i>
-                        <span>Dark Mode</span>
-                    </div>
-
-                    <label class="sidebar-theme-switch">
-                        <input type="checkbox" id="sidebarThemeSwitch">
-                        <span></span>
-                    </label>
-                </div>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="sidebar-profile-logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
-                        <span>Logout</span>
-                    </button>
-                </form>
             </div>
         </div>
     </aside>
@@ -2391,6 +2314,199 @@ body.dark-theme .sidebar-theme-row:hover {
     background: rgba(255, 255, 255, 0.16) !important;
     color: #ffffff !important;
 }
+
+/* ================================================= */
+/* MAIN BACKGROUND REDESIGN LOCK — force the new      */
+/* neutral --bg-main regardless of theme, overriding  */
+/* the older heavy gradient rules defined earlier.    */
+/* ================================================= */
+
+.main.main.main,
+body.light-mode .main.main.main,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .main.main.main,
+body.dark-mode .main.main.main,
+body.dark .main.main.main,
+body.dark-theme .main.main.main,
+html.dark-mode .main.main.main,
+html.dark .main.main.main,
+html.dark-theme .main.main.main {
+    background: transparent !important;
+}
+
+/* ================================================= */
+/* SIDEBAR REDESIGN — fixed dark plum brand color,   */
+/* independent of the light/dark content theme.      */
+/* ================================================= */
+
+.sidebar.sidebar.sidebar,
+body.dark-mode .sidebar.sidebar.sidebar,
+body.dark .sidebar.sidebar.sidebar,
+body.dark-theme .sidebar.sidebar.sidebar,
+html.dark-mode .sidebar.sidebar.sidebar,
+html.dark .sidebar.sidebar.sidebar,
+html.dark-theme .sidebar.sidebar.sidebar,
+body.light-mode .sidebar.sidebar.sidebar,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar.sidebar.sidebar {
+    background: linear-gradient(180deg, var(--sidebar-bg) 0%, var(--sidebar-bg-soft) 100%) !important;
+    border-right: 1px solid rgba(232, 222, 240, 0.14) !important;
+    box-shadow: 18px 0 60px rgba(45, 27, 61, 0.35) !important;
+}
+
+.nav-item.nav-item.nav-item,
+body.dark-mode .nav-item.nav-item.nav-item,
+body.dark .nav-item.nav-item.nav-item,
+body.dark-theme .nav-item.nav-item.nav-item,
+body.light-mode .nav-item.nav-item.nav-item,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .nav-item.nav-item.nav-item,
+.sidebar:not(:hover) .nav-item.nav-item.nav-item,
+body.dark-mode .sidebar:not(:hover) .nav-item.nav-item.nav-item,
+body.dark .sidebar:not(:hover) .nav-item.nav-item.nav-item,
+body.dark-theme .sidebar:not(:hover) .nav-item.nav-item.nav-item,
+.nav-item.nav-item.nav-item i,
+body.dark-mode .nav-item.nav-item.nav-item i,
+body.dark .nav-item.nav-item.nav-item i,
+body.dark-theme .nav-item.nav-item.nav-item i,
+body.light-mode .nav-item.nav-item.nav-item i,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .nav-item.nav-item.nav-item i {
+    color: var(--sidebar-text) !important;
+}
+
+.nav-item.nav-item.nav-item:hover,
+body.dark-mode .nav-item.nav-item.nav-item:hover,
+body.dark .nav-item.nav-item.nav-item:hover,
+body.dark-theme .nav-item.nav-item.nav-item:hover {
+    background: rgba(232, 222, 240, 0.14) !important;
+    color: #ffffff !important;
+}
+
+.nav-item.nav-item.nav-item.active,
+body.dark-mode .nav-item.nav-item.nav-item.active,
+body.dark .nav-item.nav-item.nav-item.active,
+body.dark-theme .nav-item.nav-item.nav-item.active,
+body.light-mode .nav-item.nav-item.nav-item.active,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .nav-item.nav-item.nav-item.active {
+    background: #ffffff !important;
+    color: var(--sidebar-bg) !important;
+    box-shadow: 0 14px 30px rgba(45, 27, 61, 0.25) !important;
+}
+
+.nav-item.nav-item.nav-item.active i,
+body.dark-mode .nav-item.nav-item.nav-item.active i,
+body.dark .nav-item.nav-item.nav-item.active i,
+body.dark-theme .nav-item.nav-item.nav-item.active i,
+body.light-mode .nav-item.nav-item.nav-item.active i,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .nav-item.nav-item.nav-item.active i {
+    color: var(--accent-purple) !important;
+}
+
+.sidebar-logo-text strong.sidebar-logo-text-strong,
+body.dark-mode .sidebar-logo-text strong,
+body.dark .sidebar-logo-text strong,
+body.dark-theme .sidebar-logo-text strong,
+body.light-mode .sidebar-logo-text strong,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-logo-text strong {
+    color: #ffffff !important;
+}
+
+body.dark-mode .sidebar-logo-text span,
+body.dark .sidebar-logo-text span,
+body.dark-theme .sidebar-logo-text span,
+body.light-mode .sidebar-logo-text span,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-logo-text span,
+body.dark-mode .menu-label,
+body.dark .menu-label,
+body.dark-theme .menu-label,
+body.light-mode .menu-label,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .menu-label {
+    color: var(--sidebar-text) !important;
+    opacity: 0.72;
+}
+
+.sidebar-logo-text strong,
+.sidebar-logo-text span {
+    font-family: var(--font-main) !important;
+}
+
+/* Profile card — pinned to the bottom of the sidebar, purple family
+   instead of the old neutral grey so it stays inside the sidebar's palette. */
+.sidebar-user-menu.sidebar-user-menu {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+}
+
+.sidebar-user-trigger.sidebar-user-trigger,
+body.dark-mode .sidebar-user-trigger.sidebar-user-trigger,
+body.dark .sidebar-user-trigger.sidebar-user-trigger,
+body.dark-theme .sidebar-user-trigger.sidebar-user-trigger,
+body.light-mode .sidebar-user-trigger.sidebar-user-trigger,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-trigger.sidebar-user-trigger {
+    background: #4A2F5E !important;
+    border: 1px solid rgba(232, 222, 240, 0.16) !important;
+    box-shadow: 0 14px 30px rgba(45, 27, 61, 0.3) !important;
+}
+
+.sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger,
+body.dark-mode .sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger,
+body.dark .sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger,
+body.dark-theme .sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger,
+body.light-mode .sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar:not(:hover) .sidebar-user-trigger.sidebar-user-trigger {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.sidebar-user-icon.sidebar-user-icon,
+body.dark-mode .sidebar-user-icon.sidebar-user-icon,
+body.dark .sidebar-user-icon.sidebar-user-icon,
+body.dark-theme .sidebar-user-icon.sidebar-user-icon,
+body.light-mode .sidebar-user-icon.sidebar-user-icon,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-icon.sidebar-user-icon {
+    background: rgba(232, 222, 240, 0.18) !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+}
+
+.sidebar-user-text strong,
+body.dark-mode .sidebar-user-text strong,
+body.dark .sidebar-user-text strong,
+body.dark-theme .sidebar-user-text strong,
+body.light-mode .sidebar-user-text strong,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-text strong {
+    color: #ffffff !important;
+    font-family: var(--font-main) !important;
+}
+
+.sidebar-user-text span,
+body.dark-mode .sidebar-user-text span,
+body.dark .sidebar-user-text span,
+body.dark-theme .sidebar-user-text span,
+body.light-mode .sidebar-user-text span,
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-text span {
+    color: var(--sidebar-text) !important;
+    font-family: var(--font-main) !important;
+}
+
+/* Smooth label reveal — animating to width:auto causes the text to "pop" in
+   late instead of fading in with the sidebar's own expand transition, so we
+   animate opacity + a generous max-width instead (both are transitionable). */
+.nav-item.nav-item span {
+    opacity: 0 !important;
+    visibility: visible !important;
+    width: auto !important;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: opacity 0.28s ease, max-width 0.28s ease !important;
+}
+
+.sidebar:hover .nav-item.nav-item span {
+    opacity: 1 !important;
+    max-width: 160px;
+}
         </style>
     </main>
 
@@ -2399,57 +2515,543 @@ body.dark-theme .sidebar-theme-row:hover {
 <script src="{{ asset('js/lox-dashboard.js') }}"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const switcher = document.getElementById('sidebarThemeSwitch');
+    // Magic Bento — cursor-follow spotlight glow on any .bento-card.
+    // Cards are queried once (not per event) and updates are batched to one
+    // per animation frame instead of firing getBoundingClientRect() for
+    // every card on every raw mousemove event, which was the main source of
+    // jank on pages with many cards.
+    (function () {
+        let bentoCards = [];
+        let pendingEvent = null;
+        let ticking = false;
 
-        function applyTheme(mode) {
-            const isDark = mode === 'dark';
-
-            document.documentElement.classList.toggle('dark-mode', isDark);
-            document.documentElement.classList.toggle('dark', isDark);
-            document.documentElement.classList.toggle('dark-theme', isDark);
-            document.documentElement.classList.toggle('light-mode', !isDark);
-
-            document.body.classList.toggle('dark-mode', isDark);
-            document.body.classList.toggle('dark', isDark);
-            document.body.classList.toggle('dark-theme', isDark);
-            document.body.classList.toggle('light-mode', !isDark);
-
-            const app = document.querySelector('.app');
-
-            if (app) {
-                app.classList.toggle('dark-mode', isDark);
-                app.classList.toggle('dark', isDark);
-                app.classList.toggle('dark-theme', isDark);
-                app.classList.toggle('light-mode', !isDark);
-            }
-
-            localStorage.setItem('lox_theme', mode);
-            localStorage.setItem('theme', mode);
-            localStorage.setItem('color-theme', mode);
-
-            if (switcher) {
-                switcher.checked = isDark;
-            }
-
-            window.dispatchEvent(new Event('storage'));
+        function refreshBentoCards() {
+            bentoCards = Array.prototype.slice.call(document.querySelectorAll('.bento-card'));
         }
 
-        const savedTheme =
-            localStorage.getItem('lox_theme') ||
-            localStorage.getItem('theme') ||
-            localStorage.getItem('color-theme') ||
-            'light';
+        function applySpotlight() {
+            ticking = false;
+            if (!pendingEvent) return;
+            const clientX = pendingEvent.clientX;
+            const clientY = pendingEvent.clientY;
+            pendingEvent = null;
 
-        applyTheme(savedTheme === 'dark' ? 'dark' : 'light');
+            for (let i = 0; i < bentoCards.length; i++) {
+                const card = bentoCards[i];
+                const rect = card.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
 
-        if (switcher) {
-            switcher.addEventListener('change', function () {
-                applyTheme(this.checked ? 'dark' : 'light');
+                if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+                    card.style.setProperty('--mx', x + 'px');
+                    card.style.setProperty('--my', y + 'px');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', refreshBentoCards);
+
+        document.addEventListener('mousemove', function (e) {
+            pendingEvent = e;
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(applySpotlight);
+            }
+        }, { passive: true });
+    })();
+
+    // Animated List — staggered scroll-reveal for .animated-list-item
+    document.addEventListener('DOMContentLoaded', function () {
+        const items = document.querySelectorAll('.animated-list-item');
+
+        if (!items.length) return;
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        items.forEach(function (item) {
+            observer.observe(item);
+        });
+    });
+
+    // xdr-combo — progressive-enhancement layer that turns any
+    // <select class="xdr-filter-select"> into a searchable combobox-style
+    // dropdown (vanilla port of the HeroUI ComboBox) without touching the
+    // underlying select's id/onchange/data attributes — every existing
+    // filter function keeps working untouched, only the chrome changes.
+    (function () {
+        var registry = [];
+        var popovers = [];
+        var openState = null;
+        var openedAt = 0;
+
+        function closeOpen() {
+            if (!openState) return;
+            openState.popover.classList.remove('is-visible');
+            openState.trigger.classList.remove('is-open');
+            openState = null;
+        }
+
+        // Belt-and-suspenders: force every OTHER popover closed too, so a
+        // stray desync can never leave two dropdowns visibly open at once.
+        function closeAllExcept(popover) {
+            popovers.forEach(function (entry) {
+                if (entry.popover !== popover) {
+                    entry.popover.classList.remove('is-visible');
+                    entry.trigger.classList.remove('is-open');
+                }
             });
         }
-    });
+
+        function positionPopover(trigger, popover) {
+            var rect = trigger.getBoundingClientRect();
+            popover.style.minWidth = Math.max(rect.width, 200) + 'px';
+            popover.style.left = Math.min(rect.left, window.innerWidth - 260) + 'px';
+
+            var estHeight = Math.min(280, popover.scrollHeight || 260);
+            var top = rect.bottom + 6;
+
+            if (top + estHeight > window.innerHeight && rect.top - estHeight - 6 > 0) {
+                top = rect.top - estHeight - 6;
+                popover.classList.add('xdr-combo-popover--up');
+            } else {
+                popover.classList.remove('xdr-combo-popover--up');
+            }
+
+            popover.style.top = Math.max(8, top) + 'px';
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function buildCombo(select) {
+            if (select.dataset.comboEnhanced) return;
+            select.dataset.comboEnhanced = '1';
+
+            var wrapper = document.createElement('div');
+            wrapper.className = 'xdr-combo';
+            select.insertAdjacentElement('afterend', wrapper);
+
+            var trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'xdr-combo-trigger';
+            trigger.innerHTML = '<span class="xdr-combo-trigger-label"></span>' +
+                '<svg class="xdr-combo-chevron" viewBox="0 0 16 16" fill="currentColor"><path d="M8 11 3 6h10L8 11Z"/></svg>';
+            wrapper.appendChild(trigger);
+
+            var popover = document.createElement('div');
+            popover.className = 'xdr-combo-popover';
+            popover.innerHTML = '<div class="xdr-combo-search-wrap"><input type="text" class="xdr-combo-search" placeholder="Search..."></div>' +
+                '<div class="xdr-combo-list" role="listbox"></div>';
+            document.body.appendChild(popover);
+            popovers.push({ popover: popover, trigger: trigger });
+
+            var search = popover.querySelector('.xdr-combo-search');
+            var list = popover.querySelector('.xdr-combo-list');
+            var label = trigger.querySelector('.xdr-combo-trigger-label');
+
+            var entries = Array.prototype.map.call(select.options, function (opt) {
+                var item = document.createElement('button');
+                item.type = 'button';
+                item.className = 'xdr-combo-item';
+                item.setAttribute('role', 'option');
+                item.innerHTML = '<span>' + escapeHtml(opt.textContent) + '</span>' +
+                    '<svg class="xdr-combo-check" viewBox="0 0 16 16" fill="currentColor"><path d="M6.4 12.2 2.6 8.4a1 1 0 1 1 1.4-1.4l2.4 2.4 5.8-5.8a1 1 0 1 1 1.4 1.4l-6.5 6.5a1 1 0 0 1-.7.3.97.97 0 0 1-.7-.3Z"/></svg>';
+                item.addEventListener('click', function () {
+                    select.value = opt.value;
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    sync();
+                    closeOpen();
+                });
+                list.appendChild(item);
+                return { opt: opt, item: item };
+            });
+
+            function sync() {
+                var selected = select.options[select.selectedIndex];
+                label.textContent = selected ? selected.textContent : '';
+                entries.forEach(function (entry) {
+                    entry.item.classList.toggle('is-selected', entry.opt.value === select.value);
+                });
+            }
+
+            function filter(query) {
+                var q = query.trim().toLowerCase();
+                entries.forEach(function (entry) {
+                    entry.item.hidden = !(!q || entry.opt.textContent.toLowerCase().indexOf(q) !== -1);
+                });
+            }
+
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var isOpen = popover.classList.contains('is-visible');
+                closeAllExcept(popover);
+                if (!isOpen) {
+                    popover.classList.add('is-visible');
+                    trigger.classList.add('is-open');
+                    openState = { popover: popover, trigger: trigger };
+                    openedAt = Date.now();
+                    search.value = '';
+                    filter('');
+                    positionPopover(trigger, popover);
+                    search.focus();
+                } else {
+                    popover.classList.remove('is-visible');
+                    trigger.classList.remove('is-open');
+                    openState = null;
+                }
+            });
+
+            search.addEventListener('input', function () {
+                filter(search.value);
+            });
+
+            popover.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+
+            select.classList.add('xdr-combo-native-hidden');
+            sync();
+            registry.push({ select: select, sync: sync });
+        }
+
+        function enhanceAll() {
+            document.querySelectorAll('select.xdr-filter-select').forEach(buildCombo);
+
+            document.querySelectorAll('.tdx-reset-btn, .brp-reset-btn, .reset-history-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    setTimeout(function () {
+                        registry.forEach(function (entry) { entry.sync(); });
+                    }, 0);
+                });
+            });
+        }
+
+        document.addEventListener('click', closeOpen);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeOpen();
+        });
+        // Only close on scroll happening OUTSIDE the open popover — this
+        // used to fire on every scroll unconditionally, which made it
+        // impossible to scroll a long option list (it closed itself the
+        // instant you tried to scroll it). Also ignore scroll events firing
+        // right at open time — clicking a trigger near the viewport edge
+        // makes the browser auto-scroll the newly-focused element into full
+        // view a few ms later, which used to be misread as "user scrolled
+        // away" and closed the popover instantly after it opened.
+        window.addEventListener('scroll', function (e) {
+            if (openState && !openState.popover.contains(e.target) && (Date.now() - openedAt) > 200) {
+                closeOpen();
+            }
+        }, true);
+        window.addEventListener('resize', closeOpen);
+        document.addEventListener('DOMContentLoaded', enhanceAll);
+    })();
+
+    // xdr-date — progressive-enhancement layer that turns any
+    // <input type="date"> into a vanilla port of the shadcn/react-day-picker
+    // Calendar, following the exact same pattern as xdr-combo above: the
+    // native input stays in the DOM (same id/onchange/value), only the
+    // chrome is replaced, so filterAlertHistory()/filterBlockedIp()/
+    // filterThreats() keep working untouched.
+    (function () {
+        var MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'];
+        var MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var WEEKDAY_LABELS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+        var registry = [];
+        var popovers = [];
+        var openState = null;
+        var openedAt = 0;
+
+        function closeOpen() {
+            if (!openState) return;
+            openState.popover.classList.remove('is-visible');
+            openState.trigger.classList.remove('is-open');
+            openState = null;
+        }
+
+        function closeAllExcept(popover) {
+            popovers.forEach(function (entry) {
+                if (entry.popover !== popover) {
+                    entry.popover.classList.remove('is-visible');
+                    entry.trigger.classList.remove('is-open');
+                }
+            });
+        }
+
+        function positionPopover(trigger, popover) {
+            var rect = trigger.getBoundingClientRect();
+            popover.style.left = Math.min(rect.left, window.innerWidth - 288) + 'px';
+
+            var estHeight = 340;
+            var top = rect.bottom + 6;
+
+            if (top + estHeight > window.innerHeight && rect.top - estHeight - 6 > 0) {
+                top = rect.top - estHeight - 6;
+                popover.classList.add('xdr-date-popover--up');
+            } else {
+                popover.classList.remove('xdr-date-popover--up');
+            }
+
+            popover.style.top = Math.max(8, top) + 'px';
+        }
+
+        function pad(n) {
+            return String(n).padStart(2, '0');
+        }
+
+        function toISO(date) {
+            return date.getFullYear() + '-' + pad(date.getMonth() + 1) + '-' + pad(date.getDate());
+        }
+
+        function parseISO(str) {
+            if (!str) return null;
+            var parts = str.split('-').map(Number);
+            if (!parts[0] || !parts[1] || !parts[2]) return null;
+            return new Date(parts[0], parts[1] - 1, parts[2]);
+        }
+
+        function isSameDay(a, b) {
+            return a && b && a.getFullYear() === b.getFullYear() &&
+                a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+        }
+
+        function formatDisplay(date) {
+            return MONTH_SHORT[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear();
+        }
+
+        function buildDatePicker(input) {
+            if (input.dataset.dpEnhanced) return;
+            input.dataset.dpEnhanced = '1';
+
+            var wrapper = document.createElement('div');
+            wrapper.className = 'xdr-date';
+            input.insertAdjacentElement('afterend', wrapper);
+
+            var trigger = document.createElement('button');
+            trigger.type = 'button';
+            trigger.className = 'xdr-date-trigger';
+            trigger.innerHTML = '<svg class="xdr-date-trigger-icon" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3A.75.75 0 0 1 18 3v1.5h.75a3 3 0 0 1 3 3v11.25a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3V7.5a3 3 0 0 1 3-3H6V3a.75.75 0 0 1 .75-.75Zm13.5 9a1.5 1.5 0 0 0-1.5-1.5H5.25a1.5 1.5 0 0 0-1.5 1.5v7.5a1.5 1.5 0 0 0 1.5 1.5h13.5a1.5 1.5 0 0 0 1.5-1.5v-7.5Z" clip-rule="evenodd"/></svg>' +
+                '<span class="xdr-date-trigger-label">Pick a date</span>' +
+                '<span class="xdr-date-clear" title="Clear"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm3.36 12.3a1 1 0 0 1-1.42 1.42L12 13.83l-1.94 1.89a1 1 0 1 1-1.4-1.42L10.59 12.4 8.66 10.46a1 1 0 0 1 1.4-1.42L12 10.97l1.94-1.93a1 1 0 0 1 1.42 1.42L13.41 12.4l1.95 1.9Z"/></svg></span>';
+            wrapper.appendChild(trigger);
+
+            var popover = document.createElement('div');
+            popover.className = 'xdr-date-popover';
+            document.body.appendChild(popover);
+            popovers.push({ popover: popover, trigger: trigger });
+
+            var selected = parseISO(input.value);
+            var viewDate = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date();
+
+            function syncLabel() {
+                var labelEl = trigger.querySelector('.xdr-date-trigger-label');
+                labelEl.textContent = selected ? formatDisplay(selected) : 'Pick a date';
+                trigger.classList.toggle('has-value', !!selected);
+            }
+
+            function commit(date) {
+                selected = date;
+                input.value = toISO(date);
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                syncLabel();
+            }
+
+            function render() {
+                var year = viewDate.getFullYear();
+                var month = viewDate.getMonth();
+                var firstDay = new Date(year, month, 1);
+                var startWeekday = firstDay.getDay();
+                var daysInMonth = new Date(year, month + 1, 0).getDate();
+                var daysInPrevMonth = new Date(year, month, 0).getDate();
+                var today = new Date();
+
+                var html = '<div class="xdr-date-nav">' +
+                    '<button type="button" class="xdr-date-nav-btn" data-nav="prev"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M14.5 6 8 12l6.5 6V6Z"/></svg></button>' +
+                    '<span class="xdr-date-caption">' + MONTH_NAMES[month] + ' ' + year + '</span>' +
+                    '<button type="button" class="xdr-date-nav-btn" data-nav="next"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M9.5 6 16 12l-6.5 6V6Z"/></svg></button>' +
+                    '</div>';
+                html += '<div class="xdr-date-weekdays">' + WEEKDAY_LABELS.map(function (w) { return '<span>' + w + '</span>'; }).join('') + '</div>';
+                html += '<div class="xdr-date-grid">';
+
+                for (var i = startWeekday - 1; i >= 0; i--) {
+                    var pd = daysInPrevMonth - i;
+                    html += '<button type="button" class="xdr-date-cell outside" data-date="' + toISO(new Date(year, month - 1, pd)) + '">' + pd + '</button>';
+                }
+                for (var d = 1; d <= daysInMonth; d++) {
+                    var cellDate = new Date(year, month, d);
+                    var cls = 'xdr-date-cell';
+                    if (isSameDay(cellDate, today)) cls += ' today';
+                    if (selected && isSameDay(cellDate, selected)) cls += ' selected';
+                    html += '<button type="button" class="' + cls + '" data-date="' + toISO(cellDate) + '">' + d + '</button>';
+                }
+                var totalCells = startWeekday + daysInMonth;
+                var remaining = (7 - (totalCells % 7)) % 7;
+                for (var nd = 1; nd <= remaining; nd++) {
+                    html += '<button type="button" class="xdr-date-cell outside" data-date="' + toISO(new Date(year, month + 1, nd)) + '">' + nd + '</button>';
+                }
+
+                html += '</div>';
+                html += '<button type="button" class="xdr-date-today-btn">Today</button>';
+
+                popover.innerHTML = html;
+
+                popover.querySelectorAll('[data-nav]').forEach(function (btn) {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        viewDate = new Date(year, month + (btn.dataset.nav === 'next' ? 1 : -1), 1);
+                        render();
+                    });
+                });
+
+                popover.querySelectorAll('.xdr-date-cell').forEach(function (cell) {
+                    cell.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        var date = parseISO(cell.dataset.date);
+                        viewDate = new Date(date.getFullYear(), date.getMonth(), 1);
+                        commit(date);
+                        closeOpen();
+                    });
+                });
+
+                popover.querySelector('.xdr-date-today-btn').addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    var t = new Date();
+                    viewDate = new Date(t.getFullYear(), t.getMonth(), 1);
+                    commit(t);
+                    closeOpen();
+                });
+            }
+
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var isOpen = popover.classList.contains('is-visible');
+                closeAllExcept(popover);
+                if (!isOpen) {
+                    selected = parseISO(input.value);
+                    viewDate = selected ? new Date(selected.getFullYear(), selected.getMonth(), 1) : new Date();
+                    render();
+                    popover.classList.add('is-visible');
+                    trigger.classList.add('is-open');
+                    positionPopover(trigger, popover);
+                    openState = { popover: popover, trigger: trigger };
+                    openedAt = Date.now();
+                } else {
+                    popover.classList.remove('is-visible');
+                    trigger.classList.remove('is-open');
+                    openState = null;
+                }
+            });
+
+            trigger.querySelector('.xdr-date-clear').addEventListener('click', function (e) {
+                e.stopPropagation();
+                selected = null;
+                input.value = '';
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+                syncLabel();
+                closeOpen();
+            });
+
+            popover.addEventListener('click', function (e) {
+                e.stopPropagation();
+            });
+
+            input.classList.add('xdr-combo-native-hidden');
+            syncLabel();
+            registry.push({ input: input, sync: syncLabel });
+        }
+
+        function enhanceAll() {
+            document.querySelectorAll('input[type="date"]').forEach(buildDatePicker);
+
+            document.querySelectorAll('.tdx-reset-btn, .brp-reset-btn, .reset-history-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    setTimeout(function () {
+                        registry.forEach(function (entry) { entry.sync(); });
+                    }, 0);
+                });
+            });
+        }
+
+        document.addEventListener('click', closeOpen);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeOpen();
+        });
+        window.addEventListener('scroll', function (e) {
+            // Ignore scroll events firing in the same tick the popover opened —
+            // clicking a trigger near the viewport edge makes the browser
+            // auto-scroll the newly-focused button into full view a few ms
+            // later, which used to be misread as "user scrolled away" and
+            // closed the popover instantly after it opened.
+            if (openState && !openState.popover.contains(e.target) && (Date.now() - openedAt) > 200) {
+                closeOpen();
+            }
+        }, true);
+        window.addEventListener('resize', closeOpen);
+        document.addEventListener('DOMContentLoaded', enhanceAll);
+    })();
+
+    // xdr-scroll-list — vanilla port of the React Bits AnimatedList's
+    // scroll behaviour. Any .xdr-scroll-list-target container with more
+    // than 5 direct .animated-list-item rows gets capped to a ~5-row
+    // viewport height (measured from real rendered row height, since row
+    // size varies a lot between pages) with an internal scrollbar and
+    // top/bottom fade gradients that track scroll position. Containers
+    // with 5 rows or fewer are left completely untouched.
+    (function () {
+        var VISIBLE_ITEMS = 5;
+
+        function setupList(container) {
+            if (container.dataset.scrollListReady) return;
+
+            var items = container.querySelectorAll(':scope > .animated-list-item');
+            if (items.length <= VISIBLE_ITEMS) return;
+
+            container.dataset.scrollListReady = '1';
+
+            var containerRect = container.getBoundingClientRect();
+            var targetRect = items[VISIBLE_ITEMS - 1].getBoundingClientRect();
+            container.style.maxHeight = (Math.ceil(targetRect.bottom - containerRect.top) + 4) + 'px';
+            container.classList.add('xdr-scroll-list');
+
+            var topGradient = document.createElement('div');
+            topGradient.className = 'xdr-scroll-gradient xdr-scroll-gradient--top';
+            var bottomGradient = document.createElement('div');
+            bottomGradient.className = 'xdr-scroll-gradient xdr-scroll-gradient--bottom';
+            container.appendChild(topGradient);
+            container.appendChild(bottomGradient);
+
+            function updateGradients() {
+                var scrollTop = container.scrollTop;
+                var scrollHeight = container.scrollHeight;
+                var clientHeight = container.clientHeight;
+                topGradient.style.opacity = Math.min(scrollTop / 50, 1);
+                var bottomDistance = scrollHeight - (scrollTop + clientHeight);
+                bottomGradient.style.opacity = scrollHeight <= clientHeight ? 0 : Math.min(bottomDistance / 50, 1);
+            }
+
+            container.addEventListener('scroll', updateGradients, { passive: true });
+            updateGradients();
+        }
+
+        function setupAll() {
+            document.querySelectorAll('.xdr-scroll-list-target').forEach(setupList);
+        }
+
+        window.addEventListener('load', setupAll);
+    })();
 </script>
+
+@include('partials.scroll-reveal')
 
 </body>
 </html>

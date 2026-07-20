@@ -1,243 +1,150 @@
 @extends('layouts.app-dashboard')
 
+@php
+    $agents = $agents ?? [];
+    $totalAgents = count($agents);
+    $onlineAgents = collect($agents)->where('status', 'active')->count();
+    $offlineAgents = $totalAgents - $onlineAgents;
+    $fleetHealth = $totalAgents ? round(($onlineAgents / $totalAgents) * 100) : 0;
+    $rowColors = ['green', 'blue', 'yellow'];
+
+    $initials = function ($name) {
+        $name = trim((string) $name);
+        return $name === '' ? '??' : strtoupper(substr($name, 0, 2));
+    };
+
+    $osLabel = function ($agent) {
+        $platform = $agent['os']['platform'] ?? null;
+        $name = $agent['os']['name'] ?? null;
+        return $name ?: ($platform ? ucfirst($platform) : 'Unknown OS');
+    };
+@endphp
+
 @section('content')
 
 <div class="agp-page" id="agentMonitoringPage">
 
     <div class="agp-heading">
         <h1>Agent Monitoring</h1>
-        <p>Monitor connected agents, endpoint status, last activity, and health condition.</p>
+        <p>Monitor connected agents, endpoint status, last activity, and operating system.</p>
     </div>
 
+    @if ($error ?? null)
+        <div class="agp-error-banner">Unable to reach the Wazuh Manager API: {{ $error }}</div>
+    @endif
+
     <div class="agp-summary-grid">
-        <div class="agp-summary-card">
-            <div class="agp-summary-icon">ON</div>
+        <div class="agp-summary-card online bento-card featured">
+            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 9.9 0 1 1 0 0 1 0 1.415l-.601.6a1 1 0 0 1-1.374.036 4.2 4.2 0 0 0-5.95 0 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1 0-1.415ZM3.222 11.222a11.5 11.5 0 0 1 17.556 0 1 1 0 0 1 .03 1.394l-.6.6a1 1 0 0 1-1.393.012 8.9 8.9 0 0 0-13.63 0 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394Z"/></svg></div>
             <div>
                 <span>Online Agents</span>
-                <h2>3</h2>
+                <h2>{{ $onlineAgents }}</h2>
                 <p>Currently connected</p>
             </div>
         </div>
 
-        <div class="agp-summary-card">
-            <div class="agp-summary-icon">OFF</div>
+        <div class="agp-summary-card offline bento-card">
+            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 5.313-2.027l-1.755 1.755a4.2 4.2 0 0 0-1.932 1.108 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1-.048-1.36l.396.16ZM3.222 11.222a11.5 11.5 0 0 1 13.85-1.89l-1.51 1.51a8.9 8.9 0 0 0-9.746 2.202 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394ZM20.778 11.222c.36.363.556.85.556 1.36l-1.83-1.29c.437-.164.918-.184 1.274-.07Z" fill-opacity="0.55"/><path fill-rule="evenodd" d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18Z" clip-rule="evenodd"/></svg></div>
             <div>
                 <span>Offline Agents</span>
-                <h2>1</h2>
+                <h2>{{ $offlineAgents }}</h2>
                 <p>Need attention</p>
             </div>
         </div>
 
-        <div class="agp-summary-card">
-            <div class="agp-summary-icon">AG</div>
+        <div class="agp-summary-card total bento-card">
+            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM4 13h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg></div>
             <div>
                 <span>Total Agents</span>
-                <h2>4</h2>
+                <h2>{{ $totalAgents }}</h2>
                 <p>Registered endpoints</p>
             </div>
         </div>
 
-        <div class="agp-summary-card">
-            <div class="agp-summary-icon">HL</div>
+        <div class="agp-summary-card health bento-card">
+            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.416 2.653a1 1 0 0 0-1.87-.146L8.24 10.2 6.9 7.132A1 1 0 0 0 5.98 6.5H2a1 1 0 1 0 0 2h3.324l2.223 5.076a1 1 0 0 0 1.865.114l3.235-7.463 1.478 8.31a1 1 0 0 0 1.849.322L18.62 10.5H22a1 1 0 1 0 0-2h-4a1 1 0 0 0-.86.49l-1.107 1.87-1.94-10.912a1 1 0 0 0-.677-1.295Z"/></svg></div>
             <div>
-                <span>Average Health</span>
-                <h2>87%</h2>
-                <p>Endpoint condition</p>
+                <span>Fleet Health</span>
+                <h2>{{ $fleetHealth }}%</h2>
+                <p>Share of agents online</p>
             </div>
         </div>
     </div>
 
     <div class="agp-content-grid">
 
-        <div class="agp-panel">
+        <div class="agp-panel bento-card">
             <div class="agp-panel-header">
                 <h3>Connected Agents</h3>
                 <p>List of endpoints connected to the LOX monitoring system.</p>
             </div>
 
-            <div class="agp-agent-list">
+            <div class="agp-agent-list xdr-scroll-list-target">
 
-                <div class="agp-agent-row green">
-                    <div class="agp-agent-name">
-                        <div class="agp-avatar green">RV</div>
-                        <div>
-                            <strong>rizki-VirtualBox</strong>
-                            <span>Ubuntu Endpoint</span>
-                        </div>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Status</small>
-                        <b class="agp-status online">Online</b>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Last Seen</small>
-                        <strong>11:30</strong>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>IP Address</small>
-                        <strong>192.168.56.101</strong>
-                    </div>
-
-                    <div class="agp-health-cell">
-                        <small>Agent Health</small>
-                        <div class="agp-progress-row">
-                            <span>96%</span>
-                            <div class="agp-progress">
-                                <i style="width: 96%;"></i>
+                @forelse ($agents as $index => $agent)
+                    @php
+                        $isOnline = ($agent['status'] ?? null) === 'active';
+                        $rowColor = $isOnline ? $rowColors[$index % count($rowColors)] : 'red';
+                        $lastSeen = $agent['lastKeepAlive'] ?? null;
+                    @endphp
+                    <div class="agp-agent-row data-list-row {{ $rowColor }} {{ ! $isOnline ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}">
+                        <div class="agp-agent-name">
+                            <div class="agp-avatar {{ $rowColor }}">{{ $initials($agent['name'] ?? '') }}</div>
+                            <div>
+                                <strong>{{ $agent['name'] ?? 'Unknown agent' }}</strong>
+                                <span>Agent ID {{ $agent['id'] ?? '-' }} • v{{ $agent['version'] ?? '-' }}</span>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="agp-agent-row red">
-                    <div class="agp-agent-name">
-                        <div class="agp-avatar red">KL</div>
-                        <div>
-                            <strong>kali-linux</strong>
-                            <span>Attack Simulation Client</span>
+                        <div class="agp-cell">
+                            <small>Status</small>
+                            <b class="agp-status {{ $isOnline ? 'online' : 'offline' }}">{{ $isOnline ? 'Online' : ucfirst($agent['status'] ?? 'Unknown') }}</b>
+                        </div>
+
+                        <div class="agp-cell">
+                            <small>Last Seen</small>
+                            <strong>{{ $lastSeen ? \Illuminate\Support\Carbon::parse($lastSeen)->format('Y-m-d H:i') : '-' }}</strong>
+                        </div>
+
+                        <div class="agp-cell">
+                            <small>IP Address</small>
+                            <strong>{{ $agent['ip'] ?? '-' }}</strong>
+                        </div>
+
+                        <div class="agp-cell">
+                            <small>Operating System</small>
+                            <strong>{{ $osLabel($agent) }}</strong>
                         </div>
                     </div>
-
-                    <div class="agp-cell">
-                        <small>Status</small>
-                        <b class="agp-status offline">Offline</b>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Last Seen</small>
-                        <strong>-</strong>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>IP Address</small>
-                        <strong>192.168.56.110</strong>
-                    </div>
-
-                    <div class="agp-health-cell">
-                        <small>Agent Health</small>
-                        <div class="agp-progress-row">
-                            <span>0%</span>
-                            <div class="agp-progress empty">
-                                <i style="width: 0%;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="agp-agent-row blue">
-                    <div class="agp-agent-name">
-                        <div class="agp-avatar blue">WS</div>
-                        <div>
-                            <strong>web-server</strong>
-                            <span>Application Server</span>
-                        </div>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Status</small>
-                        <b class="agp-status online">Online</b>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Last Seen</small>
-                        <strong>11:28</strong>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>IP Address</small>
-                        <strong>192.168.1.20</strong>
-                    </div>
-
-                    <div class="agp-health-cell">
-                        <small>Agent Health</small>
-                        <div class="agp-progress-row">
-                            <span>89%</span>
-                            <div class="agp-progress">
-                                <i style="width: 89%;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="agp-agent-row yellow">
-                    <div class="agp-agent-name">
-                        <div class="agp-avatar yellow">DB</div>
-                        <div>
-                            <strong>database-server</strong>
-                            <span>Database Node</span>
-                        </div>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Status</small>
-                        <b class="agp-status online">Online</b>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>Last Seen</small>
-                        <strong>11:25</strong>
-                    </div>
-
-                    <div class="agp-cell">
-                        <small>IP Address</small>
-                        <strong>192.168.1.45</strong>
-                    </div>
-
-                    <div class="agp-health-cell">
-                        <small>Agent Health</small>
-                        <div class="agp-progress-row">
-                            <span>82%</span>
-                            <div class="agp-progress warning">
-                                <i style="width: 82%;"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                    @include('partials.empty-state', ['message' => 'No agents reported yet — they will appear here once Wazuh is connected.'])
+                @endforelse
 
             </div>
         </div>
 
-        <div class="agp-panel agp-health-panel">
+        <div class="agp-panel agp-health-panel bento-card">
             <div class="agp-panel-header">
                 <h3>Agent Health</h3>
                 <p>Endpoint condition based on connection status and activity.</p>
             </div>
 
-            <div class="agp-health-list">
-                <div class="agp-health-card">
-                    <div>
-                        <strong>rizki-VirtualBox</strong>
-                        <span>Stable connection</span>
+            <div class="agp-health-list xdr-scroll-list-target">
+                @forelse ($agents as $index => $agent)
+                    @php
+                        $isOnline = ($agent['status'] ?? null) === 'active';
+                        $lastSeen = $agent['lastKeepAlive'] ?? null;
+                    @endphp
+                    <div class="agp-health-card data-list-row {{ ! $isOnline ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}">
+                        <div>
+                            <strong>{{ $agent['name'] ?? 'Unknown agent' }}</strong>
+                            <span>{{ $isOnline ? 'Stable connection' : 'No recent communication' }}</span>
+                        </div>
+                        <b class="{{ $isOnline ? 'good' : 'danger' }}">{{ $isOnline ? 'Online' : 'Offline' }}</b>
                     </div>
-                    <b class="good">96%</b>
-                </div>
-
-                <div class="agp-health-card">
-                    <div>
-                        <strong>web-server</strong>
-                        <span>Normal activity</span>
-                    </div>
-                    <b class="good">89%</b>
-                </div>
-
-                <div class="agp-health-card">
-                    <div>
-                        <strong>database-server</strong>
-                        <span>Minor delay detected</span>
-                    </div>
-                    <b class="warning">82%</b>
-                </div>
-
-                <div class="agp-health-card">
-                    <div>
-                        <strong>kali-linux</strong>
-                        <span>No recent communication</span>
-                    </div>
-                    <b class="danger">0%</b>
-                </div>
+                @empty
+                    @include('partials.empty-state', ['message' => 'No agent health data yet.'])
+                @endforelse
             </div>
         </div>
 
@@ -273,6 +180,17 @@
         font-weight: 650;
     }
 
+    .agp-error-banner {
+        margin-bottom: 20px;
+        padding: 14px 18px;
+        border-radius: 16px;
+        background: #fee2e2 !important;
+        border: 1px solid rgba(220, 38, 38, 0.25) !important;
+        color: #dc2626 !important;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
     .agp-summary-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
@@ -289,36 +207,19 @@
         display: flex;
         align-items: center;
         gap: 18px;
-        background:
-            radial-gradient(circle at top right, rgba(168, 85, 247, 0.20), transparent 36%),
-            radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 36%),
-            linear-gradient(135deg, #ffffff, #f8f3ff) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10) !important;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.06) !important;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .agp-summary-card::before {
-        content: "";
-        position: absolute;
-        width: 135px;
-        height: 135px;
-        right: -45px;
-        top: -48px;
-        border-radius: 50%;
-        background: rgba(168, 85, 247, 0.18);
+    .agp-summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(139, 92, 246, 0.12) !important;
     }
 
-    .agp-summary-card::after {
-        content: "";
-        position: absolute;
-        width: 95px;
-        height: 95px;
-        right: 28px;
-        bottom: -44px;
-        border-radius: 50%;
-        background: rgba(236, 72, 153, 0.15);
-    }
-
+    /* All summary cards are the same size — see dashboard.blade.php for
+       why the asymmetric featured-card span was dropped. */
     .agp-summary-card > * {
         position: relative;
         z-index: 2;
@@ -332,26 +233,35 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        background: #ffffff !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        color: #7c3aed !important;
-        font-size: 13px;
-        font-weight: 950;
-        box-shadow: 0 14px 30px rgba(168, 85, 247, 0.14);
+        background: #FAF8FC !important;
+        color: var(--accent-purple) !important;
+        box-shadow: 0 10px 22px rgba(139, 92, 246, 0.10);
     }
 
+    .agp-summary-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .agp-summary-card.online .agp-summary-icon { color: #059669 !important; background: rgba(5, 150, 105, 0.12) !important; }
+    .agp-summary-card.offline .agp-summary-icon { color: #dc2626 !important; background: rgba(220, 38, 38, 0.12) !important; }
+    .agp-summary-card.total .agp-summary-icon { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.12) !important; }
+    .agp-summary-card.health .agp-summary-icon { color: #2563eb !important; background: rgba(37, 99, 235, 0.12) !important; }
+
     .agp-summary-card span {
-        color: #64748b !important;
-        font-size: 13px;
-        font-weight: 900;
+        color: var(--text-body) !important;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
     }
 
     .agp-summary-card h2 {
-        margin: 7px 0 4px;
-        color: #0f172a !important;
-        font-size: 32px;
-        font-weight: 950;
-        letter-spacing: -0.8px;
+        margin: 8px 0 2px;
+        color: var(--text-heading) !important;
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
     }
 
     .agp-summary-card p {
@@ -373,12 +283,9 @@
         overflow: hidden;
         border-radius: 30px;
         padding: 26px;
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 35%),
-            rgba(255, 255, 255, 0.92) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 24px 55px rgba(168, 85, 247, 0.13) !important;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 16px 40px rgba(139, 92, 246, 0.07) !important;
     }
 
     .agp-panel::before {
@@ -430,7 +337,7 @@
         position: relative;
         z-index: 2;
         display: grid;
-        gap: 14px;
+        gap: 0;
     }
 
     .agp-agent-row {
@@ -440,25 +347,6 @@
         gap: 18px;
         min-height: 78px;
         padding: 18px 20px;
-        border-radius: 20px;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
-    }
-
-    .agp-agent-row.green {
-        background: linear-gradient(135deg, #ffffff, #dcfce7) !important;
-    }
-
-    .agp-agent-row.red {
-        background: linear-gradient(135deg, #ffffff, #fee2e2) !important;
-    }
-
-    .agp-agent-row.blue {
-        background: linear-gradient(135deg, #ffffff, #dbeafe) !important;
-    }
-
-    .agp-agent-row.yellow {
-        background: linear-gradient(135deg, #ffffff, #fef3c7) !important;
     }
 
     .agp-agent-name {
@@ -562,20 +450,16 @@
         position: relative;
         z-index: 2;
         display: grid;
-        gap: 14px;
+        gap: 0;
     }
 
     .agp-health-card {
         min-height: 72px;
         padding: 18px 20px;
-        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
-        background: linear-gradient(135deg, #ffffff, #f8f3ff) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
     }
 
     .agp-health-card strong {
@@ -807,6 +691,53 @@
             grid-template-columns: 1fr;
         }
     }
+
+    /* Redesign lock — keep the new light card system regardless of the
+       light/dark content toggle. */
+    .agp-summary-card.agp-summary-card,
+    .agp-panel.agp-panel,
+    body.dark-mode .agp-summary-card.agp-summary-card,
+    body.dark .agp-summary-card.agp-summary-card,
+    body.dark-theme .agp-summary-card.agp-summary-card,
+    .agp-page.agp-dark .agp-summary-card.agp-summary-card,
+    body.dark-mode .agp-panel.agp-panel,
+    body.dark .agp-panel.agp-panel,
+    body.dark-theme .agp-panel.agp-panel,
+    .agp-page.agp-dark .agp-panel.agp-panel {
+        background: var(--card-bg) !important;
+        border-color: rgba(139, 92, 246, 0.10) !important;
+    }
+
+    body.dark-mode .agp-heading h1,
+    body.dark .agp-heading h1,
+    body.dark-theme .agp-heading h1,
+    .agp-page.agp-dark .agp-heading h1,
+    body.dark-mode .agp-summary-card h2,
+    body.dark .agp-summary-card h2,
+    body.dark-theme .agp-summary-card h2,
+    .agp-page.agp-dark .agp-summary-card h2,
+    body.dark-mode .agp-panel-header h3,
+    body.dark .agp-panel-header h3,
+    body.dark-theme .agp-panel-header h3,
+    .agp-page.agp-dark .agp-panel-header h3 {
+        color: var(--text-heading) !important;
+        text-shadow: none !important;
+    }
+
+    body.dark-mode .agp-heading p,
+    body.dark .agp-heading p,
+    body.dark-theme .agp-heading p,
+    .agp-page.agp-dark .agp-heading p,
+    body.dark-mode .agp-summary-card span,
+    body.dark .agp-summary-card span,
+    body.dark-theme .agp-summary-card span,
+    .agp-page.agp-dark .agp-summary-card span,
+    body.dark-mode .agp-panel-header p,
+    body.dark .agp-panel-header p,
+    body.dark-theme .agp-panel-header p,
+    .agp-page.agp-dark .agp-panel-header p {
+        color: var(--text-body) !important;
+    }
 </style>
 
 <script>
@@ -860,5 +791,7 @@
         window.addEventListener('storage', syncAgentTheme);
     });
 </script>
+
+@include('partials.auto-refresh')
 
 @endsection

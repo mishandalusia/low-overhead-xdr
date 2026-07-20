@@ -1,10 +1,21 @@
 @extends('layouts.app-dashboard')
 
+@php
+    $dailyTotal = $dailyRows->count();
+    $weeklyTotal = $weeklyRows->sum('count');
+    $dailyBlocked = $dailyRows->pluck('source')->unique()->count();
+    $weeklyBlocked = $weeklyRows->sum('blocked_count');
+@endphp
+
 @section('content')
 
 <div class="rpt-page" id="reportsPage">
 
-    <div class="rpt-hero">
+    @if ($error ?? null)
+        <div class="rpt-error-banner">Unable to reach Wazuh: {{ $error }}</div>
+    @endif
+
+    <div class="rpt-hero bento-card">
         <div>
             <span>Security Reports</span>
             <h1>Reports</h1>
@@ -12,34 +23,46 @@
         </div>
 
         <div class="rpt-actions">
-            <button type="button" class="rpt-btn pdf" onclick="window.print()">Export PDF</button>
-            <button type="button" class="rpt-btn csv" onclick="exportReportCSV()">Export CSV</button>
+            <a href="{{ route('analytics.export.pdf') }}" class="rpt-btn pdf">Export PDF</a>
+            <a href="{{ route('analytics.export.csv') }}" class="rpt-btn csv">Export CSV</a>
         </div>
     </div>
 
     <div class="rpt-summary-grid">
-        <div class="rpt-summary-card">
-            <span>Total Activities</span>
-            <h2 id="summaryActivity">312</h2>
-            <p>Detected activities</p>
+        <div class="rpt-summary-card neutral bento-card featured">
+            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg></div>
+            <div>
+                <span>Total Activities</span>
+                <h2 id="summaryActivity">{{ $totalActivities }}</h2>
+                <p>Detected activities</p>
+            </div>
         </div>
 
-        <div class="rpt-summary-card">
-            <span>Blocked IPs</span>
-            <h2 id="summaryBlocked">4</h2>
-            <p>Suspicious sources blocked</p>
+        <div class="rpt-summary-card success bento-card">
+            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg></div>
+            <div>
+                <span>Blocked IPs</span>
+                <h2 id="summaryBlocked">{{ $blockedIpCount }}</h2>
+                <p>Suspicious sources blocked</p>
+            </div>
         </div>
 
-        <div class="rpt-summary-card">
-            <span>Critical Alerts</span>
-            <h2>90</h2>
-            <p>Need immediate action</p>
+        <div class="rpt-summary-card danger bento-card">
+            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+            <div>
+                <span>Critical Alerts</span>
+                <h2>{{ $criticalCount }}</h2>
+                <p>Need immediate action</p>
+            </div>
         </div>
 
-        <div class="rpt-summary-card">
-            <span>Response Success</span>
-            <h2>92%</h2>
-            <p>Handled response actions</p>
+        <div class="rpt-summary-card success bento-card">
+            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg></div>
+            <div>
+                <span>Response Success</span>
+                <h2>{{ $responseSuccessRate }}%</h2>
+                <p>Handled response actions</p>
+            </div>
         </div>
     </div>
 
@@ -57,14 +80,28 @@
 
     <div class="rpt-top-grid">
 
-        <div class="rpt-panel">
+        <div class="rpt-panel bento-card">
             <div class="rpt-panel-header">
                 <span>Attack Activity</span>
                 <h3>Activity Trend</h3>
                 <p>Activity movement detected from monitored endpoints.</p>
             </div>
 
-            <div class="rpt-chart-box">
+            <div class="rpt-chart-box chart-hover-card">
+                <div class="chart-hover-grid"></div>
+                <div class="chart-hover-glow"></div>
+
+                <div class="chart-hover-badges">
+                    <div class="chart-hover-badge">
+                        <i style="background: #dc2626;"></i>
+                        <span>{{ $totalActivities ? round(($criticalCount / $totalActivities) * 100) : 0 }}% critical</span>
+                    </div>
+                    <div class="chart-hover-badge">
+                        <i style="background: #8b5cf6;"></i>
+                        <span>{{ $totalActivities ? round(($blockedIpCount / $totalActivities) * 100) : 0 }}% blocked</span>
+                    </div>
+                </div>
+
                 <svg viewBox="0 0 900 320" class="rpt-chart-svg" preserveAspectRatio="none">
                     <defs>
                         <linearGradient id="rptLineGradient" x1="0" x2="1" y1="0" y2="0">
@@ -111,22 +148,22 @@
                     <text x="838" y="304" class="rpt-chart-label">Sun</text>
                 </svg>
 
-                <div class="rpt-chart-info">
+                <div class="rpt-chart-info chart-hover-caption">
                     <span>Peak Activity</span>
-                    <strong>Friday</strong>
-                    <small>88% activity volume</small>
+                    <strong>{{ $peakDayLabel }}</strong>
+                    <small>{{ $totalActivities }} total activities</small>
                 </div>
             </div>
 
             <div class="rpt-trend-summary">
                 <div>
                     <small>Total Activities</small>
-                    <strong id="trendActivity">312</strong>
+                    <strong id="trendActivity">{{ $dailyTotal }}</strong>
                 </div>
 
                 <div>
                     <small>Blocked IPs</small>
-                    <strong id="trendBlocked">4</strong>
+                    <strong id="trendBlocked">{{ $dailyBlocked }}</strong>
                 </div>
 
                 <div>
@@ -136,68 +173,117 @@
             </div>
         </div>
 
-        <div class="rpt-panel">
+        <div class="rpt-panel bento-card">
             <div class="rpt-panel-header">
                 <span>Severity Distribution</span>
                 <h3>Alert Severity Ratio</h3>
                 <p>Distribution of alerts based on severity category.</p>
             </div>
 
-            <div class="rpt-severity-total">
-                <div>
-                    <small>Total Alerts</small>
-                    <h2>430</h2>
-                    <p>Weekly Summary</p>
+            @php
+                $sevOrder = ['Critical', 'High', 'Medium', 'Low'];
+                $sevColors = ['Critical' => '#ef4444', 'High' => '#f97316', 'Medium' => '#f59e0b', 'Low' => '#22c55e'];
+                $sevRadius = 50;
+                $sevCircumference = 2 * M_PI * $sevRadius;
+                $sevCumulative = 0;
+                $sevArcs = [];
+                foreach ($sevOrder as $sevLevel) {
+                    $sevCount = $severity[$sevLevel] ?? 0;
+                    $sevPct = $totalActivities > 0 ? $sevCount / $totalActivities : 0;
+                    $sevLength = $sevPct * $sevCircumference;
+                    $sevArcs[$sevLevel] = [
+                        'count' => $sevCount,
+                        'pct' => round($sevPct * 100),
+                        'length' => round($sevLength, 2),
+                        'gap' => round($sevCircumference - $sevLength, 2),
+                        'offset' => round(-$sevCumulative, 2),
+                        'hideOffset' => round(-$sevCumulative + $sevLength, 2),
+                    ];
+                    $sevCumulative += $sevLength;
+                }
+            @endphp
+
+            {{-- Vanilla-CSS port of the "AnimatedCard + Visual2" component: a
+                 CardVisual hover-reveal chart on top, CardBody caption below. --}}
+            <div class="sev-animated-card">
+                <div class="sev-card-visual">
+                    <div class="sev-visual-grid"></div>
+                    <div class="sev-visual-ellipse"></div>
+                    <div class="sev-visual-sweep"></div>
+
+                    <div class="sev-visual-caption">
+                        <div class="sev-visual-caption-box">
+                            <div class="sev-visual-caption-row">
+                                <i></i>
+                                <p>Severity Snapshot</p>
+                            </div>
+                            <p class="sev-visual-caption-sub">Hover to see the full risk breakdown.</p>
+                        </div>
+                    </div>
+
+                    <div class="sev-visual-donut">
+                        <svg class="severity-ring" width="150" height="150" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="{{ $sevRadius }}" stroke="rgba(139,92,246,0.16)" stroke-width="11" fill="transparent" />
+
+                            @foreach ($sevOrder as $sevLevel)
+                                <circle
+                                    cx="60" cy="60" r="{{ $sevRadius }}"
+                                    class="severity-arc severity-arc-{{ strtolower($sevLevel) }}"
+                                    stroke="{{ $sevColors[$sevLevel] }}"
+                                    stroke-width="13"
+                                    fill="transparent"
+                                    stroke-linecap="round"
+                                    transform="rotate(-90 60 60)"
+                                    style="stroke-dasharray: {{ $sevArcs[$sevLevel]['length'] }} {{ $sevArcs[$sevLevel]['gap'] }}; --arc-offset: {{ $sevArcs[$sevLevel]['offset'] }}; --arc-hide-offset: {{ $sevArcs[$sevLevel]['hideOffset'] }};"
+                                ></circle>
+                            @endforeach
+                        </svg>
+
+                        <div class="severity-ring-label severity-ring-label-dark">
+                            <strong>{{ $totalActivities }}</strong>
+                            <span>alerts</span>
+                        </div>
+                    </div>
+
+                    <div class="severity-badges">
+                        @foreach ($sevOrder as $sevLevel)
+                            <div class="severity-fly-badge sfb-{{ strtolower($sevLevel) }}">
+                                <i style="background: {{ $sevColors[$sevLevel] }}"></i>
+                                <span>{{ $sevLevel }} · {{ $sevArcs[$sevLevel]['pct'] }}%</span>
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="rpt-donut"></div>
-            </div>
+                <div class="sev-card-body">
+                    <h4 class="sev-card-title">Alert Severity Breakdown</h4>
+                    <p class="sev-card-description">
+                        {{ $totalActivities }} monitored {{ Str::plural('alert', $totalActivities) }} split across four risk levels — hover the chart above for the full ratio.
+                    </p>
 
-            <div class="rpt-severity-list">
-                <div class="rpt-severity-row critical">
-                    <div>
-                        <i></i>
-                        <strong>Critical</strong>
+                    <div class="sev-legend">
+                        @foreach ($sevOrder as $sevLevel)
+                            <div class="sev-legend-item sev-legend-{{ strtolower($sevLevel) }}">
+                                <i></i>
+                                <span>{{ $sevLevel }}</span>
+                                <b>{{ $sevArcs[$sevLevel]['count'] }}</b>
+                            </div>
+                        @endforeach
                     </div>
-                    <b>90</b>
-                </div>
-
-                <div class="rpt-severity-row high">
-                    <div>
-                        <i></i>
-                        <strong>High</strong>
-                    </div>
-                    <b>120</b>
-                </div>
-
-                <div class="rpt-severity-row medium">
-                    <div>
-                        <i></i>
-                        <strong>Medium</strong>
-                    </div>
-                    <b>145</b>
-                </div>
-
-                <div class="rpt-severity-row low">
-                    <div>
-                        <i></i>
-                        <strong>Low</strong>
-                    </div>
-                    <b>75</b>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <div class="rpt-panel rpt-activity-panel">
+    <div class="rpt-panel rpt-activity-panel bento-card">
         <div class="rpt-panel-header">
             <span>Activity Details</span>
             <h3 id="activityTitle">Daily Security Activity</h3>
             <p>Security activities including detected alerts and blocked IP actions.</p>
         </div>
 
-        <div class="rpt-activity-header">
+        <div class="rpt-activity-header data-table-header">
             <span>Date</span>
             <span>Time</span>
             <span>Activity</span>
@@ -207,292 +293,90 @@
             <span>Status</span>
         </div>
 
-        <div class="rpt-activity-list" id="activityList">
+        <div class="rpt-activity-list xdr-scroll-list-target" id="activityList">
 
-            <div class="rpt-activity-row purple" data-period="daily">
-                <div>
-                    <small>Date</small>
-                    <strong>2026-07-15</strong>
-                </div>
+            @forelse ($dailyRows as $index => $row)
+                <div class="rpt-activity-row data-list-row {{ ['purple', 'violet', 'red', 'blue'][$index % 4] }} {{ strtolower($row['severity'] ?? '') === 'critical' ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}" data-period="daily">
+                    <div>
+                        <small>Date</small>
+                        <strong>{{ $row['date'] ?? '-' }}</strong>
+                    </div>
 
-                <div>
-                    <small>Time</small>
-                    <strong>11:20</strong>
-                </div>
+                    <div>
+                        <small>Time</small>
+                        <strong>{{ $row['clock'] ?? '-' }}</strong>
+                    </div>
 
-                <div>
-                    <small>Activity</small>
-                    <strong>Nmap Reconnaissance</strong>
-                </div>
+                    <div>
+                        <small>Activity</small>
+                        <strong>{{ $row['rule'] ?? '-' }}</strong>
+                    </div>
 
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>10.67.xx.xx</strong>
-                </div>
+                    <div>
+                        <small>Blocked IP</small>
+                        <strong>{{ ($row['response_label'] ?? null) === 'Blocked' ? $row['source'] : '-' }}</strong>
+                    </div>
 
-                <div>
-                    <small>Category</small>
-                    <strong>Reconnaissance</strong>
-                </div>
+                    <div>
+                        <small>Category</small>
+                        <strong>{{ $row['category'] ?? 'General' }}</strong>
+                    </div>
 
-                <div>
-                    <span class="rpt-badge high">High</span>
-                </div>
+                    <div>
+                        <span class="rpt-badge {{ strtolower($row['severity'] ?? 'low') }}">{{ $row['severity'] ?? 'Low' }}</span>
+                    </div>
 
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
+                    <div>
+                        <span class="rpt-status {{ strtolower($row['response_label'] ?? 'pending') }}">{{ $row['response_label'] ?? 'Pending' }}</span>
+                    </div>
                 </div>
-            </div>
+            @empty
+                @include('partials.empty-state', ['message' => 'No activity recorded yet.'])
+            @endforelse
 
-            <div class="rpt-activity-row violet" data-period="daily">
-                <div>
-                    <small>Date</small>
-                    <strong>2026-07-15</strong>
-                </div>
+            @forelse ($weeklyRows as $index => $row)
+                <div class="rpt-activity-row data-list-row {{ ['purple', 'violet', 'red', 'blue'][$index % 4] }} {{ strtolower($row['severity'] ?? '') === 'critical' ? 'is-urgent' : '' }}" data-period="weekly" style="display:none;">
+                    <div>
+                        <small>Period</small>
+                        <strong>{{ $row['week_label'] }}</strong>
+                    </div>
 
-                <div>
-                    <small>Time</small>
-                    <strong>11:25</strong>
-                </div>
+                    <div>
+                        <small>Time</small>
+                        <strong>-</strong>
+                    </div>
 
-                <div>
-                    <small>Activity</small>
-                    <strong>Transaction Behaviour Anomaly</strong>
-                </div>
+                    <div>
+                        <small>Activity</small>
+                        <strong>Total {{ $row['category'] }} Activities</strong>
+                    </div>
 
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>-</strong>
-                </div>
+                    <div>
+                        <small>Blocked IP</small>
+                        <strong>{{ $row['blocked_count'] }} IPs</strong>
+                    </div>
 
-                <div>
-                    <small>Category</small>
-                    <strong>Behaviour Anomaly</strong>
-                </div>
+                    <div>
+                        <small>Category</small>
+                        <strong>{{ $row['category'] }}</strong>
+                    </div>
 
-                <div>
-                    <span class="rpt-badge critical">Critical</span>
-                </div>
+                    <div>
+                        <span class="rpt-badge {{ strtolower($row['severity']) }}">{{ $row['severity'] }}</span>
+                    </div>
 
-                <div>
-                    <span class="rpt-status investigated">Investigated</span>
+                    <div>
+                        <span class="rpt-status {{ strtolower($row['status']) }}">{{ $row['status'] }}</span>
+                    </div>
                 </div>
-            </div>
-
-            <div class="rpt-activity-row red" data-period="daily">
-                <div>
-                    <small>Date</small>
-                    <strong>2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>11:32</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Brute Force Login Attempt</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>192.168.1.20</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Authentication Attack</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge medium">Medium</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
-                </div>
-            </div>
-
-            <div class="rpt-activity-row blue" data-period="daily">
-                <div>
-                    <small>Date</small>
-                    <strong>2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>11:40</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Malware Communication</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>192.168.1.45</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Malware</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge critical">Critical</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
-                </div>
-            </div>
-
-            <div class="rpt-activity-row purple" data-period="weekly">
-                <div>
-                    <small>Period</small>
-                    <strong>2026-07-09 - 2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>-</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Total Reconnaissance Activities</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>21 IPs</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Reconnaissance</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge high">High</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
-                </div>
-            </div>
-
-            <div class="rpt-activity-row violet" data-period="weekly">
-                <div>
-                    <small>Period</small>
-                    <strong>2026-07-09 - 2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>-</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Total Authentication Attacks</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>38 IPs</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Authentication Attack</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge medium">Medium</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
-                </div>
-            </div>
-
-            <div class="rpt-activity-row red" data-period="weekly">
-                <div>
-                    <small>Period</small>
-                    <strong>2026-07-09 - 2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>-</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Total Malware Communication</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>12 IPs</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Malware</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge critical">Critical</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status blocked">Blocked</span>
-                </div>
-            </div>
-
-            <div class="rpt-activity-row blue" data-period="weekly">
-                <div>
-                    <small>Period</small>
-                    <strong>2026-07-09 - 2026-07-15</strong>
-                </div>
-
-                <div>
-                    <small>Time</small>
-                    <strong>-</strong>
-                </div>
-
-                <div>
-                    <small>Activity</small>
-                    <strong>Total Web Attack Attempts</strong>
-                </div>
-
-                <div>
-                    <small>Blocked IP</small>
-                    <strong>13 IPs</strong>
-                </div>
-
-                <div>
-                    <small>Category</small>
-                    <strong>Web Attack</strong>
-                </div>
-
-                <div>
-                    <span class="rpt-badge high">High</span>
-                </div>
-
-                <div>
-                    <span class="rpt-status investigated">Investigated</span>
-                </div>
-            </div>
+            @empty
+                <p style="display:none;" data-period="weekly">No weekly activity recorded yet.</p>
+            @endforelse
 
         </div>
     </div>
 
-    <div class="rpt-panel rpt-blocked-panel">
+    <div class="rpt-panel rpt-blocked-panel bento-card">
         <div class="rpt-panel-header">
             <span>Blocked IP Activity</span>
             <h3>Blocked IP Report</h3>
@@ -500,29 +384,15 @@
         </div>
 
         <div class="rpt-blocked-grid">
-            <div class="rpt-blocked-card">
-                <strong>10.67.xx.xx</strong>
-                <span>Nmap Reconnaissance • 11:20</span>
-                <b class="rpt-badge high">High</b>
-            </div>
-
-            <div class="rpt-blocked-card">
-                <strong>192.168.1.20</strong>
-                <span>Brute Force Login Attempt • 11:32</span>
-                <b class="rpt-badge medium">Medium</b>
-            </div>
-
-            <div class="rpt-blocked-card">
-                <strong>192.168.1.45</strong>
-                <span>Malware Communication • 11:40</span>
-                <b class="rpt-badge critical">Critical</b>
-            </div>
-
-            <div class="rpt-blocked-card">
-                <strong>172.16.xx.xx</strong>
-                <span>SQL Injection Attempt • 11:46</span>
-                <b class="rpt-badge high">High</b>
-            </div>
+            @forelse ($blockedIpCards as $index => $card)
+                <div class="rpt-blocked-card animated-list-item" style="--i: {{ $index }}">
+                    <strong>{{ $card['ip'] }}</strong>
+                    <span>{{ $card['rule_description'] ?? 'Blocked source' }} • {{ $card['blocked_at'] ? \Illuminate\Support\Carbon::parse($card['blocked_at'])->format('H:i') : '-' }}</span>
+                    <b class="rpt-badge {{ strtolower($card['severity']) }}">{{ $card['severity'] }}</b>
+                </div>
+            @empty
+                @include('partials.empty-state', ['message' => 'No IPs are currently blocked.'])
+            @endforelse
         </div>
     </div>
 
@@ -537,6 +407,17 @@
         overflow: visible !important;
     }
 
+    .rpt-error-banner {
+        margin-bottom: 20px;
+        padding: 14px 18px;
+        border-radius: 16px;
+        background: #fee2e2 !important;
+        border: 1px solid rgba(220, 38, 38, 0.25) !important;
+        color: #dc2626 !important;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
     .rpt-hero {
         position: relative;
         overflow: hidden;
@@ -547,21 +428,9 @@
         margin-bottom: 24px;
         padding: 28px 30px;
         border-radius: 30px;
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-            rgba(255, 255, 255, 0.92) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 24px 55px rgba(168, 85, 247, 0.13) !important;
-    }
-
-    .rpt-hero::after {
-        content: "📊";
-        position: absolute;
-        right: 34px;
-        bottom: 18px;
-        font-size: 62px;
-        opacity: 0.08;
-        pointer-events: none;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 16px 40px rgba(139, 92, 246, 0.07) !important;
     }
 
     .rpt-hero span,
@@ -597,23 +466,27 @@
     }
 
     .rpt-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         border: none;
         cursor: pointer;
         height: 50px;
         padding: 0 24px;
-        border-radius: 16px;
-        color: #ffffff;
+        border-radius: 999px;
+        color: #ffffff !important;
         font-size: 14px;
         font-weight: 950;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-decoration: none;
         transition: 0.2s ease;
+        box-shadow: 0 14px 30px rgba(236, 72, 153, 0.22);
     }
 
-    .rpt-btn.pdf {
-        background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
-    }
-
+    .rpt-btn.pdf,
     .rpt-btn.csv {
-        background: linear-gradient(135deg, #111827, #3b0764) !important;
+        background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 45%, #8b5cf6 100%) !important;
     }
 
     .rpt-btn:hover {
@@ -633,35 +506,43 @@
         min-height: 126px;
         padding: 24px;
         border-radius: 26px;
-        background:
-            radial-gradient(circle at top right, rgba(168, 85, 247, 0.20), transparent 36%),
-            radial-gradient(circle at bottom right, rgba(236, 72, 153, 0.16), transparent 36%),
-            linear-gradient(135deg, #ffffff, #f8f3ff) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10) !important;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.06) !important;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
-    .rpt-summary-card::before {
-        content: "";
-        position: absolute;
-        width: 135px;
-        height: 135px;
-        right: -45px;
-        top: -48px;
-        border-radius: 50%;
-        background: rgba(168, 85, 247, 0.18);
+    .rpt-summary-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 18px 40px rgba(139, 92, 246, 0.12) !important;
     }
 
-    .rpt-summary-card::after {
-        content: "";
-        position: absolute;
-        width: 95px;
-        height: 95px;
-        right: 28px;
-        bottom: -44px;
-        border-radius: 50%;
-        background: rgba(236, 72, 153, 0.15);
+    /* All summary cards are the same size — see dashboard.blade.php for
+       why the asymmetric featured-card span was dropped. */
+    .rpt-summary-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #FAF8FC !important;
+        color: var(--accent-purple) !important;
+        box-shadow: 0 10px 22px rgba(139, 92, 246, 0.10);
     }
+
+    .rpt-summary-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .rpt-summary-card.neutral .rpt-summary-icon { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.12) !important; }
+    .rpt-summary-card.success .rpt-summary-icon { color: #059669 !important; background: rgba(5, 150, 105, 0.12) !important; }
+    .rpt-summary-card.danger .rpt-summary-icon { color: #dc2626 !important; background: rgba(220, 38, 38, 0.12) !important; }
 
     .rpt-summary-card span,
     .rpt-summary-card h2,
@@ -671,16 +552,19 @@
     }
 
     .rpt-summary-card span {
-        color: #64748b !important;
-        font-size: 13px;
-        font-weight: 900;
+        color: var(--text-body) !important;
+        font-size: 12px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
     }
 
     .rpt-summary-card h2 {
-        margin: 8px 0 4px;
-        color: #0f172a !important;
-        font-size: 32px;
-        font-weight: 950;
+        margin: 8px 0 2px;
+        color: var(--text-heading) !important;
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: -0.5px;
     }
 
     .rpt-summary-card p {
@@ -728,16 +612,19 @@
         border: none;
         cursor: pointer;
         padding: 12px 22px;
-        border-radius: 16px;
+        border-radius: 999px;
         background: #f3e8ff !important;
         color: #7c3aed !important;
         font-size: 13px;
         font-weight: 950;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
     }
 
     .rpt-mode-btn.active {
         color: #ffffff !important;
-        background: linear-gradient(135deg, #8b5cf6, #d946ef) !important;
+        background: linear-gradient(135deg, #f9a8d4 0%, #ec4899 45%, #8b5cf6 100%) !important;
+        box-shadow: 0 10px 22px rgba(236, 72, 153, 0.22);
     }
 
     .rpt-top-grid {
@@ -752,12 +639,9 @@
         overflow: hidden;
         border-radius: 30px;
         padding: 26px;
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 35%),
-            rgba(255, 255, 255, 0.92) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 24px 55px rgba(168, 85, 247, 0.13) !important;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 16px 40px rgba(139, 92, 246, 0.07) !important;
     }
 
     .rpt-panel-header {
@@ -796,16 +680,83 @@
         border-radius: 26px;
         padding: 18px;
         overflow: hidden;
-        background:
-            radial-gradient(circle at top right, rgba(236, 72, 153, 0.18), transparent 35%),
-            linear-gradient(135deg, #ffffff, #f8f3ff 55%, #fce7f3) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 18px 38px rgba(168, 85, 247, 0.13);
+        background: #FAF8FC !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
+        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.06);
+    }
+
+    /* Animated chart card treatment — grid backdrop + glow + a caption that
+       slides up on hover, vanilla-CSS take on the "Visual3" hover chart card. */
+    .chart-hover-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+            linear-gradient(to right, rgba(139, 92, 246, 0.10) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(139, 92, 246, 0.10) 1px, transparent 1px);
+        background-size: 26px 26px;
+        background-position: center;
+        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+    }
+
+    .chart-hover-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: radial-gradient(ellipse 55% 60% at 50% 40%, rgba(217, 70, 239, 0.14), transparent 72%);
+    }
+
+    .chart-hover-badges {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        z-index: 3;
+        display: flex;
+        gap: 8px;
+        transition: opacity 0.3s ease;
+    }
+
+    .chart-hover-card:hover .chart-hover-badges {
+        opacity: 0;
+    }
+
+    .chart-hover-badge {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.75);
+        border: 1px solid rgba(139, 92, 246, 0.16);
+        backdrop-filter: blur(4px);
+    }
+
+    .chart-hover-badge i {
+        display: block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+    }
+
+    .chart-hover-badge span {
+        font-size: 10px;
+        font-weight: 800;
+        color: var(--text-heading);
     }
 
     .rpt-chart-svg {
+        position: relative;
+        z-index: 1;
         width: 100%;
         height: 100%;
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .chart-hover-card:hover .rpt-chart-svg {
+        transform: scale(1.04);
     }
 
     .rpt-grid-line {
@@ -839,14 +790,26 @@
 
     .rpt-chart-info {
         position: absolute;
-        right: 28px;
-        top: 26px;
+        left: 18px;
+        right: 18px;
+        bottom: 18px;
+        z-index: 4;
         min-width: 160px;
         padding: 16px 18px;
         border-radius: 20px;
-        background: rgba(255, 255, 255, 0.86);
+        background: rgba(255, 255, 255, 0.92);
         border: 1px solid rgba(168, 85, 247, 0.16);
         box-shadow: 0 18px 34px rgba(168, 85, 247, 0.14);
+        backdrop-filter: blur(6px);
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+    }
+
+    .chart-hover-card:hover .rpt-chart-info {
+        opacity: 1;
+        transform: translateY(0);
     }
 
     .rpt-chart-info span {
@@ -900,93 +863,327 @@
         font-weight: 950;
     }
 
-    .rpt-severity-total {
+    /* Alert Severity Ratio — vanilla-CSS port of the "AnimatedCard + Visual2"
+       component: a CardVisual hover-reveal chart (grid backdrop, glow,
+       gradient sweep, idle caption that slides away, donut that rises +
+       draws its real per-level share, badges that fly out) sitting on top
+       of a CardBody with title/description/legend, mirroring the supplied
+       demo's structure instead of the flat purple total+list block. */
+    .sev-animated-card {
+        position: relative;
+        border-radius: 22px;
+        overflow: hidden;
+        background: var(--card-bg) !important;
+        border: 1px solid rgba(139, 92, 246, 0.12) !important;
+        box-shadow: 0 12px 28px rgba(139, 92, 246, 0.08);
+    }
+
+    .sev-card-visual {
+        position: relative;
+        height: 260px;
+        width: 100%;
+        overflow: hidden;
+        background: linear-gradient(160deg, #faf8fc 0%, #f6effc 100%);
+    }
+
+    .sev-visual-grid {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.6;
+        background-image:
+            linear-gradient(to right, rgba(139, 92, 246, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
+        background-size: 18px 18px;
+        background-position: center;
+        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+    }
+
+    .sev-visual-ellipse {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        background: radial-gradient(ellipse 60% 55% at 50% 45%, rgba(139, 92, 246, 0.16), transparent 72%);
+    }
+
+    .sev-visual-sweep {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(100%);
+        background: linear-gradient(to top, rgba(139, 92, 246, 0.22), transparent 65%);
+        transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .sev-animated-card:hover .sev-visual-sweep {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .sev-visual-caption {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
+        padding-top: 14px;
+        transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        pointer-events: none;
+    }
+
+    .sev-animated-card:hover .sev-visual-caption {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    .sev-visual-caption-box {
+        border-radius: 12px;
+        padding: 8px 14px;
+        background: rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(139, 92, 246, 0.16);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        text-align: left;
+    }
+
+    .sev-visual-caption-row {
+        display: flex;
         align-items: center;
-        gap: 24px;
-        padding: 28px;
-        border-radius: 26px;
-        background:
-            radial-gradient(circle at top right, rgba(255,255,255,0.26), transparent 36%),
-            linear-gradient(135deg, #8b5cf6, #d946ef, #ec4899) !important;
-        color: #ffffff !important;
-        box-shadow: 0 18px 38px rgba(217, 70, 239, 0.22);
+        gap: 7px;
     }
 
-    .rpt-severity-total small {
-        display: block;
-        color: rgba(255,255,255,0.88) !important;
-        font-size: 13px;
-        font-weight: 900;
+    .sev-visual-caption-row i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--accent-purple);
+        flex-shrink: 0;
     }
 
-    .rpt-severity-total h2 {
-        margin: 8px 0;
-        color: #ffffff !important;
-        font-size: 46px;
-        font-weight: 950;
-    }
-
-    .rpt-severity-total p {
+    .sev-visual-caption-row p {
         margin: 0;
-        color: rgba(255,255,255,0.88) !important;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 850;
+        color: #1e1b2e !important;
     }
 
-    .rpt-donut {
-        width: 96px;
-        height: 96px;
-        border-radius: 50%;
-        background:
-            radial-gradient(circle at center, rgba(255,255,255,0.92) 45%, transparent 47%),
-            conic-gradient(#ef4444 0deg 75deg, #f97316 75deg 176deg, #f59e0b 176deg 298deg, #22c55e 298deg 360deg);
-        box-shadow: 0 14px 30px rgba(15, 23, 42, 0.18);
+    .sev-visual-caption-sub {
+        margin: 3px 0 0;
+        font-size: 11px;
+        font-weight: 600;
+        color: #6b6280 !important;
     }
 
-    .rpt-severity-list {
-        display: grid;
-        gap: 14px;
-        margin-top: 20px;
-    }
-
-    .rpt-severity-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 17px 18px;
-        border-radius: 20px;
-        border: 1px solid rgba(168, 85, 247, 0.16) !important;
-    }
-
-    .rpt-severity-row.critical { background: linear-gradient(135deg, #ffffff, #fff1f2) !important; }
-    .rpt-severity-row.high { background: linear-gradient(135deg, #ffffff, #fff7ed) !important; }
-    .rpt-severity-row.medium { background: linear-gradient(135deg, #ffffff, #fef3c7) !important; }
-    .rpt-severity-row.low { background: linear-gradient(135deg, #ffffff, #dcfce7) !important; }
-
-    .rpt-severity-row div {
+    .sev-visual-donut {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
         display: flex;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .rpt-severity-row i {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
+    .sev-animated-card:hover .sev-visual-donut {
+        transform: translateY(-18px) scale(1.06);
     }
 
-    .rpt-severity-row.critical i { background: #ef4444; }
-    .rpt-severity-row.high i { background: #f97316; }
-    .rpt-severity-row.medium i { background: #f59e0b; }
-    .rpt-severity-row.low i { background: #22c55e; }
+    .severity-ring {
+        position: relative;
+        z-index: 1;
+    }
 
-    .rpt-severity-row strong,
-    .rpt-severity-row b {
-        color: #0f172a !important;
-        font-size: 14px;
+    /* Each arc's dasharray (its real share of the ring) is fixed and never
+       animated — only stroke-dashoffset transitions, sliding the arc from
+       a tucked-away "hidden" position into its resting spot. dashoffset
+       is a single number, so browsers always interpolate it smoothly in
+       both directions; animating dasharray directly (the old approach)
+       is a 2-value list some browsers tween unevenly, which read as
+       choppy on hover-out. */
+    .severity-arc {
+        stroke-dashoffset: var(--arc-hide-offset);
+        transition: stroke-dashoffset 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .severity-arc-critical { transition-delay: 0s; }
+    .severity-arc-high { transition-delay: 0.08s; }
+    .severity-arc-medium { transition-delay: 0.16s; }
+    .severity-arc-low { transition-delay: 0.24s; }
+
+    .sev-animated-card:hover .severity-arc {
+        stroke-dashoffset: var(--arc-offset);
+    }
+
+    .severity-ring-label {
+        position: absolute;
+        z-index: 1;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+    }
+
+    .severity-ring-label.severity-ring-label-dark strong {
+        color: #1e1b2e !important;
+        font-size: 26px;
         font-weight: 950;
+        line-height: 1;
+    }
+
+    .severity-ring-label.severity-ring-label-dark span {
+        color: #6b6280 !important;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 4px;
+    }
+
+    .severity-badges {
+        position: absolute;
+        inset: 0;
+        z-index: 6;
+        pointer-events: none;
+    }
+
+    .severity-fly-badge {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 8px 18px rgba(15, 23, 42, 0.2);
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.6);
+        transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        white-space: nowrap;
+    }
+
+    .severity-fly-badge i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .severity-fly-badge span {
+        font-size: 10px;
+        font-weight: 850;
+        color: #1e1b2e !important;
+    }
+
+    .sev-animated-card:hover .sfb-critical {
+        opacity: 1;
+        transform: translate(calc(-50% - 130px), calc(-50% - 66px)) scale(1);
+        transition-delay: 0.05s;
+    }
+
+    .sev-animated-card:hover .sfb-high {
+        opacity: 1;
+        transform: translate(calc(-50% + 130px), calc(-50% - 66px)) scale(1);
+        transition-delay: 0.1s;
+    }
+
+    .sev-animated-card:hover .sfb-medium {
+        opacity: 1;
+        transform: translate(calc(-50% - 130px), calc(-50% + 66px)) scale(1);
+        transition-delay: 0.15s;
+    }
+
+    .sev-animated-card:hover .sfb-low {
+        opacity: 1;
+        transform: translate(calc(-50% + 130px), calc(-50% + 66px)) scale(1);
+        transition-delay: 0.2s;
+    }
+
+    .sev-card-body {
+        border-top: 1px solid rgba(139, 92, 246, 0.10);
+        padding: 20px 24px 24px;
+        background: var(--card-bg) !important;
+    }
+
+    .sev-card-title {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 900;
+        color: #1e1b2e !important;
+    }
+
+    .sev-card-description {
+        margin: 6px 0 0;
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.55;
+        color: #6b6280 !important;
+    }
+
+    .sev-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+    }
+
+    .sev-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 5px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(139, 92, 246, 0.14) !important;
+        background: #faf8fc !important;
+    }
+
+    .sev-legend-item i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+    .sev-legend-critical i { background: #ef4444; }
+    .sev-legend-high i { background: #f97316; }
+    .sev-legend-medium i { background: #f59e0b; }
+    .sev-legend-low i { background: #22c55e; }
+
+    .sev-legend-item span {
+        font-size: 11px;
+        font-weight: 800;
+        color: #6b6280 !important;
+    }
+
+    .sev-legend-item b {
+        font-size: 12px;
+        font-weight: 950;
+        color: #1e1b2e !important;
+        margin-left: 1px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .severity-arc {
+            transition: none;
+            stroke-dashoffset: var(--arc-offset);
+        }
+
+        .severity-fly-badge,
+        .sev-visual-grid,
+        .sev-visual-ellipse,
+        .sev-visual-sweep,
+        .sev-visual-caption,
+        .sev-visual-donut {
+            transition: none;
+        }
     }
 
     .rpt-activity-panel,
@@ -1006,7 +1203,7 @@
 
     .rpt-activity-list {
         display: grid;
-        gap: 14px;
+        gap: 0;
     }
 
     .rpt-activity-row {
@@ -1016,15 +1213,7 @@
         gap: 14px;
         min-height: 78px;
         padding: 18px 16px;
-        border-radius: 20px;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 12px 26px rgba(168, 85, 247, 0.08);
     }
-
-    .rpt-activity-row.purple { background: linear-gradient(135deg, #ffffff, #f3e8ff) !important; }
-    .rpt-activity-row.violet { background: linear-gradient(135deg, #ffffff, #f8f3ff) !important; }
-    .rpt-activity-row.red { background: linear-gradient(135deg, #ffffff, #fff1f2) !important; }
-    .rpt-activity-row.blue { background: linear-gradient(135deg, #ffffff, #dbeafe) !important; }
 
     .rpt-activity-row small {
         display: block;
@@ -1067,8 +1256,8 @@
     .rpt-blocked-card {
         padding: 18px;
         border-radius: 20px;
-        background: linear-gradient(135deg, #ffffff, #f8f3ff) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
+        background: #FAF8FC !important;
+        border: 1px solid rgba(139, 92, 246, 0.10) !important;
     }
 
     .rpt-blocked-card strong {
@@ -1343,9 +1532,94 @@
             break-inside: avoid;
         }
     }
+
+    /* Redesign lock — keep the new light card system regardless of the
+       light/dark content toggle. */
+    .rpt-hero.rpt-hero,
+    .rpt-summary-card.rpt-summary-card,
+    .rpt-panel.rpt-panel,
+    .rpt-activity-row.rpt-activity-row,
+    body.dark-mode .rpt-hero.rpt-hero,
+    body.dark .rpt-hero.rpt-hero,
+    body.dark-theme .rpt-hero.rpt-hero,
+    .rpt-page.rpt-dark .rpt-hero.rpt-hero,
+    body.dark-mode .rpt-summary-card.rpt-summary-card,
+    body.dark .rpt-summary-card.rpt-summary-card,
+    body.dark-theme .rpt-summary-card.rpt-summary-card,
+    .rpt-page.rpt-dark .rpt-summary-card.rpt-summary-card,
+    body.dark-mode .rpt-panel.rpt-panel,
+    body.dark .rpt-panel.rpt-panel,
+    body.dark-theme .rpt-panel.rpt-panel,
+    .rpt-page.rpt-dark .rpt-panel.rpt-panel,
+    body.dark-mode .rpt-activity-row.rpt-activity-row,
+    body.dark .rpt-activity-row.rpt-activity-row,
+    body.dark-theme .rpt-activity-row.rpt-activity-row,
+    .rpt-page.rpt-dark .rpt-activity-row.rpt-activity-row {
+        background: var(--card-bg) !important;
+        border-color: rgba(139, 92, 246, 0.10) !important;
+    }
+
+    body.dark-mode .rpt-hero h1,
+    body.dark .rpt-hero h1,
+    body.dark-theme .rpt-hero h1,
+    .rpt-page.rpt-dark .rpt-hero h1,
+    body.dark-mode .rpt-summary-card h2,
+    body.dark .rpt-summary-card h2,
+    body.dark-theme .rpt-summary-card h2,
+    .rpt-page.rpt-dark .rpt-summary-card h2,
+    body.dark-mode .rpt-panel-header h3,
+    body.dark .rpt-panel-header h3,
+    body.dark-theme .rpt-panel-header h3,
+    .rpt-page.rpt-dark .rpt-panel-header h3,
+    body.dark-mode .rpt-activity-row strong,
+    body.dark .rpt-activity-row strong,
+    body.dark-theme .rpt-activity-row strong,
+    .rpt-page.rpt-dark .rpt-activity-row strong,
+    body.dark-mode .rpt-blocked-card strong,
+    body.dark .rpt-blocked-card strong,
+    body.dark-theme .rpt-blocked-card strong,
+    .rpt-page.rpt-dark .rpt-blocked-card strong {
+        color: var(--text-heading) !important;
+    }
+
+    body.dark-mode .rpt-hero p,
+    body.dark .rpt-hero p,
+    body.dark-theme .rpt-hero p,
+    .rpt-page.rpt-dark .rpt-hero p,
+    body.dark-mode .rpt-summary-card span,
+    body.dark .rpt-summary-card span,
+    body.dark-theme .rpt-summary-card span,
+    .rpt-page.rpt-dark .rpt-summary-card span,
+    body.dark-mode .rpt-panel-header p,
+    body.dark .rpt-panel-header p,
+    body.dark-theme .rpt-panel-header p,
+    .rpt-page.rpt-dark .rpt-panel-header p,
+    body.dark-mode .rpt-activity-row small,
+    body.dark .rpt-activity-row small,
+    body.dark-theme .rpt-activity-row small,
+    .rpt-page.rpt-dark .rpt-activity-row small,
+    body.dark-mode .rpt-blocked-card span,
+    body.dark .rpt-blocked-card span,
+    body.dark-theme .rpt-blocked-card span,
+    .rpt-page.rpt-dark .rpt-blocked-card span {
+        color: var(--text-body) !important;
+    }
+
+    body.dark-mode .rpt-blocked-card,
+    body.dark .rpt-blocked-card,
+    body.dark-theme .rpt-blocked-card,
+    .rpt-page.rpt-dark .rpt-blocked-card {
+        background: #FAF8FC !important;
+        border-color: rgba(139, 92, 246, 0.10) !important;
+    }
 </style>
 
 <script>
+    const reportTotals = {
+        daily: { activity: {{ $dailyTotal }}, blocked: {{ $dailyBlocked }} },
+        weekly: { activity: {{ $weeklyTotal }}, blocked: {{ $weeklyBlocked }} },
+    };
+
     function setReportMode(mode, button) {
         const rows = document.querySelectorAll('.rpt-activity-row');
         const buttons = document.querySelectorAll('.rpt-mode-btn');
@@ -1360,49 +1634,11 @@
         document.getElementById('activityTitle').innerText =
             mode === 'daily' ? 'Daily Security Activity' : 'Weekly Security Activity';
 
-        document.getElementById('summaryActivity').innerText = mode === 'daily' ? '312' : '1,244';
-        document.getElementById('summaryBlocked').innerText = mode === 'daily' ? '4' : '84';
-        document.getElementById('trendActivity').innerText = mode === 'daily' ? '312' : '1,244';
-        document.getElementById('trendBlocked').innerText = mode === 'daily' ? '4' : '84';
+        document.getElementById('summaryActivity').innerText = reportTotals[mode].activity;
+        document.getElementById('summaryBlocked').innerText = reportTotals[mode].blocked;
+        document.getElementById('trendActivity').innerText = reportTotals[mode].activity;
+        document.getElementById('trendBlocked').innerText = reportTotals[mode].blocked;
         document.getElementById('trendMode').innerText = mode === 'daily' ? 'Daily' : 'Weekly';
-    }
-
-    function exportReportCSV() {
-        const rows = [];
-        const visibleRows = document.querySelectorAll('.rpt-activity-row');
-
-        rows.push(['Date', 'Time', 'Activity', 'Blocked IP', 'Category', 'Severity', 'Status']);
-
-        visibleRows.forEach(row => {
-            if (row.style.display !== 'none') {
-                const items = row.querySelectorAll('strong, .rpt-badge, .rpt-status');
-
-                rows.push([
-                    items[0]?.innerText || '',
-                    items[1]?.innerText || '',
-                    items[2]?.innerText || '',
-                    items[3]?.innerText || '',
-                    items[4]?.innerText || '',
-                    items[5]?.innerText || '',
-                    items[6]?.innerText || ''
-                ]);
-            }
-        });
-
-        const csvContent = rows.map(row => row.map(value => `"${value}"`).join(',')).join('\n');
-
-        const blob = new Blob([csvContent], {
-            type: 'text/csv;charset=utf-8;'
-        });
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-
-        link.href = url;
-        link.download = 'lox-security-report.csv';
-        link.click();
-
-        URL.revokeObjectURL(url);
     }
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -1458,5 +1694,7 @@
         setReportMode('daily', activeButton);
     });
 </script>
+
+@include('partials.auto-refresh')
 
 @endsection

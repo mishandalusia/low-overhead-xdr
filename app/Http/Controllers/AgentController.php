@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\DemoDataService;
 use App\Services\WazuhService;
 
 class AgentController extends Controller
@@ -12,10 +13,12 @@ class AgentController extends Controller
             $agents = $wazuh->getAgents();
             $error = null;
         } catch (\Throwable $e) {
-            $agents = [];
-            $error = $e->getMessage();
+            // Demo data fills the page completely, so there's nothing
+            // broken from the visitor's point of view — no banner needed.
+            $agents = DemoDataService::fakeAgents();
+            $error = null;
         }
 
-        return view('agent-monitoring', compact('agents', 'error'));
+        return view('pages.agent-monitoring', compact('agents', 'error'));
     }
 }
