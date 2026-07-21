@@ -220,7 +220,7 @@
 
         h1,
         .panel-copy h2 {
-            font-family: "Space Grotesk", sans-serif;
+           font-family: Arial, sans-serif;
         }
 
         h1 {
@@ -258,7 +258,7 @@
             background: transparent;
             outline: none;
             color: #35105f;
-            font-family: "Manrope", sans-serif;
+            font-family: Arial, sans-serif;
             font-size: 13px;
             padding: 0 40px 0 2px;
             transition: 230ms ease;
