@@ -55,9 +55,10 @@ class ThreatWorkflowService
             $alert['mitre'] = $this->mitreFor($alert['rule_id'] ?? null, $alert['category'] ?? null);
             $alert['detection_source'] = $this->detectionSourceFor($alert['category'] ?? null);
             $alert['detection_engine'] = $this->detectionEngineFor($alert['category'] ?? null);
-            $alert['prediction'] = $this->predictionFor($alert['category'] ?? null);
+            $alert['prediction'] = $alert['transaction_status'] ?? $this->predictionFor($alert['category'] ?? null);
             $alert['detection_category'] = $this->detectionCategoryFor($alert['category'] ?? null);
             $alert['rule_label'] = $this->ruleLabelFor($alert['rule_id'] ?? null, $alert['category'] ?? null);
+            $alert['description'] = $this->descriptionFor($alert['category'] ?? null, $alert['severity'] ?? 'Medium');
 
             return $alert;
         }, $alerts);
@@ -139,6 +140,31 @@ class ThreatWorkflowService
         $map = config('threat_recommendations');
 
         return $map[$category] ?? $map['default'];
+    }
+
+    /**
+     * Short (2-3 sentence) alert description that folds "what happened" and
+     * "why this severity" into one paragraph — deliberately not split into a
+     * separate "Reason for Severity" field, per demo feedback that a wall of
+     * labelled fields makes the popup feel cluttered.
+     */
+    public function descriptionFor(?string $category, string $severity): string
+    {
+        $templates = [
+            'Reconnaissance' => 'Network reconnaissance activity was detected, indicating an attempt to scan hosts, ports, or services before launching further attacks. This alert is classified as %s because reconnaissance is an early stage of the attack lifecycle that often precedes exploitation attempts.',
+
+            self::BEHAVIOUR_CATEGORY => 'The Isolation Forest model detected a pattern that significantly deviates from normal behaviour on this endpoint. This alert is classified as %s because it is based on behavioural analysis rather than a confirmed signature match, and requires administrator verification to rule out a false positive.',
+
+            'Authentication Attack' => 'Multiple failed login attempts were detected from this source, indicating a possible brute-force attempt to gain unauthorized access. This alert is classified as %s because repeated authentication failures often precede a successful account compromise.',
+
+            'Malware' => 'Activity consistent with malware behaviour was detected on this endpoint, such as suspicious process execution or command-and-control communication. This alert is classified as %s because malware can lead to data theft or further compromise across the network.',
+
+            'Web Attack' => 'A web-based attack pattern (such as SQL injection or cross-site scripting) was detected against the monitored application. This alert is classified as %s because a successful web attack can lead to unauthorized data access or full application compromise.',
+        ];
+
+        $template = $templates[$category] ?? 'This alert was triggered by a signature match against monitored traffic or logs. It is classified as %s based on the potential impact and confidence of this detection.';
+
+        return sprintf($template, $severity);
     }
 
     public function mitreFor(?string $ruleId, ?string $category): ?array

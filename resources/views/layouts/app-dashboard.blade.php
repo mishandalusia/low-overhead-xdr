@@ -24,7 +24,7 @@
         }
 
         body {
-            background: var(--bg-main);
+            background: #F2F4F7;
             color: #0f172a;
         }
 
@@ -54,17 +54,13 @@
             padding: 36px 42px 46px;
             overflow: visible;
             transition: 0.25s ease;
-            background: transparent !important;
+            background: #F2F4F7 !important;
         }
 
         body.dark-mode .main,
         body.dark .main,
         body.dark-theme .main {
-            background:
-                radial-gradient(circle at top left, rgba(79, 70, 229, 0.26), transparent 35%),
-                radial-gradient(circle at top right, rgba(236, 72, 153, 0.18), transparent 34%),
-                radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.25), transparent 38%),
-                linear-gradient(135deg, #0f172a 0%, #1e1b4b 45%, #3b123c 100%) !important;
+            background: #0f172a !important;
         }
 
         .content-wrapper {
@@ -98,13 +94,9 @@
         body.light-mode .sidebar,
         html.light-mode .sidebar,
         body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar {
-            background:
-                radial-gradient(circle at top left, rgba(255, 255, 255, 0.75), transparent 30%),
-                radial-gradient(circle at 88% 12%, rgba(147, 197, 253, 0.58), transparent 30%),
-                radial-gradient(circle at 20% 78%, rgba(236, 72, 153, 0.38), transparent 35%),
-                linear-gradient(180deg, #f8e8ff 0%, #e9d5ff 28%, #dbeafe 62%, #fce7f3 100%) !important;
-            border-right: 1px solid rgba(168, 85, 247, 0.18);
-            box-shadow: 18px 0 55px rgba(168, 85, 247, 0.18);
+            background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%) !important;
+            border-right: 1px solid rgba(124, 58, 237, 0.25);
+            box-shadow: 4px 0 20px rgba(124, 58, 237, 0.12);
         }
 
         body.dark-mode .sidebar,
@@ -113,12 +105,9 @@
         html.dark-mode .sidebar,
         html.dark .sidebar,
         html.dark-theme .sidebar {
-            background:
-                radial-gradient(circle at top left, rgba(79, 70, 229, 0.18), transparent 34%),
-                radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.20), transparent 38%),
-                linear-gradient(180deg, #020617 0%, #07111f 42%, #111827 70%, #1e1238 100%) !important;
-            border-right: 1px solid rgba(99, 102, 241, 0.30);
-            box-shadow: 18px 0 60px rgba(2, 6, 23, 0.58);
+            background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%) !important;
+            border-right: 1px solid rgba(99, 102, 241, 0.25);
+            box-shadow: 4px 0 20px rgba(2, 6, 23, 0.40);
         }
 
         .sidebar-logo {
@@ -722,7 +711,7 @@
     justify-content: center !important;
     gap: 14px !important;
     margin-bottom: 58px !important;
-    overflow: hidden !important;
+    overflow: visible !important;
 }
 
 .sidebar:hover .sidebar-logo {
@@ -730,37 +719,40 @@
 }
 
 .sidebar-logo-mark {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    max-width: 44px !important;
-    min-height: 44px !important;
-    max-height: 44px !important;
-    padding: 6px !important;
-    border-radius: 16px !important;
-    overflow: hidden !important;
+    width: 64px !important;
+    height: 64px !important;
+    min-width: 64px !important;
+    max-width: 64px !important;
+    min-height: 64px !important;
+    max-height: 64px !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    overflow: visible !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     position: relative !important;
-    background: rgba(255, 255, 255, 0.45) !important;
-    box-shadow: 0 12px 26px rgba(168, 85, 247, 0.18) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
-/* Logo image dipaksa kecil */
+/* Logo image dipersiapkan besar dan jelas */
 .lox-sidebar-logo,
 .sidebar-logo-mark img {
-    width: 30px !important;
-    height: 30px !important;
-    max-width: 30px !important;
-    max-height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
+    width: 64px !important;
+    height: 64px !important;
+    max-width: 64px !important;
+    max-height: 64px !important;
+    min-width: 64px !important;
+    min-height: 64px !important;
     object-fit: contain !important;
     display: block !important;
     position: static !important;
-    transform: none !important;
+    transform: scale(1.15) !important;
     opacity: 1 !important;
+    background: transparent !important;
+    filter: drop-shadow(0 4px 12px rgba(168, 85, 247, 0.50)) !important;
 }
 
 /* Jangan sampai logo lama muncul sebagai background besar */
@@ -772,17 +764,15 @@
     content: none !important;
 }
 
-/* Light mode */
+/* Transparent background in both Light & Dark modes */
 body.light-mode .sidebar-logo-mark,
-body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-logo-mark {
-    background: rgba(255, 255, 255, 0.60) !important;
-}
-
-/* Dark mode */
+body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-logo-mark,
 body.dark-mode .sidebar-logo-mark,
 body.dark .sidebar-logo-mark,
 body.dark-theme .sidebar-logo-mark {
-    background: rgba(255, 255, 255, 0.18) !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* Logo text */
@@ -820,9 +810,19 @@ h4,
     letter-spacing: -0.6px;
 }
 
+/* Monospace font for data numbers — monitoring style */
+.dashboard-stat-card h2,
+.agp-summary-card h2,
+.tdx-summary-card h2,
+.brp-summary-card h2,
+.rpt-summary-card h2,
+.inc-summary-card h2 {
+    font-family: var(--font-mono) !important;
+    letter-spacing: -1px;
+}
+
 /* ================================================= */
-/* GLOBAL SHARP UI FIX - BIAR GA TERLALU MELENGKUNG */
-/* Paste paling bawah style app-dashboard.blade.php */
+/* GLOBAL SHARP UI - Card tidak terlalu melengkung  */
 /* ================================================= */
 
 /* Panel besar / container utama */
@@ -834,7 +834,7 @@ h4,
 .rpt-hero,
 .rpt-mode-panel,
 .brp-filter-panel {
-    border-radius: 18px !important;
+    border-radius: 10px !important;
 }
 
 /* Card summary atas */
@@ -843,7 +843,7 @@ h4,
 .tdx-summary-card,
 .brp-summary-card,
 .rpt-summary-card {
-    border-radius: 16px !important;
+    border-radius: 10px !important;
 }
 
 /* Row/table/card list */
@@ -861,7 +861,7 @@ h4,
 .rpt-blocked-card,
 .rpt-trend-summary div,
 .rpt-severity-row {
-    border-radius: 12px !important;
+    border-radius: 6px !important;
 }
 
 /* Chart box / visual box */
@@ -870,7 +870,7 @@ h4,
 .severity-total,
 .brp-selected-hero,
 .selected-ip-box {
-    border-radius: 16px !important;
+    border-radius: 10px !important;
 }
 
 /* Input, select, search */
@@ -905,6 +905,60 @@ button,
 .incident-status,
 .agent-status {
     border-radius: 10px !important;
+}
+
+/* ======================================================== */
+/* NUCLEAR OVERRIDE: Hapus semua gradient/orb dari background */
+/* Ini meng-override SEMUA radial-gradient di semua halaman  */
+/* ======================================================== */
+body,
+body.light-mode,
+html.light-mode body {
+    background: #ffffff !important;
+}
+
+.main {
+    background: #ffffff !important;
+}
+
+body.dark-mode,
+body.dark,
+body.dark-theme {
+    background: #0f172a !important;
+}
+
+body.dark-mode .main,
+body.dark .main,
+body.dark-theme .main {
+    background: #0f172a !important;
+}
+
+/* Override semua panel/page background yang pakai gradient */
+.tdx-page,
+.agp-page,
+.brp-page,
+.rpt-page,
+.inc-page {
+    background: transparent !important;
+}
+
+/* Hapus ::before / ::after dekoratif yang bikin bulet-bulet */
+.bento-card::before,
+.bento-card::after,
+.dashboard-stat-card::before,
+.dashboard-stat-card::after,
+.agp-summary-card::before,
+.agp-summary-card::after,
+.tdx-summary-card::before,
+.tdx-summary-card::after,
+.brp-summary-card::before,
+.brp-summary-card::after,
+.rpt-summary-card::before,
+.rpt-summary-card::after,
+.inc-summary-card::before,
+.inc-summary-card::after {
+    background: none !important;
+    display: none !important;
 }
 
 /* Sidebar menu tetap modern tapi tidak terlalu bulet */
@@ -999,32 +1053,24 @@ textarea {
 /* MAIN BACKGROUND LIGHT */
 body.light-mode .main,
 body:not(.dark-mode):not(.dark):not(.dark-theme) .main {
-    background:
-        radial-gradient(circle at top left, rgba(155, 92, 246, 0.25), transparent 32%),
-        radial-gradient(circle at top right, rgba(236, 107, 184, 0.22), transparent 34%),
-        radial-gradient(circle at bottom left, rgba(134, 168, 255, 0.24), transparent 36%),
-        linear-gradient(135deg, #f7ecff 0%, #ffe8f4 48%, #e9f0ff 100%) !important;
+    background: #ffffff !important;
     color: var(--soft-text) !important;
 }
 
 /* SIDEBAR LIGHT */
 body.light-mode .sidebar,
 body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar {
-    background:
-        radial-gradient(circle at top left, rgba(155, 92, 246, 0.22), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(236, 107, 184, 0.18), transparent 38%),
-        linear-gradient(180deg, rgba(255,255,255,0.50), rgba(245,231,255,0.70), rgba(255,232,244,0.62)) !important;
-    border-right: 1px solid rgba(180, 148, 255, 0.30) !important;
-    box-shadow: 14px 0 44px rgba(155, 92, 246, 0.14) !important;
-    backdrop-filter: blur(18px) !important;
+    background: linear-gradient(180deg, #7c3aed 0%, #6d28d9 100%) !important;
+    border-right: 1px solid rgba(124, 58, 237, 0.25) !important;
+    box-shadow: 4px 0 20px rgba(124, 58, 237, 0.12) !important;
 }
 
 /* SIDEBAR LOGO */
 body.light-mode .sidebar-logo-mark,
 body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-logo-mark {
-    background: rgba(255, 255, 255, 0.72) !important;
-    border: 1px solid rgba(180, 148, 255, 0.24) !important;
-    box-shadow: 0 12px 26px rgba(155, 92, 246, 0.14) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
 }
 
 body.light-mode .sidebar-logo-text strong,
@@ -1654,8 +1700,7 @@ button,
         ->take(2)
         ->implode('');
 @endphp
-
-@include('partials.flickering-grid-bg')
+{{-- Flickering grid background removed --}}
 
 <div class="app light-mode">
 
@@ -1778,7 +1823,7 @@ button,
                 outline: none !important;
             }
 
-            /* LIGHT MODE - fitur nyatu dengan background */
+            /* LIGHT MODE - polos putih tanpa gradien / bunder-bunder */
             body.light-mode .dashboard-panel,
             body.light-mode .dashboard-stat-card,
             body.light-mode .agp-summary-card,
@@ -1792,12 +1837,9 @@ button,
             body.light-mode .rpt-summary-card,
             body.light-mode .rpt-mode-panel,
             body.light-mode .rpt-panel {
-                background:
-                    radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-                    radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.08), transparent 35%),
-                    rgba(255, 255, 255, 0.88) !important;
-                border: 1px solid rgba(168, 85, 247, 0.17) !important;
-                box-shadow: 0 24px 55px rgba(168, 85, 247, 0.12) !important;
+                background: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
                 color: #0f172a !important;
             }
 
@@ -1806,7 +1848,7 @@ button,
             body.light-mode .tdx-panel,
             body.light-mode .brp-panel,
             body.light-mode .rpt-panel {
-                backdrop-filter: blur(10px);
+                backdrop-filter: none !important;
             }
 
             /* DARK MODE - fitur purple dark, beda dari sidebar */
@@ -2163,44 +2205,23 @@ body.dark-theme .brp-filter-group select {
 /* Sidebar tetap beda: lebih navy/black supaya tidak nyatu dengan fitur */
 body.dark-mode .sidebar,
 body.dark .sidebar,
-body.dark-theme .sidebar {
-    background:
-        radial-gradient(circle at top left, rgba(79, 70, 229, 0.16), transparent 34%),
-        radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.20), transparent 38%),
-        linear-gradient(180deg, #020617 0%, #07111f 45%, #0f172a 75%, #111827 100%) !important;
-    border-right: 1px solid rgba(99, 102, 241, 0.32) !important;
-    box-shadow: 18px 0 60px rgba(2, 6, 23, 0.55) !important;
-
-    
-}
-
-/* ================================================= */
-/* FIX SIDEBAR DARK MODE - LEBIH TERANG & BEDA DARI BACKGROUND */
-/* Paste paling bawah <style> app-dashboard.blade.php */
-/* ================================================= */
-
-body.dark-mode .sidebar,
-body.dark .sidebar,
 body.dark-theme .sidebar,
 html.dark-mode .sidebar,
 html.dark .sidebar,
 html.dark-theme .sidebar {
-    background:
-        radial-gradient(circle at top left, rgba(236, 72, 153, 0.32), transparent 34%),
-        radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.45), transparent 36%),
-        radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.34), transparent 40%),
-        linear-gradient(180deg, #312e81 0%, #5b21b6 42%, #7e22ce 72%, #be185d 100%) !important;
-    border-right: 1px solid rgba(216, 180, 254, 0.42) !important;
-    box-shadow: 18px 0 60px rgba(126, 34, 206, 0.34) !important;
+    background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%) !important;
+    border-right: 1px solid rgba(99, 102, 241, 0.25) !important;
+    box-shadow: 4px 0 20px rgba(2, 6, 23, 0.40) !important;
 }
 
 /* Logo biar tetap kontras */
 body.dark-mode .sidebar-logo-mark,
 body.dark .sidebar-logo-mark,
 body.dark-theme .sidebar-logo-mark {
-    background: linear-gradient(135deg, #ffffff, #fce7f3) !important;
-    color: #7e22ce !important;
-    box-shadow: 0 14px 30px rgba(255, 255, 255, 0.18) !important;
+    background: transparent !important;
+    color: inherit !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* Icon sidebar saat tertutup */
@@ -3050,6 +3071,22 @@ body:not(.dark-mode):not(.dark):not(.dark-theme) .sidebar-user-text span {
         window.addEventListener('load', setupAll);
     })();
 </script>
+
+<style>
+/* ABSOLUTE FINAL OVERRIDE: Solid white background & zero dot matrix / orb patterns */
+html, body, .main, .content-wrapper, div, section, article, header, main, footer {
+    background-image: none !important;
+}
+
+body, body.light-mode, html.light-mode body, .main, body.light-mode .main {
+    background-color: #ffffff !important;
+    background: #ffffff !important;
+}
+
+*:before, *:after {
+    background-image: none !important;
+}
+</style>
 
 @include('partials.scroll-reveal')
 

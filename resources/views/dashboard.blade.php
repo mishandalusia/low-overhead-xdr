@@ -20,6 +20,9 @@
             'recommendations' => $alert['recommendations'],
             'mitre' => $alert['mitre'],
             'detection_source' => $alert['detection_source'] ?? null,
+            'user' => $alert['user'] ?? null,
+            'amount' => $alert['amount'] ?? null,
+            'transaction_status' => $alert['transaction_status'] ?? null,
             'detection_engine' => $alert['detection_engine'] ?? null,
             'prediction' => $alert['prediction'] ?? null,
             'detection_category' => $alert['detection_category'] ?? null,
@@ -27,7 +30,7 @@
         ];
     };
     $topThreatsMax = collect($topThreats)->max('count') ?: 1;
-    $progressColors = ['', 'red', 'orange', 'green'];
+    $progressColors = ['purple', 'red', 'orange', 'green', 'blue', 'teal'];
 @endphp
 
 @section('content')
@@ -43,66 +46,66 @@
         <div class="dashboard-error-banner">Unable to reach Wazuh: {{ $error }}</div>
     @endif
 
-    <!-- Summary Cards -->
+    <!-- 5 Summary Stat Cards in 1 Row -->
     <div class="dashboard-stats-grid">
-        <div class="dashboard-stat-card purple bento-card">
-            <div class="stat-icon">
+        <div class="dashboard-stat-card purple bento-card" style="background: linear-gradient(135deg, #7c3aed, #6d28d9) !important; border: none;">
+            <div class="stat-icon" style="background: rgba(255,255,255,0.22) !important; color: #ffffff !important;">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <span>Total Threats</span>
-                <h2>{{ $totalThreats }}</h2>
-                <p>Detected from Wazuh</p>
+                <span style="color: rgba(255,255,255,0.92) !important;">Total Alerts</span>
+                <h2 style="color: #ffffff !important;">{{ $totalThreats }}</h2>
+                <p style="color: rgba(255,255,255,0.85) !important;">Total Alerts</p>
             </div>
         </div>
 
-        <div class="dashboard-stat-card pink bento-card">
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25c-.966 0-1.75.784-1.75 1.75v.68C7.5 5.36 5.75 7.86 5.75 10.75v3.19c0 .414-.164.81-.457 1.103l-1.086 1.086A1.5 1.5 0 0 0 5.27 18.5h13.46a1.5 1.5 0 0 0 1.06-2.561l-1.086-1.086a1.56 1.56 0 0 1-.457-1.103v-3.19c0-2.89-1.75-5.39-4.5-6.07V4c0-.966-.784-1.75-1.75-1.75ZM9.5 20a2.5 2.5 0 0 0 5 0h-5Z"/></svg>
+        <div class="dashboard-stat-card blue bento-card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; border: none;">
+            <div class="stat-icon" style="background: rgba(255,255,255,0.22) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 17.93c3.95-.49 7-3.85 7-7.93 0-.62-.08-1.21-.21-1.79L15 15v1a2 2 0 0 1-2 2v1.93zm6.9-2.54A8.037 8.037 0 0 0 20 12c0-4.42-3.58-8-8-8a7.95 7.95 0 0 0-4.22 1.21l.22.79a2 2 0 0 0 1.9 1.47h2a2 2 0 0 1 2 2v1a2 2 0 0 0 2 2h1.5a1.5 1.5 0 0 1 1.5 1.5v1.93z"/></svg>
             </div>
             <div>
-                <span>Active Alerts</span>
-                <h2>{{ $activeAlerts }}</h2>
-                <p>Alerts need attention</p>
+                <span style="color: rgba(255,255,255,0.92) !important;">Network Alerts</span>
+                <h2 style="color: #ffffff !important;">{{ $networkAlerts }}</h2>
+                <p style="color: rgba(255,255,255,0.85) !important;">Suricata IDS</p>
             </div>
         </div>
 
-        <div class="dashboard-stat-card yellow bento-card">
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg>
+        <div class="dashboard-stat-card purple bento-card" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important; border: none;">
+            <div class="stat-icon" style="background: rgba(255,255,255,0.22) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-10 10c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2Z"/></svg>
             </div>
             <div>
-                <span>Active Blocks</span>
-                <h2>{{ $activeBlocks }}</h2>
-                <p>Blocked suspicious sources</p>
+                <span style="color: rgba(255,255,255,0.92) !important;">Behaviour Alerts</span>
+                <h2 style="color: #ffffff !important;">{{ $behaviourAlerts }}</h2>
+                <p style="color: rgba(255,255,255,0.85) !important;">Isolation Forest ML</p>
             </div>
         </div>
 
-        <div class="dashboard-stat-card blue bento-card">
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg>
+        <div class="dashboard-stat-card yellow bento-card" style="background: linear-gradient(135deg, #f97316, #ea580c) !important; border: none;">
+            <div class="stat-icon" style="background: rgba(255,255,255,0.22) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V12.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <span>Resolved Incidents</span>
-                <h2>{{ $resolvedIncidents }}</h2>
-                <p>Incidents closed</p>
+                <span style="color: rgba(255,255,255,0.92) !important;">Blocked Users</span>
+                <h2 style="color: #ffffff !important;">{{ $blockedUsersCount }}</h2>
+                <p style="color: rgba(255,255,255,0.85) !important;">10-Min Temp Block</p>
             </div>
         </div>
 
-        <div class="dashboard-stat-card teal bento-card">
-            <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 7l10 5 10-5-10-5Zm0 8L2 15l10 5 10-5-10-5Z"/></svg>
+        <div class="dashboard-stat-card pink bento-card" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="stat-icon" style="background: rgba(255,255,255,0.22) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clip-rule="evenodd"/></svg>
             </div>
             <div>
-                <span>Network / Behaviour</span>
-                <h2>{{ $networkAlerts }} / {{ $behaviourAlerts }}</h2>
-                <p>Suricata + Isolation Forest alerts</p>
+                <span style="color: rgba(255,255,255,0.92) !important;">Critical Alerts</span>
+                <h2 style="color: #ffffff !important;">{{ $criticalAlerts }}</h2>
+                <p style="color: rgba(255,255,255,0.85) !important;">Level 14 - 15</p>
             </div>
         </div>
     </div>
 
-    <!-- Top Threat + Severity -->
-    <div class="dashboard-bottom-grid">
+    <!-- Top Threat Types + Threat Severity Distribution -->
+    <div class="dashboard-bottom-grid" style="margin-bottom: 24px;">
 
         <div class="dashboard-panel bento-card">
             <div class="panel-header">
@@ -120,9 +123,9 @@
                             <strong>{{ $entry['rule'] }}</strong>
                             <small>{{ $entry['count'] }} detections</small>
                         </div>
-                        <span>{{ $percent }}%</span>
-                        <div class="threat-progress {{ $progressColors[$index % 4] }}">
-                            <div style="width: {{ $percent }}%;"></div>
+                        <span style="font-weight: 900; color: #0f172a; font-size: 13px;">{{ $percent }}%</span>
+                        <div class="threat-progress {{ $progressColors[$index % count($progressColors)] }}" style="height: 10px !important; border-radius: 999px !important; background: #e2e8f0 !important; overflow: hidden !important; width: 120px !important; flex-shrink: 0 !important;">
+                            <div style="width: {{ max($percent, 6) }}%; height: 100% !important; border-radius: 999px !important;"></div>
                         </div>
                     </div>
                 @empty
@@ -162,9 +165,6 @@
                 }
             @endphp
 
-            {{-- Vanilla-CSS port of the "AnimatedCard + Visual2" component, same
-                 recipe as the Reports "Alert Severity Ratio" card — bigger here
-                 since this panel sits next to the taller Top Threat Types list. --}}
             <div class="sev-animated-card">
                 <div class="sev-card-visual">
                     <div class="sev-visual-grid"></div>
@@ -236,30 +236,132 @@
 
     </div>
 
-    <!-- Recent Alerts -->
-    <div class="dashboard-panel recent-alerts-panel bento-card">
-        <div class="panel-header">
+    <!-- Blocked Users Panel -->
+    <div class="dashboard-panel bento-card" style="margin-bottom: 24px;">
+        <div class="panel-header" style="margin-bottom: 16px;">
             <div>
-                <h3>Recent Alerts</h3>
-                <p>Latest security alerts detected from monitored endpoints.</p>
+                <h3>Blocked Users</h3>
+                <p>Users automatically blocked for 10 minutes due to repeated transaction anomalies (>= 3 count limit).</p>
             </div>
         </div>
 
-        <div class="recent-alert-list xdr-scroll-list-target">
-            @forelse ($recentAlerts as $index => $alert)
-                <div class="recent-alert-item data-list-row {{ strtolower($alert['severity']) === 'critical' ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}">
-                    <div class="alert-time">{{ $alert['clock'] }}</div>
-                    <div class="alert-info">
-                        <strong>{{ $alert['rule'] }}</strong>
-                        <small>{{ $alert['category'] ?? 'General' }} • Agent: {{ $alert['agent'] }}</small>
-                    </div>
-                    <span class="alert-severity {{ strtolower($alert['severity']) }}">{{ $alert['severity'] }}</span>
-                    <div class="alert-source">{{ $alert['source'] }}</div>
-                    <button class="detail-btn" data-alert="{{ json_encode($buildAlertPayload($alert)) }}" onclick="openThreatDetail(this)">Detail</button>
-                </div>
-            @empty
-                @include('partials.empty-state', ['message' => 'All clear! No recent alerts to show.'])
-            @endforelse
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">
+                        <th style="padding: 12px 16px;">User</th>
+                        <th style="padding: 12px 16px;">Anomaly Count</th>
+                        <th style="padding: 12px 16px;">Block Duration</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                        <th style="padding: 12px 16px;">Reason / Rule</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($blockedUsersList as $blocked)
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 14px 16px;">
+                                <strong style="font-size: 14px; color: #0f172a;">{{ $blocked['user'] }}</strong>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <span style="font-family: var(--font-mono); font-weight: 700; color: #dc2626; background: #fee2e2; padding: 2px 8px; border-radius: 6px;">{{ $blocked['count'] }} Anomaly</span>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <strong style="color: #475569;">{{ $blocked['duration'] }}</strong>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <span class="xdr-badge status-blocked">Blocked</span>
+                            </td>
+                            <td style="padding: 14px 16px; color: #64748b;">
+                                Rule 100600 · Temporary User Block
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="5" style="padding: 20px; text-align: center; color: #94a3b8;">No users currently blocked.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Alert Feed Table (Cross-Layer Detection) -->
+    <div class="dashboard-panel bento-card" style="margin-bottom: 24px;">
+        <div class="panel-header" style="margin-bottom: 16px;">
+            <div>
+                <h3 style="font-size: 18px; font-weight: 800; color: #0f172a;">Live XDR Detection Feed</h3>
+                <p style="font-size: 13px; color: #64748b;">Cross-Layer detection: Suricata Network IDS + FastAPI Behaviour Anomaly Detection.</p>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 13px;">
+                <thead>
+                    <tr style="border-bottom: 1px solid #e2e8f0; color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">
+                        <th style="padding: 12px 16px;">Time</th>
+                        <th style="padding: 12px 16px;">User / Target</th>
+                        <th style="padding: 12px 16px;">Source</th>
+                        <th style="padding: 12px 16px;">Type / Rule</th>
+                        <th style="padding: 12px 16px;">Status</th>
+                        <th style="padding: 12px 16px;">Level / Severity</th>
+                        <th style="padding: 12px 16px;">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($recentAlerts as $alert)
+                        @php
+                            $isBehaviour = ($alert['detection_source'] ?? '') === 'FastAPI Behaviour Detection' || ($alert['category'] ?? '') === 'Behaviour Anomaly' || in_array((string)($alert['rule_id'] ?? ''), ['100500', '100600']);
+                            $status = $alert['transaction_status'] ?? ($alert['rule_id'] == '100600' ? 'USER_BLOCKED' : ($isBehaviour ? 'ANOMALY' : 'ALERT'));
+                            $userLabel = $alert['user'] ?? ($alert['source'] !== 'N/A' ? $alert['source'] : 'Unknown');
+                            $level = (int)($alert['level'] ?? 12);
+                            $severity = $alert['severity'] ?? 'High';
+                        @endphp
+                        <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.15s ease;" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 14px 16px; font-family: var(--font-mono); font-weight: 600; color: #475569;">
+                                {{ $alert['clock'] ?? '15:53' }}
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <strong style="color: #0f172a; font-size: 14px;">{{ $userLabel }}</strong>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                @if ($isBehaviour)
+                                    <span class="xdr-badge source-behaviour">Behaviour Detection</span>
+                                @else
+                                    <span class="xdr-badge source-network">Network IDS</span>
+                                @endif
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <strong style="color: #1e293b; display: block;">{{ $alert['rule_label'] ?? $alert['rule'] }}</strong>
+                                <small style="color: #64748b; font-size: 11px;">Rule {{ $alert['rule_id'] }}</small>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                @if (strtoupper($status) === 'NORMAL')
+                                    <span class="xdr-badge status-normal">NORMAL</span>
+                                @elseif (strtoupper($status) === 'USER_BLOCKED' || (string)$alert['rule_id'] === '100600')
+                                    <span class="xdr-badge status-blocked">USER_BLOCKED</span>
+                                @else
+                                    <span class="xdr-badge status-anomaly">ANOMALY</span>
+                                @endif
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <span style="font-family: var(--font-mono); font-weight: 700; font-size: 13px; color: {{ $level >= 14 ? '#dc2626' : '#ea580c' }};">
+                                    Lvl {{ $level }}
+                                </span>
+                                <span class="alert-severity {{ strtolower($severity) }}" style="margin-left: 6px; padding: 2px 8px; border-radius: 6px; font-size: 11px;">{{ $severity }}</span>
+                            </td>
+                            <td style="padding: 14px 16px;">
+                                <button class="detail-btn" data-alert="{{ json_encode($buildAlertPayload($alert)) }}" onclick="openThreatDetail(this)" style="padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; background: #7c3aed; color: #fff; border: none;">
+                                    Detail
+                                </button>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" style="padding: 20px; text-align: center; color: #94a3b8;">No alerts detected.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -309,6 +411,19 @@
                 <div class="history-alert-row data-list-row {{ strtolower($alert['severity']) === 'critical' ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}" data-date="{{ $alert['date'] }}" data-severity="{{ $alert['severity'] }}" data-category="{{ $alert['category'] ?? 'General' }}">
                     <div>
                         <strong>{{ $alert['rule'] }}</strong>
+                        @if (($alert['category'] ?? '') === 'Behaviour Anomaly' || !empty($alert['user']) || isset($alert['amount']) || !empty($alert['transaction_status']))
+                            <div class="transaction-anomaly-tags">
+                                <span class="anomaly-tag status {{ strtolower($alert['transaction_status'] ?? $alert['prediction'] ?? 'ANOMALY') === 'normal' ? 'normal' : 'anomaly' }}">
+                                    Status: {{ $alert['transaction_status'] ?? $alert['prediction'] ?? 'ANOMALY' }}
+                                </span>
+                                <span class="anomaly-tag user">
+                                    User: <strong>{{ $alert['user'] ?? '-' }}</strong>
+                                </span>
+                                <span class="anomaly-tag amount">
+                                    Amount: <strong>{{ isset($alert['amount']) ? (is_numeric($alert['amount']) ? number_format((float)$alert['amount'], 0, ',', '.') : $alert['amount']) : '-' }}</strong>
+                                </span>
+                            </div>
+                        @endif
                         <small>{{ $alert['date'] }} • {{ $alert['clock'] }} • {{ $alert['category'] ?? 'General' }}</small>
                     </div>
                     <span class="alert-severity {{ strtolower($alert['severity']) }}">{{ $alert['severity'] }}</span>
@@ -359,10 +474,21 @@
     }
 
     .dashboard-stats-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
-        margin-bottom: 24px;
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 18px !important;
+        margin-bottom: 24px !important;
+    }
+
+    @media (max-width: 1200px) {
+        .dashboard-stats-grid {
+            grid-template-columns: repeat(3, 1fr) !important;
+        }
+    }
+    @media (max-width: 768px) {
+        .dashboard-stats-grid {
+            grid-template-columns: 1fr !important;
+        }
     }
 
     .dashboard-stat-card {
@@ -370,44 +496,47 @@
         overflow: hidden;
         min-height: 128px;
         padding: 24px;
-        border-radius: 24px;
+        border-radius: 10px;
         display: flex;
         align-items: center;
         gap: 18px;
         background: var(--card-bg);
-        border: 1px solid rgba(139, 92, 246, 0.10);
-        box-shadow: 0 12px 30px rgba(139, 92, 246, 0.06);
+        border: none;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.10);
         transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
 
     .dashboard-stat-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 18px 40px rgba(139, 92, 246, 0.12);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.16);
     }
 
-    /* All 5 stat cards are the same size — the previous asymmetric bento
-       span (purple 2x2 + the rest 2x1) only actually worked out evenly
-       for exactly 4 cards; adding a 5th broke the math and left visible
-       gaps. Equal sizing keeps gap/height consistent regardless of how
-       many cards end up in this row. */
+    /* Colored stat cards — solid background, white text */
+    .dashboard-stat-card.purple  { background: linear-gradient(135deg, #7c3aed, #6d28d9) !important; }
+    .dashboard-stat-card.pink    { background: linear-gradient(135deg, #ec4899, #db2777) !important; }
+    .dashboard-stat-card.yellow  { background: linear-gradient(135deg, #f97316, #ea580c) !important; }
+    .dashboard-stat-card.blue    { background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; }
+    .dashboard-stat-card.teal    { background: linear-gradient(135deg, #0d9488, #0f766e) !important; }
+
+    /* All 5 stat cards are the same size */
     .stat-icon {
         width: 52px;
         height: 52px;
-        border-radius: 16px;
+        border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        color: var(--accent-purple);
-        background: #FAF8FC;
-        box-shadow: 0 10px 22px rgba(139, 92, 246, 0.10);
+        color: rgba(255,255,255,0.9);
+        background: rgba(255,255,255,0.20);
+        box-shadow: none;
     }
 
-    .dashboard-stat-card.purple .stat-icon { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.12) !important; }
-    .dashboard-stat-card.pink .stat-icon { color: #ec4899 !important; background: rgba(236, 72, 153, 0.12) !important; }
-    .dashboard-stat-card.yellow .stat-icon { color: #ea580c !important; background: rgba(234, 88, 12, 0.12) !important; }
-    .dashboard-stat-card.blue .stat-icon { color: #2563eb !important; background: rgba(37, 99, 235, 0.12) !important; }
-    .dashboard-stat-card.teal .stat-icon { color: #0d9488 !important; background: rgba(13, 148, 136, 0.12) !important; }
+    .dashboard-stat-card.purple .stat-icon  { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .dashboard-stat-card.pink .stat-icon    { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .dashboard-stat-card.yellow .stat-icon  { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .dashboard-stat-card.blue .stat-icon    { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .dashboard-stat-card.teal .stat-icon    { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
 
     .stat-icon svg {
         width: 24px;
@@ -415,7 +544,7 @@
     }
 
     .dashboard-stat-card span {
-        color: var(--text-body);
+        color: rgba(255,255,255,0.85);
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -424,7 +553,7 @@
 
     .dashboard-stat-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading);
+        color: #ffffff;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -432,7 +561,7 @@
 
     .dashboard-stat-card p {
         margin: 0;
-        color: #64748b;
+        color: rgba(255,255,255,0.80);
         font-size: 13px;
         font-weight: 600;
     }
@@ -445,11 +574,11 @@
     }
 
     .dashboard-panel {
-        border-radius: 26px;
+        border-radius: 10px;
         padding: 26px;
         background: var(--card-bg);
-        border: 1px solid rgba(139, 92, 246, 0.10);
-        box-shadow: 0 16px 40px rgba(139, 92, 246, 0.07);
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
     }
 
     .panel-header h3 {
@@ -510,6 +639,85 @@
         font-weight: 950;
     }
 
+    .transaction-anomaly-tags {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        margin: 5px 0 3px;
+    }
+
+    .xdr-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 8px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.3px;
+    }
+
+    .xdr-badge.source-behaviour {
+        background: rgba(139, 92, 246, 0.15) !important;
+        color: #7c3aed !important;
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    }
+
+    .xdr-badge.source-network {
+        background: rgba(37, 99, 235, 0.15) !important;
+        color: #2563eb !important;
+        border: 1px solid rgba(37, 99, 235, 0.3) !important;
+    }
+
+    .xdr-badge.status-normal {
+        background: #dcfce7 !important;
+        color: #166534 !important;
+        border: 1px solid #bbf7d0 !important;
+    }
+
+    .xdr-badge.status-anomaly {
+        background: #fef3c7 !important;
+        color: #92400e !important;
+        border: 1px solid #fde68a !important;
+    }
+
+    .xdr-badge.status-blocked {
+        background: #fee2e2 !important;
+        color: #991b1b !important;
+        border: 1px solid #fca5a5 !important;
+    }
+
+    .anomaly-tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 3px 10px;
+        border-radius: 999px;
+        font-size: 11px;
+        font-weight: 850;
+        line-height: 1.2;
+    }
+
+    .anomaly-tag.status.anomaly {
+        background: #fee2e2 !important;
+        color: #dc2626 !important;
+    }
+
+    .anomaly-tag.status.normal {
+        background: #dcfce7 !important;
+        color: #15803d !important;
+    }
+
+    .anomaly-tag.user {
+        background: #f3e8ff !important;
+        color: #7c3aed !important;
+    }
+
+    .anomaly-tag.amount {
+        background: #fce7f3 !important;
+        color: #db2777 !important;
+    }
+
     .threat-row small,
     .alert-info small,
     .history-alert-row small {
@@ -526,27 +734,44 @@
     }
 
     .threat-progress {
-        height: 9px;
-        border-radius: 999px;
-        background: #e2e8f0;
-        overflow: hidden;
+        height: 10px !important;
+        border-radius: 999px !important;
+        background: #e2e8f0 !important;
+        overflow: hidden !important;
+        width: 120px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
     }
 
     .threat-progress div {
-        height: 100%;
-        background: linear-gradient(90deg, #8b5cf6, #d946ef);
+        height: 100% !important;
+        border-radius: 999px !important;
+        background: linear-gradient(90deg, #8b5cf6, #d946ef) !important;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .threat-progress.purple div {
+        background: linear-gradient(90deg, #7c3aed, #a855f7) !important;
     }
 
     .threat-progress.red div {
-        background: linear-gradient(90deg, #ef4444, #ec4899);
+        background: linear-gradient(90deg, #dc2626, #ef4444) !important;
     }
 
     .threat-progress.orange div {
-        background: linear-gradient(90deg, #f97316, #f59e0b);
+        background: linear-gradient(90deg, #ea580c, #f97316) !important;
     }
 
     .threat-progress.green div {
-        background: linear-gradient(90deg, #22c55e, #8b5cf6);
+        background: linear-gradient(90deg, #059669, #10b981) !important;
+    }
+
+    .threat-progress.blue div {
+        background: linear-gradient(90deg, #2563eb, #3b82f6) !important;
+    }
+
+    .threat-progress.teal div {
+        background: linear-gradient(90deg, #0d9488, #14b8a6) !important;
     }
 
     /* Threat Severity Distribution — vanilla-CSS port of the "AnimatedCard +
@@ -572,18 +797,7 @@
     }
 
     .sev-visual-grid {
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        opacity: 0.6;
-        background-image:
-            linear-gradient(to right, rgba(139, 92, 246, 0.12) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
-        background-size: 20px 20px;
-        background-position: center;
-        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
-        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+        display: none !important;
     }
 
     .sev-visual-ellipse {

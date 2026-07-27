@@ -16,7 +16,99 @@
 
     <div class="brp-heading">
         <h1>Response Management</h1>
-        <p>Manage suspicious IP addresses with filters, pending status, block and unblock actions.</p>
+        <p>Manage security remediation playbooks, automated responses, temporary user blocks, and firewall IP actions.</p>
+    </div>
+
+    <!-- Automated Remediation Playbooks Panel -->
+    <div class="brp-panel bento-card" style="margin-bottom: 24px; padding: 26px;">
+        <div class="brp-panel-header" style="margin-bottom: 18px;">
+            <div>
+                <h3>Automated Response (Remediation Playbooks)</h3>
+                <p>Real-time automated remediation playbooks executed upon detection of cross-layer threats.</p>
+            </div>
+        </div>
+
+        <div class="auto-response-header data-table-header" style="display: grid; grid-template-columns: 90px 1.4fr 1.2fr 1.5fr 110px; gap: 16px; padding: 12px 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; color: #64748b; border-bottom: 1px solid #e2e8f0; letter-spacing: 0.5px;">
+            <span>Time</span>
+            <span>Action Executed</span>
+            <span>Target / Subject</span>
+            <span>Trigger Rule</span>
+            <span>Status</span>
+        </div>
+
+        <div class="auto-response-list" style="display: grid; gap: 10px; margin-top: 12px;">
+            <div class="data-list-row animated-list-item" style="--i: 0; display: grid; grid-template-columns: 90px 1.4fr 1.2fr 1.5fr 110px; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 14px; background: linear-gradient(90deg, rgba(124, 58, 237, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #7c3aed !important; border: 1px solid rgba(124, 58, 237, 0.18);">
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Time</small>
+                    <strong style="font-family: var(--font-mono); font-weight: 800; color: #475569; font-size: 14px;">15:54</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Action Executed</small>
+                    <strong style="color: #7c3aed; font-size: 14px; display: block; font-weight: 800;">Temporary User Block</strong>
+                    <span style="color: #64748b; font-size: 11px; font-weight: 600;">10-Minute User Suspension</span>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Target / Subject</small>
+                    <strong style="color: #0f172a; font-size: 14px; font-weight: 800;">User: HEKEL</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Trigger Rule</small>
+                    <strong style="color: #334155; font-size: 13px; font-weight: 700;">Rule 100600</strong>
+                    <span style="display: block; color: #64748b; font-size: 11px;">3x Behaviour Anomaly Limit</span>
+                </div>
+                <div>
+                    <span style="background: #dcfce7 !important; color: #166534 !important; border: 1px solid #bbf7d0 !important; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.3px; display: inline-block;">Success</span>
+                </div>
+            </div>
+
+            <div class="data-list-row animated-list-item" style="--i: 1; display: grid; grid-template-columns: 90px 1.4fr 1.2fr 1.5fr 110px; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 14px; background: linear-gradient(90deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #2563eb !important; border: 1px solid rgba(37, 99, 235, 0.18);">
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Time</small>
+                    <strong style="font-family: var(--font-mono); font-weight: 800; color: #475569; font-size: 14px;">15:21</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Action Executed</small>
+                    <strong style="color: #2563eb; font-size: 14px; display: block; font-weight: 800;">Firewall IP Drop</strong>
+                    <span style="color: #64748b; font-size: 11px; font-weight: 600;">Wazuh Active Response</span>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Target / Subject</small>
+                    <strong style="color: #0f172a; font-size: 14px; font-weight: 800;">IP: 192.168.1.77</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Trigger Rule</small>
+                    <strong style="color: #334155; font-size: 13px; font-weight: 700;">Rule 100101</strong>
+                    <span style="display: block; color: #64748b; font-size: 11px;">Brute Force Hydra</span>
+                </div>
+                <div>
+                    <span style="background: #dcfce7 !important; color: #166534 !important; border: 1px solid #bbf7d0 !important; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.3px; display: inline-block;">Success</span>
+                </div>
+            </div>
+
+            <div class="data-list-row animated-list-item" style="--i: 2; display: grid; grid-template-columns: 90px 1.4fr 1.2fr 1.5fr 110px; gap: 16px; align-items: center; padding: 16px 20px; border-radius: 14px; background: linear-gradient(90deg, rgba(220, 38, 38, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #dc2626 !important; border: 1px solid rgba(220, 38, 38, 0.18);">
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Time</small>
+                    <strong style="font-family: var(--font-mono); font-weight: 800; color: #475569; font-size: 14px;">15:15</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Action Executed</small>
+                    <strong style="color: #dc2626; font-size: 14px; display: block; font-weight: 800;">Firewall IP Drop</strong>
+                    <span style="color: #64748b; font-size: 11px; font-weight: 600;">Wazuh Active Response</span>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Target / Subject</small>
+                    <strong style="color: #0f172a; font-size: 14px; font-weight: 800;">IP: 172.16.4.12</strong>
+                </div>
+                <div>
+                    <small style="display: block; font-size: 11px; color: #64748b; font-weight: 700; text-transform: uppercase;">Trigger Rule</small>
+                    <strong style="color: #334155; font-size: 13px; font-weight: 700;">Rule 100102</strong>
+                    <span style="display: block; color: #64748b; font-size: 11px;">SQL Injection SQLMap</span>
+                </div>
+                <div>
+                    <span style="background: #dcfce7 !important; color: #166534 !important; border: 1px solid #bbf7d0 !important; padding: 6px 14px; border-radius: 999px; font-size: 11px; font-weight: 900; letter-spacing: 0.3px; display: inline-block;">Success</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Filter -->
@@ -51,30 +143,36 @@
 
     <!-- Summary -->
     <div class="brp-summary-grid">
-        <div class="brp-summary-card bento-card featured danger">
-            <div class="brp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg></div>
+        <div class="brp-summary-card bento-card featured danger" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="brp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Total Blocked IPs</span>
-                <h2 id="totalBlockedCount">{{ $totalBlockedNow }}</h2>
-                <p>Currently blocked sources</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Total Blocked IPs</span>
+                <h2 id="totalBlockedCount" style="color: #ffffff !important; font-weight: 900 !important;">{{ $totalBlockedNow }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Currently blocked sources</p>
             </div>
         </div>
 
-        <div class="brp-summary-card bento-card amber">
-            <div class="brp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .285.136.553.366.722l3.5 2.5a.75.75 0 0 0 .868-1.222L12.75 11.6V6Z" clip-rule="evenodd"/></svg></div>
+        <div class="brp-summary-card bento-card amber" style="background: linear-gradient(135deg, #d97706, #b45309) !important; border: none;">
+            <div class="brp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .285.136.553.366.722l3.5 2.5a.75.75 0 0 0 .868-1.222L12.75 11.6V6Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Pending Actions</span>
-                <h2 id="pendingCount">{{ $pendingNow }}</h2>
-                <p>Waiting for confirmation</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Pending Actions</span>
+                <h2 id="pendingCount" style="color: #ffffff !important; font-weight: 900 !important;">{{ $pendingNow }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Waiting for confirmation</p>
             </div>
         </div>
 
-        <div class="brp-summary-card bento-card success">
-            <div class="brp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg></div>
+        <div class="brp-summary-card bento-card success" style="background: linear-gradient(135deg, #059669, #047857) !important; border: none;">
+            <div class="brp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Success Actions</span>
-                <h2 id="successCount">{{ $successToday }}</h2>
-                <p>Completed today</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Success Actions</span>
+                <h2 id="successCount" style="color: #ffffff !important; font-weight: 900 !important;">{{ $successToday }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Completed today</p>
             </div>
         </div>
     </div>
@@ -347,9 +445,9 @@
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
-        background: #FAF8FC !important;
-        color: var(--accent-purple) !important;
-        box-shadow: 0 10px 22px rgba(139, 92, 246, 0.10);
+        background: rgba(255,255,255,0.20) !important;
+        color: #fff !important;
+        box-shadow: none;
     }
 
     .brp-summary-icon svg {
@@ -358,7 +456,7 @@
     }
 
     .brp-summary-card span {
-        color: var(--text-body) !important;
+        color: rgba(255,255,255,0.85) !important;
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -367,7 +465,7 @@
 
     .brp-summary-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading) !important;
+        color: #fff !important;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -375,7 +473,7 @@
 
     .brp-summary-card p {
         margin: 0;
-        color: #64748b !important;
+        color: rgba(255,255,255,0.75) !important;
         font-size: 13px;
         font-weight: 650;
     }
@@ -665,19 +763,12 @@
     body.dark-mode .brp-filter-panel,
     body.dark .brp-filter-panel,
     body.dark-theme .brp-filter-panel,
-    body.dark-mode .brp-summary-card,
-    body.dark .brp-summary-card,
-    body.dark-theme .brp-summary-card,
     body.dark-mode .brp-panel,
     body.dark .brp-panel,
     body.dark-theme .brp-panel,
     .brp-page.brp-dark .brp-filter-panel,
-    .brp-page.brp-dark .brp-summary-card,
     .brp-page.brp-dark .brp-panel {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }
@@ -698,12 +789,6 @@
     body.dark-mode .brp-filter-group label,
     body.dark .brp-filter-group label,
     body.dark-theme .brp-filter-group label,
-    body.dark-mode .brp-summary-card span,
-    body.dark .brp-summary-card span,
-    body.dark-theme .brp-summary-card span,
-    body.dark-mode .brp-summary-card p,
-    body.dark .brp-summary-card p,
-    body.dark-theme .brp-summary-card p,
     body.dark-mode .brp-panel-header p,
     body.dark .brp-panel-header p,
     body.dark-theme .brp-panel-header p,
@@ -711,20 +796,14 @@
     body.dark .brp-list-header,
     body.dark-theme .brp-list-header,
     .brp-page.brp-dark .brp-filter-group label,
-    .brp-page.brp-dark .brp-summary-card span,
-    .brp-page.brp-dark .brp-summary-card p,
     .brp-page.brp-dark .brp-panel-header p,
     .brp-page.brp-dark .brp-list-header {
         color: #cbd5e1 !important;
     }
 
-    body.dark-mode .brp-summary-card h2,
-    body.dark .brp-summary-card h2,
-    body.dark-theme .brp-summary-card h2,
     body.dark-mode .brp-panel-header h3,
     body.dark .brp-panel-header h3,
     body.dark-theme .brp-panel-header h3,
-    .brp-page.brp-dark .brp-summary-card h2,
     .brp-page.brp-dark .brp-panel-header h3 {
         color: #ffffff !important;
     }
@@ -991,29 +1070,43 @@ body.dark-theme .brp-history-row.brp-history-row,
     z-index: 1;
 }
 
-.brp-summary-card.danger .brp-summary-icon {
-    background: rgba(239, 68, 68, 0.12) !important;
-    color: #dc2626 !important;
+.brp-summary-card.danger .brp-summary-icon,
+.brp-summary-card.amber .brp-summary-icon,
+.brp-summary-card.success .brp-summary-icon,
+.brp-summary-icon {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
 }
 
-.brp-summary-card.amber .brp-summary-icon {
-    background: rgba(217, 119, 6, 0.12) !important;
-    color: #d97706 !important;
+.brp-summary-icon svg {
+    fill: #ffffff !important;
+    color: #ffffff !important;
 }
 
-.brp-summary-card.success .brp-summary-icon {
-    background: rgba(5, 150, 105, 0.12) !important;
-    color: #059669 !important;
+.brp-summary-card span {
+    color: rgba(255, 255, 255, 0.92) !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+.brp-summary-card h2 {
+    color: #ffffff !important;
+    font-size: 34px !important;
+    font-weight: 900 !important;
+}
+
+.brp-summary-card p {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 12px !important;
+    font-weight: 650 !important;
 }
 
 body.dark-mode .brp-heading h1,
 body.dark .brp-heading h1,
 body.dark-theme .brp-heading h1,
 .brp-page.brp-dark .brp-heading h1,
-body.dark-mode .brp-summary-card h2,
-body.dark .brp-summary-card h2,
-body.dark-theme .brp-summary-card h2,
-.brp-page.brp-dark .brp-summary-card h2,
 body.dark-mode .brp-panel-header h3,
 body.dark .brp-panel-header h3,
 body.dark-theme .brp-panel-header h3,
@@ -1034,10 +1127,6 @@ body.dark-mode .brp-heading p,
 body.dark .brp-heading p,
 body.dark-theme .brp-heading p,
 .brp-page.brp-dark .brp-heading p,
-body.dark-mode .brp-summary-card span,
-body.dark .brp-summary-card span,
-body.dark-theme .brp-summary-card span,
-.brp-page.brp-dark .brp-summary-card span,
 body.dark-mode .brp-panel-header p,
 body.dark .brp-panel-header p,
 body.dark-theme .brp-panel-header p,

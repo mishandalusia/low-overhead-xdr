@@ -63,6 +63,44 @@ class AnalyticsController extends Controller
         $byWeekday = collect($threats)->countBy(fn ($t) => $t['time'] ? date('N', strtotime($t['time'])) : null)->filter(fn ($v, $k) => $k !== null);
         $peakDay = $byWeekday->sortDesc()->keys()->first();
         $weekdayNames = [1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thursday', 5 => 'Friday', 6 => 'Saturday', 7 => 'Sunday'];
+        $daysMap = [1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat', 7 => 'Sun'];
+
+        $trendCounts = [1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0];
+        foreach ($threats as $t) {
+            if (!empty($t['time'])) {
+                $dayNum = (int) date('N', strtotime($t['time']));
+                if (isset($trendCounts[$dayNum])) {
+                    $trendCounts[$dayNum]++;
+                }
+            }
+        }
+
+        $maxTrend = max(max($trendCounts), 1);
+        $xPositions = [1 => 70, 2 => 200, 3 => 330, 4 => 460, 5 => 590, 6 => 720, 7 => 850];
+        $trendPoints = [];
+
+        foreach ($trendCounts as $dayNum => $cnt) {
+            $x = $xPositions[$dayNum];
+            $y = 230 - (int) round(($cnt / $maxTrend) * 160);
+            $trendPoints[$dayNum] = [
+                'x' => $x,
+                'y' => $y,
+                'count' => $cnt,
+                'day' => $daysMap[$dayNum],
+            ];
+        }
+
+        $svgPath = "M ".$trendPoints[1]['x']." ".$trendPoints[1]['y'];
+        for ($i = 1; $i < 7; $i++) {
+            $p1 = $trendPoints[$i];
+            $p2 = $trendPoints[$i + 1];
+            $cx1 = $p1['x'] + 65;
+            $cy1 = $p1['y'];
+            $cx2 = $p2['x'] - 65;
+            $cy2 = $p2['y'];
+            $svgPath .= " C {$cx1} {$cy1}, {$cx2} {$cy2}, {$p2['x']} {$p2['y']}";
+        }
+        $svgAreaPath = $svgPath." L 850 250 L 70 250 Z";
 
         $severityByIp = collect($threats)->keyBy('source');
         $blockedIpCards = $blockedIps->where('status', 'Blocked')->take(8)->map(function ($entry) use ($severityByIp) {
@@ -81,6 +119,11 @@ class AnalyticsController extends Controller
             'dailyRows' => $dailyRows,
             'weeklyRows' => $weeklyRows,
             'peakDayLabel' => $peakDay ? $weekdayNames[(int) $peakDay] : '-',
+            'trendCounts' => $trendCounts,
+            'trendPoints' => $trendPoints,
+            'svgPath' => $svgPath,
+            'svgAreaPath' => $svgAreaPath,
+            'maxTrend' => $maxTrend,
             'blockedIpCards' => $blockedIpCards,
             'incidentSummary' => [
                 'open' => Incident::where('status', 'open')->count(),

@@ -6,23 +6,27 @@ class DemoDataService
 {
     /**
      * Realistic placeholder threats, shaped exactly like WazuhService::getThreats().
-     * Used only as a fallback when the real Wazuh Indexer is unreachable, so the
-     * redesigned UI isn't empty — this stops appearing automatically the moment
-     * a real connection succeeds.
+     * Custom XDR Rules:
+     * - 100100: Nmap Scan Detected
+     * - 100101: Brute Force Attempt Detected (Hydra)
+     * - 100102: SQL Injection Attempt Detected (SQLMap)
+     * - 100200: Nmap Reconnaissance Activity Detected
+     * - 100500: Transaction Behaviour Anomaly Detected
+     * - 100600: Repeated Behavioural Anomaly - Temporary User Block
      */
     public static function fakeThreats(): array
     {
         $now = now();
 
         $rows = [
-            ['id' => 'demo-1', 'rule_id' => '100200', 'rule' => 'Nmap Reconnaissance Scan', 'category' => 'Reconnaissance', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '10.67.12.45', 'destination' => '192.168.1.20', 'severity' => 'High', 'minutesAgo' => 6],
-            ['id' => 'demo-2', 'rule_id' => '100500', 'rule' => 'Brute Force Login Attempt', 'category' => 'Authentication Attack', 'agent' => 'db-server-02', 'agent_id' => '002', 'source' => '192.168.1.77', 'destination' => '192.168.1.10', 'severity' => 'Critical', 'minutesAgo' => 18],
-            ['id' => 'demo-3', 'rule_id' => '100310', 'rule' => 'Suspicious Outbound Connection', 'category' => 'Malware', 'agent' => 'endpoint-finance-03', 'agent_id' => '003', 'source' => '192.168.1.45', 'destination' => '203.0.113.9', 'severity' => 'Critical', 'minutesAgo' => 34],
-            ['id' => 'demo-4', 'rule_id' => '100410', 'rule' => 'SQL Injection Attempt', 'category' => 'Web Attack', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '172.16.4.12', 'destination' => '192.168.1.20', 'severity' => 'High', 'minutesAgo' => 52],
-            ['id' => 'demo-5', 'rule_id' => '100600', 'rule' => 'Unusual Transaction Behaviour', 'category' => 'Behaviour Anomaly', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '192.168.1.30', 'destination' => 'N/A', 'severity' => 'Medium', 'minutesAgo' => 71],
-            ['id' => 'demo-6', 'rule_id' => '100210', 'rule' => 'Port Scanning Detected', 'category' => 'Reconnaissance', 'agent' => 'db-server-02', 'agent_id' => '002', 'source' => '10.67.12.46', 'destination' => '192.168.1.10', 'severity' => 'Medium', 'minutesAgo' => 95],
-            ['id' => 'demo-7', 'rule_id' => '100510', 'rule' => 'Repeated Failed SSH Logins', 'category' => 'Authentication Attack', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '198.51.100.23', 'destination' => '192.168.1.30', 'severity' => 'High', 'minutesAgo' => 128],
-            ['id' => 'demo-8', 'rule_id' => '100420', 'rule' => 'Cross-Site Scripting Attempt', 'category' => 'Web Attack', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '172.16.4.30', 'destination' => '192.168.1.20', 'severity' => 'Low', 'minutesAgo' => 160],
+            ['id' => 'demo-1', 'rule_id' => '100600', 'rule' => 'Repeated Behavioural Anomaly - Temporary User Block', 'category' => 'Behaviour Anomaly', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '192.168.1.30', 'destination' => 'N/A', 'level' => 14, 'severity' => 'Critical', 'minutesAgo' => 2, 'user' => 'HEKEL', 'amount' => 500, 'transaction_status' => 'USER_BLOCKED', 'response_action' => 'Temporary User Block'],
+            ['id' => 'demo-2', 'rule_id' => '100500', 'rule' => 'Transaction Behaviour Anomaly Detected', 'category' => 'Behaviour Anomaly', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '192.168.1.30', 'destination' => 'N/A', 'level' => 12, 'severity' => 'High', 'minutesAgo' => 5, 'user' => 'HEKEL', 'amount' => 450, 'transaction_status' => 'ANOMALY', 'response_action' => 'Alert Logged'],
+            ['id' => 'demo-3', 'rule_id' => '100101', 'rule' => 'Brute Force Attempt Detected', 'category' => 'Authentication Attack', 'agent' => 'db-server-02', 'agent_id' => '002', 'source' => '192.168.1.77', 'destination' => '192.168.1.10', 'level' => 12, 'severity' => 'High', 'minutesAgo' => 12, 'user' => 'Hydra', 'response_action' => 'Block IP'],
+            ['id' => 'demo-4', 'rule_id' => '100102', 'rule' => 'SQL Injection Attempt Detected', 'category' => 'Web Attack', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '172.16.4.12', 'destination' => '192.168.1.20', 'level' => 15, 'severity' => 'Critical', 'minutesAgo' => 18, 'user' => 'SQLMap', 'response_action' => 'Block IP'],
+            ['id' => 'demo-5', 'rule_id' => '100100', 'rule' => 'Nmap Scan Detected', 'category' => 'Reconnaissance', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '10.67.12.45', 'destination' => '192.168.1.20', 'level' => 10, 'severity' => 'High', 'minutesAgo' => 25, 'user' => 'Nmap', 'response_action' => 'None'],
+            ['id' => 'demo-6', 'rule_id' => '100200', 'rule' => 'Nmap Reconnaissance Activity Detected', 'category' => 'Reconnaissance', 'agent' => 'web-server-01', 'agent_id' => '001', 'source' => '10.67.12.45', 'destination' => '192.168.1.20', 'level' => 10, 'severity' => 'High', 'minutesAgo' => 30, 'user' => 'Nmap', 'response_action' => 'None'],
+            ['id' => 'demo-7', 'rule_id' => '100500', 'rule' => 'Transaction Behaviour Anomaly Detected', 'category' => 'Behaviour Anomaly', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '192.168.1.30', 'destination' => 'N/A', 'level' => 12, 'severity' => 'High', 'minutesAgo' => 45, 'user' => 'NAMIN', 'amount' => 750, 'transaction_status' => 'ANOMALY', 'response_action' => 'Alert Logged'],
+            ['id' => 'demo-8', 'rule_id' => '100600', 'rule' => 'Repeated Behavioural Anomaly - Temporary User Block', 'category' => 'Behaviour Anomaly', 'agent' => 'app-server-04', 'agent_id' => '004', 'source' => '192.168.1.30', 'destination' => 'N/A', 'level' => 14, 'severity' => 'Critical', 'minutesAgo' => 55, 'user' => 'BADUSER', 'amount' => 1200, 'transaction_status' => 'USER_BLOCKED', 'response_action' => 'Temporary User Block'],
         ];
 
         return array_map(function ($row) use ($now) {
@@ -32,6 +36,7 @@ class DemoDataService
                 'id' => $row['id'],
                 'rule_id' => $row['rule_id'],
                 'rule' => $row['rule'],
+                'level' => $row['level'],
                 'category' => $row['category'],
                 'agent' => $row['agent'],
                 'agent_id' => $row['agent_id'],
@@ -41,13 +46,14 @@ class DemoDataService
                 'time' => $time->toIso8601String(),
                 'date' => $time->format('Y-m-d'),
                 'clock' => $time->format('H:i'),
+                'user' => $row['user'] ?? null,
+                'amount' => $row['amount'] ?? null,
+                'transaction_status' => $row['transaction_status'] ?? null,
+                'response_action' => $row['response_action'] ?? 'None',
             ];
         }, $rows);
     }
 
-    /**
-     * Realistic placeholder agents, shaped exactly like WazuhService::getAgents().
-     */
     public static function fakeAgents(): array
     {
         $now = now();

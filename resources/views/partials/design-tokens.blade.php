@@ -1,10 +1,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
     :root {
-        --bg-main: #FAF8FC;
+        --bg-main: #F2F4F7;
         --card-bg: #FFFFFF;
         --sidebar-bg: #2D1B3D;
         --sidebar-bg-soft: #3B1F4D;
@@ -14,11 +14,75 @@
         --accent-magenta: #ec4899;
         --text-heading: #1e1b2e;
         --text-body: #6b6280;
-        --font-main: 'Plus Jakarta Sans', 'Poppins', 'Segoe UI', sans-serif;
+        --font-main: 'Inter', -apple-system, 'Segoe UI', sans-serif;
+        --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+        --radius-card: 10px;
+        --radius-sm: 6px;
+        --radius-md: 8px;
     }
+
 
     body {
         font-family: var(--font-main);
+    }
+
+    /* ==========================================================================
+       CUSTOM SLEEK PURPLE SCROLLBAR SYSTEM (GLOBAL & PANELS)
+       ========================================================================== */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: #a855f7 rgba(15, 23, 42, 0.06);
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px !important;
+        height: 8px !important;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.04) !important;
+        border-radius: 10px !important;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #8b5cf6, #a855f7) !important;
+        border-radius: 10px !important;
+        border: 2px solid transparent !important;
+        background-clip: padding-box !important;
+        transition: all 0.2s ease !important;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(180deg, #7c3aed, #9333ea) !important;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.5) !important;
+    }
+
+    ::-webkit-scrollbar-corner {
+        background: transparent !important;
+    }
+
+    ::-webkit-scrollbar-button {
+        display: none !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+
+    body.dark-mode,
+    body.dark,
+    body.dark-theme {
+        scrollbar-color: #a855f7 rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode ::-webkit-scrollbar-track,
+    body.dark ::-webkit-scrollbar-track,
+    body.dark-theme ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.03) !important;
+    }
+
+    body.dark-mode ::-webkit-scrollbar-thumb,
+    body.dark ::-webkit-scrollbar-thumb,
+    body.dark-theme ::-webkit-scrollbar-thumb {
+        background: linear-gradient(180deg, #9333ea, #c084fc) !important;
     }
 
     /* Magic Bento — cursor-follow spotlight glow, paired with the mousemove
@@ -35,18 +99,7 @@
     }
 
     .bento-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        opacity: 0;
-        background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%), rgba(139, 92, 246, 0.16), transparent 70%);
-        transition: opacity 0.25s ease;
-    }
-
-    .bento-card:hover::after {
-        opacity: 1;
+        display: none !important;
     }
 
     .bento-card > * {
@@ -54,42 +107,93 @@
         z-index: 1;
     }
 
-    /* Animated List — staggered scroll reveal, paired with the
-       IntersectionObserver in layouts/app-dashboard.blade.php. */
+    /* ============================================= */
+    /* ANIMATED GROUP — scale + blur + slide entrance */
+    /* Keyframes-based so it ALWAYS triggers on load  */
+    /* ============================================= */
+
+    @keyframes animGroupScale {
+        0% {
+            opacity: 0;
+            transform: translateY(35px) scale(0.88);
+            filter: blur(8px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes animGroupPanel {
+        0% {
+            opacity: 0;
+            transform: translateY(45px);
+            filter: blur(6px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes animGroupHeading {
+        0% {
+            opacity: 0;
+            transform: translateX(-25px);
+            filter: blur(4px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(0);
+            filter: blur(0);
+        }
+    }
+
+    @keyframes animGroupListItem {
+        0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+            filter: blur(4px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            filter: blur(0);
+        }
+    }
+
+    /* Initial hidden state */
+    .reveal-on-scroll,
+    .reveal-panel,
+    .reveal-heading,
     .animated-list-item {
         opacity: 0;
-        transform: translateY(16px);
-        transition: opacity 0.5s ease, transform 0.5s ease;
-        transition-delay: calc(var(--i, 0) * 0.05s);
+    }
+
+    /* Active entrance animations */
+    .reveal-on-scroll.in-view {
+        animation: animGroupScale 0.65s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: var(--reveal-delay, 0s);
+    }
+
+    .reveal-panel.in-view {
+        animation: animGroupPanel 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: var(--reveal-delay, 0.12s);
+    }
+
+    .reveal-heading.in-view {
+        animation: animGroupHeading 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: 0.05s;
     }
 
     .animated-list-item.in-view {
-        opacity: 1;
-        transform: translateY(0);
+        animation: animGroupListItem 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        animation-delay: calc(var(--i, 0) * 0.06s + 0.1s);
     }
 
-    /* reveal-on-scroll — reusable fade-in + slide-up class, driven by the
-       IntersectionObserver in partials/scroll-reveal.blade.php. That
-       script also auto-tags every .bento-card with this class, so every
-       stat card and panel across the app gets it for free — but it's a
-       standalone class, so it can be added to any future element too. */
-    .reveal-on-scroll {
-        opacity: 0;
-        transform: translateY(26px);
-        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        transition-delay: var(--reveal-delay, 0s);
-    }
-
-    .reveal-on-scroll.in-view {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    /* Bottom scroll-fade — fixed strip cueing "there's more below",
-       toggled by the same script (hidden once the page is scrolled to
-       its end). Lightweight gradient, no blur, for perf. Only ever
-       injected on dashboard-layout pages (see scroll-reveal.blade.php),
-       so it's safe to offset past the fixed 86px sidebar here. */
+    /* Bottom scroll-fade */
     .scroll-fade-bottom {
         position: fixed;
         left: 86px;
@@ -98,7 +202,7 @@
         height: 52px;
         z-index: 40;
         pointer-events: none;
-        background: linear-gradient(to bottom, transparent, var(--bg-main) 85%);
+        background: linear-gradient(to bottom, transparent, #ffffff 85%);
         opacity: 0;
         transition: opacity 0.25s ease;
     }
@@ -109,9 +213,12 @@
 
     @media (prefers-reduced-motion: reduce) {
         .animated-list-item,
-        .reveal-on-scroll {
+        .reveal-on-scroll,
+        .reveal-panel,
+        .reveal-heading {
             opacity: 1;
             transform: none;
+            filter: none;
             transition: none;
         }
 
@@ -655,5 +762,290 @@
 
     .data-list-row.data-list-row.data-list-row.is-urgent:hover {
         background: #FCE7EC !important;
+    }
+
+    /* UNIVERSAL COLORED STAT CARDS MASTER RULE (EXACT MATCH FOR USER SPEC) */
+    .dashboard-stat-card,
+    .agp-summary-card,
+    .tdx-summary-card,
+    .brp-summary-card,
+    .inc-summary-card,
+    .rpt-summary-card {
+        position: relative !important;
+        overflow: hidden !important;
+        border: none !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12) !important;
+        border-radius: 14px !important;
+    }
+
+    .dashboard-stat-card span,
+    .agp-summary-card span,
+    .tdx-summary-card span,
+    .brp-summary-card span,
+    .inc-summary-card span,
+    .rpt-summary-card span {
+        color: #ffffff !important;
+        opacity: 0.95 !important;
+        font-size: 11px !important;
+        font-weight: 800 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    .dashboard-stat-card h2,
+    .agp-summary-card h2,
+    .tdx-summary-card h2,
+    .brp-summary-card h2,
+    .inc-summary-card h2,
+    .rpt-summary-card h2 {
+        color: #ffffff !important;
+        opacity: 1 !important;
+        font-size: 32px !important;
+        font-weight: 900 !important;
+        margin: 4px 0 2px !important;
+        letter-spacing: -0.5px !important;
+    }
+
+    .dashboard-stat-card p,
+    .agp-summary-card p,
+    .tdx-summary-card p,
+    .brp-summary-card p,
+    .inc-summary-card p,
+    .rpt-summary-card p {
+        color: #ffffff !important;
+        opacity: 0.90 !important;
+        font-size: 12px !important;
+        font-weight: 700 !important;
+        margin: 0 !important;
+    }
+
+    .dashboard-stat-card .stat-icon,
+    .agp-summary-card .agp-summary-icon,
+    .tdx-summary-card .tdx-summary-icon,
+    .brp-summary-card .brp-summary-icon,
+    .inc-summary-card .inc-summary-icon,
+    .rpt-summary-card .rpt-summary-icon {
+        background: rgba(255, 255, 255, 0.25) !important;
+        color: #ffffff !important;
+        border-radius: 12px !important;
+        width: 48px !important;
+        height: 48px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        flex-shrink: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .dashboard-stat-card svg,
+    .agp-summary-card svg,
+    .tdx-summary-card svg,
+    .brp-summary-card svg,
+    .inc-summary-card svg,
+    .rpt-summary-card svg {
+        fill: #ffffff !important;
+        color: #ffffff !important;
+        width: 22px !important;
+        height: 22px !important;
+    }
+
+    /* MASTER OVERRIDE: SIDEBAR LOGO TRANSPARENT NO BACKGROUND */
+    .sidebar-logo-mark,
+    body .sidebar-logo-mark,
+    body.light-mode .sidebar-logo-mark,
+    body.dark-mode .sidebar-logo-mark,
+    body:not(.dark-mode) .sidebar-logo-mark {
+        background: transparent !important;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        border: none !important;
+        outline: none !important;
+        padding: 0 !important;
+    }
+
+    .lox-sidebar-logo,
+    .sidebar-logo-mark img {
+        width: 64px !important;
+        height: 64px !important;
+        max-width: 64px !important;
+        max-height: 64px !important;
+        min-width: 64px !important;
+        min-height: 64px !important;
+        object-fit: contain !important;
+        background: transparent !important;
+        border: none !important;
+        transform: scale(1.15) !important;
+        filter: drop-shadow(0 4px 12px rgba(139, 92, 246, 0.50)) !important;
+    }
+
+    /* ==========================================================================
+       1. LIVE STATUS PULSE ANIMATION (SOC RADAR EFFECT FOR ONLINE/OFFLINE BADGES)
+       ========================================================================== */
+    @keyframes statusPulseGreen {
+        0% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+        }
+    }
+
+    @keyframes statusPulseRed {
+        0% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 8px rgba(239, 68, 68, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+        }
+    }
+
+    .status-badge.online,
+    .status-badge.connected,
+    .badge-success,
+    .agp-status.online,
+    .agp-status-pill.online,
+    .is-online-dot,
+    .agp-health-card b.good {
+        position: relative !important;
+        animation: statusPulseGreen 2s infinite !important;
+    }
+
+    .status-badge.offline,
+    .status-badge.disconnected,
+    .badge-danger,
+    .agp-status.offline,
+    .agp-status-pill.offline,
+    .is-offline-dot,
+    .agp-health-card b.danger {
+        position: relative !important;
+        animation: statusPulseRed 2s infinite !important;
+    }
+
+    .status-badge.online::before,
+    .agp-status.online::before,
+    .agp-status-pill.online::before {
+        content: '' !important;
+        display: inline-block !important;
+        width: 7px !important;
+        height: 7px !important;
+        border-radius: 50% !important;
+        background-color: #10b981 !important;
+        margin-right: 6px !important;
+        vertical-align: middle !important;
+        box-shadow: 0 0 6px #10b981 !important;
+    }
+
+    .status-badge.offline::before,
+    .agp-status.offline::before,
+    .agp-status-pill.offline::before {
+        content: '' !important;
+        display: inline-block !important;
+        width: 7px !important;
+        height: 7px !important;
+        border-radius: 50% !important;
+        background-color: #ef4444 !important;
+        margin-right: 6px !important;
+        vertical-align: middle !important;
+        box-shadow: 0 0 6px #ef4444 !important;
+    }
+
+    /* ==========================================================================
+       2. QUICK FILTER BUTTON ACTIVE STATE GLOW & INTERACTIVE POLISH
+       ========================================================================== */
+    .tdx-filter-btn,
+    .rpt-mode-btn,
+    .table-filter-btn,
+    .status-filter-btn,
+    .filter-btn,
+    .tdx-reset-btn,
+    .xdr-combo-button,
+    .tdx-filter-group input,
+    .tdx-filter-group select,
+    .xdr-filter-select {
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        cursor: pointer !important;
+    }
+
+    .tdx-filter-btn:hover,
+    .rpt-mode-btn:hover,
+    .table-filter-btn:hover,
+    .status-filter-btn:hover,
+    .filter-btn:hover,
+    .tdx-reset-btn:hover,
+    .xdr-combo-button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.25) !important;
+    }
+
+    .tdx-filter-btn.active,
+    .rpt-mode-btn.active,
+    .table-filter-btn.active,
+    .status-filter-btn.active,
+    .filter-btn.active,
+    .tdx-reset-btn:active {
+        background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+        color: #ffffff !important;
+        font-weight: 800 !important;
+        box-shadow: 0 6px 20px rgba(124, 58, 237, 0.40) !important;
+        transform: translateY(-1px) !important;
+        border: none !important;
+    }
+
+    .tdx-filter-group input:focus,
+    .tdx-filter-group select:focus,
+    .xdr-filter-select:focus {
+        border-color: #7c3aed !important;
+        box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.18) !important;
+        outline: none !important;
+    }
+
+    /* ==========================================================================
+       PROGRESS BAR COLOR FIX (TOP THREAT TYPES & SEVERITY BREAKDOWNS)
+       ========================================================================== */
+    .threat-progress {
+        height: 10px !important;
+        border-radius: 999px !important;
+        background: #e2e8f0 !important;
+        overflow: hidden !important;
+        width: 120px !important;
+        flex-shrink: 0 !important;
+        display: block !important;
+    }
+
+    .threat-progress div {
+        height: 100% !important;
+        border-radius: 999px !important;
+        background: linear-gradient(90deg, #8b5cf6, #d946ef) !important;
+        transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+
+    .threat-progress.purple div {
+        background: linear-gradient(90deg, #7c3aed, #a855f7) !important;
+    }
+
+    .threat-progress.red div {
+        background: linear-gradient(90deg, #dc2626, #ef4444) !important;
+    }
+
+    .threat-progress.orange div {
+        background: linear-gradient(90deg, #ea580c, #f97316) !important;
+    }
+
+    .threat-progress.green div {
+        background: linear-gradient(90deg, #059669, #10b981) !important;
+    }
+
+    .threat-progress.blue div {
+        background: linear-gradient(90deg, #2563eb, #3b82f6) !important;
+    }
+
+    .threat-progress.teal div {
+        background: linear-gradient(90deg, #0d9488, #14b8a6) !important;
     }
 </style>

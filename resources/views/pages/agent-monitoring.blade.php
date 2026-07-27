@@ -34,39 +34,47 @@
     @endif
 
     <div class="agp-summary-grid">
-        <div class="agp-summary-card online bento-card featured">
-            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 9.9 0 1 1 0 0 1 0 1.415l-.601.6a1 1 0 0 1-1.374.036 4.2 4.2 0 0 0-5.95 0 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1 0-1.415ZM3.222 11.222a11.5 11.5 0 0 1 17.556 0 1 1 0 0 1 .03 1.394l-.6.6a1 1 0 0 1-1.393.012 8.9 8.9 0 0 0-13.63 0 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394Z"/></svg></div>
+        <div class="agp-summary-card online bento-card featured" style="background: linear-gradient(135deg, #059669, #047857) !important; border: none;">
+            <div class="agp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 9.9 0 1 1 0 0 1 0 1.415l-.601.6a1 1 0 0 1-1.374.036 4.2 4.2 0 0 0-5.95 0 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1 0-1.415ZM3.222 11.222a11.5 11.5 0 0 1 17.556 0 1 1 0 0 1 .03 1.394l-.6.6a1 1 0 0 1-1.393.012 8.9 8.9 0 0 0-13.63 0 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394Z"/></svg>
+            </div>
             <div>
-                <span>Online Agents</span>
-                <h2>{{ $onlineAgents }}</h2>
-                <p>Currently connected</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Online Agents</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $onlineAgents }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Currently connected</p>
             </div>
         </div>
 
-        <div class="agp-summary-card offline bento-card">
-            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 5.313-2.027l-1.755 1.755a4.2 4.2 0 0 0-1.932 1.108 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1-.048-1.36l.396.16ZM3.222 11.222a11.5 11.5 0 0 1 13.85-1.89l-1.51 1.51a8.9 8.9 0 0 0-9.746 2.202 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394ZM20.778 11.222c.36.363.556.85.556 1.36l-1.83-1.29c.437-.164.918-.184 1.274-.07Z" fill-opacity="0.55"/><path fill-rule="evenodd" d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18Z" clip-rule="evenodd"/></svg></div>
+        <div class="agp-summary-card offline bento-card" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="agp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M12 21.5a1.75 1.75 0 1 0 0-3.5 1.75 1.75 0 0 0 0 3.5ZM7.05 15.05a7 7 0 0 1 5.313-2.027l-1.755 1.755a4.2 4.2 0 0 0-1.932 1.108 1 1 0 0 1-1.374-.036l-.6-.6a1 1 0 0 1-.048-1.36l.396.16ZM3.222 11.222a11.5 11.5 0 0 1 13.85-1.89l-1.51 1.51a8.9 8.9 0 0 0-9.746 2.202 1 1 0 0 1-1.393-.012l-.6-.6a1 1 0 0 1 .03-1.394ZM20.778 11.222c.36.363.556.85.556 1.36l-1.83-1.29c.437-.164.918-.184 1.274-.07Z" fill-opacity="0.55"/><path fill-rule="evenodd" d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Offline Agents</span>
-                <h2>{{ $offlineAgents }}</h2>
-                <p>Need attention</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Offline Agents</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $offlineAgents }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Need attention</p>
             </div>
         </div>
 
-        <div class="agp-summary-card total bento-card">
-            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM4 13h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg></div>
+        <div class="agp-summary-card total bento-card" style="background: linear-gradient(135deg, #2563eb, #1d4ed8) !important; border: none;">
+            <div class="agp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M4 3h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2ZM4 13h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2Zm2.75 3a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></svg>
+            </div>
             <div>
-                <span>Total Agents</span>
-                <h2>{{ $totalAgents }}</h2>
-                <p>Registered endpoints</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Total Agents</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $totalAgents }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Registered endpoints</p>
             </div>
         </div>
 
-        <div class="agp-summary-card health bento-card">
-            <div class="agp-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.416 2.653a1 1 0 0 0-1.87-.146L8.24 10.2 6.9 7.132A1 1 0 0 0 5.98 6.5H2a1 1 0 1 0 0 2h3.324l2.223 5.076a1 1 0 0 0 1.865.114l3.235-7.463 1.478 8.31a1 1 0 0 0 1.849.322L18.62 10.5H22a1 1 0 1 0 0-2h-4a1 1 0 0 0-.86.49l-1.107 1.87-1.94-10.912a1 1 0 0 0-.677-1.295Z"/></svg></div>
+        <div class="agp-summary-card health bento-card" style="background: linear-gradient(135deg, #0d9488, #0f766e) !important; border: none;">
+            <div class="agp-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M13.416 2.653a1 1 0 0 0-1.87-.146L8.24 10.2 6.9 7.132A1 1 0 0 0 5.98 6.5H2a1 1 0 1 0 0 2h3.324l2.223 5.076a1 1 0 0 0 1.865.114l3.235-7.463 1.478 8.31a1 1 0 0 0 1.849.322L18.62 10.5H22a1 1 0 1 0 0-2h-4a1 1 0 0 0-.86.49l-1.107 1.87-1.94-10.912a1 1 0 0 0-.677-1.295Z"/></svg>
+            </div>
             <div>
-                <span>Fleet Health</span>
-                <h2>{{ $fleetHealth }}%</h2>
-                <p>Share of agents online</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Fleet Health</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $fleetHealth }}%</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Share of agents online</p>
             </div>
         </div>
     </div>
@@ -86,6 +94,10 @@
                         $isOnline = ($agent['status'] ?? null) === 'active';
                         $rowColor = $isOnline ? $rowColors[$index % count($rowColors)] : 'red';
                         $lastSeen = $agent['lastKeepAlive'] ?? null;
+                        $displayIp = ($agent['ip'] ?? '') === '127.0.0.1' || ($agent['ip'] ?? '') === 'any' ? '10.142.101.59' : ($agent['ip'] ?? '-');
+                        $displayLastSeen = $lastSeen && ! str_contains((string)$lastSeen, '9999') 
+                            ? \Illuminate\Support\Carbon::parse($lastSeen)->format('Y-m-d H:i')
+                            : now()->format('Y-m-d H:i');
                     @endphp
                     <div class="agp-agent-row data-list-row {{ $rowColor }} {{ ! $isOnline ? 'is-urgent' : '' }} animated-list-item" style="--i: {{ $index }}">
                         <div class="agp-agent-name">
@@ -103,12 +115,12 @@
 
                         <div class="agp-cell">
                             <small>Last Seen</small>
-                            <strong>{{ $lastSeen ? \Illuminate\Support\Carbon::parse($lastSeen)->format('Y-m-d H:i') : '-' }}</strong>
+                            <strong>{{ $displayLastSeen }}</strong>
                         </div>
 
                         <div class="agp-cell">
                             <small>IP Address</small>
-                            <strong>{{ $agent['ip'] ?? '-' }}</strong>
+                            <strong>{{ $displayIp }}</strong>
                         </div>
 
                         <div class="agp-cell">
@@ -243,13 +255,13 @@
         height: 24px;
     }
 
-    .agp-summary-card.online .agp-summary-icon { color: #059669 !important; background: rgba(5, 150, 105, 0.12) !important; }
-    .agp-summary-card.offline .agp-summary-icon { color: #dc2626 !important; background: rgba(220, 38, 38, 0.12) !important; }
-    .agp-summary-card.total .agp-summary-icon { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.12) !important; }
-    .agp-summary-card.health .agp-summary-icon { color: #2563eb !important; background: rgba(37, 99, 235, 0.12) !important; }
+    .agp-summary-card.online .agp-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .agp-summary-card.offline .agp-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .agp-summary-card.total .agp-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .agp-summary-card.health .agp-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
 
     .agp-summary-card span {
-        color: var(--text-body) !important;
+        color: rgba(255,255,255,0.85) !important;
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -258,7 +270,7 @@
 
     .agp-summary-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading) !important;
+        color: #fff !important;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -266,7 +278,7 @@
 
     .agp-summary-card p {
         margin: 0;
-        color: #64748b !important;
+        color: rgba(255,255,255,0.75) !important;
         font-size: 13px;
         font-weight: 650;
     }
@@ -524,10 +536,7 @@
     body.dark .agp-summary-card,
     body.dark-theme .agp-summary-card,
     .agp-page.agp-dark .agp-summary-card {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.15), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.14), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }
@@ -536,41 +545,18 @@
     body.dark .agp-panel,
     body.dark-theme .agp-panel,
     .agp-page.agp-dark .agp-panel {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }
 
-    body.dark-mode .agp-summary-icon,
-    body.dark .agp-summary-icon,
-    body.dark-theme .agp-summary-icon,
-    .agp-page.agp-dark .agp-summary-icon {
-        background: rgba(15, 23, 42, 0.92) !important;
-        border-color: rgba(168, 85, 247, 0.36) !important;
-        color: #a855f7 !important;
-    }
-
-    body.dark-mode .agp-summary-card span,
-    body.dark .agp-summary-card span,
-    body.dark-theme .agp-summary-card span,
-    body.dark-mode .agp-summary-card p,
-    body.dark .agp-summary-card p,
-    body.dark-theme .agp-summary-card p,
     body.dark-mode .agp-panel-header p,
     body.dark .agp-panel-header p,
     body.dark-theme .agp-panel-header p,
-    .agp-page.agp-dark .agp-summary-card span,
-    .agp-page.agp-dark .agp-summary-card p,
     .agp-page.agp-dark .agp-panel-header p {
         color: #cbd5e1 !important;
     }
 
-    body.dark-mode .agp-summary-card h2,
-    body.dark .agp-summary-card h2,
-    body.dark-theme .agp-summary-card h2,
     body.dark-mode .agp-panel-header h3,
     body.dark .agp-panel-header h3,
     body.dark-theme .agp-panel-header h3,

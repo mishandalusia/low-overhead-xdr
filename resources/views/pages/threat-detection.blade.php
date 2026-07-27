@@ -23,6 +23,9 @@
             'block_status' => $alert['block_status'],
             'recommendations' => $alert['recommendations'],
             'mitre' => $alert['mitre'],
+            'user' => $alert['user'] ?? null,
+            'amount' => $alert['amount'] ?? null,
+            'transaction_status' => $alert['transaction_status'] ?? null,
             'detection_source' => $alert['detection_source'] ?? null,
             'detection_engine' => $alert['detection_engine'] ?? null,
             'prediction' => $alert['prediction'] ?? null,
@@ -46,39 +49,47 @@
     @endif
 
     <div class="tdx-summary-grid">
-        <div class="tdx-summary-card critical bento-card featured">
-            <div class="tdx-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+        <div class="tdx-summary-card critical bento-card featured" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="tdx-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Critical Threats</span>
-                <h2>{{ $severityCounts->get('Critical', 0) }}</h2>
-                <p>Need immediate attention</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Critical Threats</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $severityCounts->get('Critical', 0) }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Need immediate attention</p>
             </div>
         </div>
 
-        <div class="tdx-summary-card high bento-card">
-            <div class="tdx-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+        <div class="tdx-summary-card high bento-card" style="background: linear-gradient(135deg, #ea580c, #c2410c) !important; border: none;">
+            <div class="tdx-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>High Threats</span>
-                <h2>{{ $severityCounts->get('High', 0) }}</h2>
-                <p>Potential security risks</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">High Threats</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $severityCounts->get('High', 0) }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Potential security risks</p>
             </div>
         </div>
 
-        <div class="tdx-summary-card medium bento-card">
-            <div class="tdx-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 2 12l10 10 10-10L12 2Zm0 5a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Zm0 9.75a1.1 1.1 0 1 1 0-2.2 1.1 1.1 0 0 1 0 2.2Z"/></svg></div>
+        <div class="tdx-summary-card medium bento-card" style="background: linear-gradient(135deg, #d97706, #b45309) !important; border: none;">
+            <div class="tdx-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M12 2 2 12l10 10 10-10L12 2Zm0 5a1 1 0 0 1 1 1v4a1 1 0 1 1-2 0V8a1 1 0 0 1 1-1Zm0 9.75a1.1 1.1 0 1 1 0-2.2 1.1 1.1 0 0 1 0 2.2Z"/></svg>
+            </div>
             <div>
-                <span>Medium Threats</span>
-                <h2>{{ $severityCounts->get('Medium', 0) }}</h2>
-                <p>Require monitoring</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Medium Threats</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $severityCounts->get('Medium', 0) }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Require monitoring</p>
             </div>
         </div>
 
-        <div class="tdx-summary-card low bento-card">
-            <div class="tdx-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+        <div class="tdx-summary-card low bento-card" style="background: linear-gradient(135deg, #059669, #047857) !important; border: none;">
+            <div class="tdx-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Low Threats</span>
-                <h2>{{ $severityCounts->get('Low', 0) }}</h2>
-                <p>Informational activity</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Low Threats</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $severityCounts->get('Low', 0) }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Informational activity</p>
             </div>
         </div>
     </div>
@@ -151,7 +162,12 @@
 
                     <div class="tdx-threat-info">
                         <strong>{{ $threat['rule'] }}</strong>
-                        <small>{{ $threat['category'] ?? 'General' }} • Agent: {{ $threat['agent'] }} • {{ $threat['date'] }}</small>
+                        <small>
+                            {{ $threat['category'] ?? 'General' }} • Agent: {{ $threat['agent'] }} • {{ $threat['date'] }}
+                            @if (!empty($threat['user']) || isset($threat['amount']) || !empty($threat['transaction_status']))
+                                • User: <strong>{{ $threat['user'] ?? '-' }}</strong> • Amount: <strong>{{ isset($threat['amount']) ? (is_numeric($threat['amount']) ? number_format((float)$threat['amount'], 0, ',', '.') : $threat['amount']) : '-' }}</strong> • Status: <strong>{{ $threat['transaction_status'] ?? $threat['prediction'] ?? 'ANOMALY' }}</strong>
+                            @endif
+                        </small>
                     </div>
 
                     <div class="tdx-source">{{ $threat['source'] }}</div>
@@ -250,10 +266,10 @@
         box-shadow: 0 10px 22px rgba(139, 92, 246, 0.10);
     }
 
-    .tdx-summary-card.critical .tdx-summary-icon { color: #dc2626 !important; background: rgba(220, 38, 38, 0.12) !important; }
-    .tdx-summary-card.high .tdx-summary-icon { color: #ea580c !important; background: rgba(234, 88, 12, 0.12) !important; }
-    .tdx-summary-card.medium .tdx-summary-icon { color: #d97706 !important; background: rgba(217, 119, 6, 0.12) !important; }
-    .tdx-summary-card.low .tdx-summary-icon { color: #059669 !important; background: rgba(5, 150, 105, 0.12) !important; }
+    .tdx-summary-card.critical .tdx-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .tdx-summary-card.high .tdx-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .tdx-summary-card.medium .tdx-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .tdx-summary-card.low .tdx-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
 
     .tdx-summary-icon svg {
         width: 24px;
@@ -261,7 +277,7 @@
     }
 
     .tdx-summary-card span {
-        color: var(--text-body) !important;
+        color: rgba(255,255,255,0.85) !important;
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -270,7 +286,7 @@
 
     .tdx-summary-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading) !important;
+        color: #fff !important;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -278,7 +294,7 @@
 
     .tdx-summary-card p {
         margin: 0;
-        color: #64748b !important;
+        color: rgba(255,255,255,0.75) !important;
         font-size: 13px;
         font-weight: 650;
     }
@@ -527,10 +543,7 @@
     body.dark .tdx-summary-card,
     body.dark-theme .tdx-summary-card,
     .tdx-page.tdx-dark .tdx-summary-card {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.15), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.14), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }
@@ -539,45 +552,22 @@
     body.dark .tdx-panel,
     body.dark-theme .tdx-panel,
     .tdx-page.tdx-dark .tdx-panel {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }
 
-    body.dark-mode .tdx-summary-icon,
-    body.dark .tdx-summary-icon,
-    body.dark-theme .tdx-summary-icon,
-    .tdx-page.tdx-dark .tdx-summary-icon {
-        background: rgba(15, 23, 42, 0.92) !important;
-        border-color: rgba(168, 85, 247, 0.36) !important;
-        color: #a855f7 !important;
-    }
-
-    body.dark-mode .tdx-summary-card span,
-    body.dark .tdx-summary-card span,
-    body.dark-theme .tdx-summary-card span,
-    body.dark-mode .tdx-summary-card p,
-    body.dark .tdx-summary-card p,
-    body.dark-theme .tdx-summary-card p,
     body.dark-mode .tdx-panel-header p,
     body.dark .tdx-panel-header p,
     body.dark-theme .tdx-panel-header p,
     body.dark-mode .tdx-list-header,
     body.dark .tdx-list-header,
     body.dark-theme .tdx-list-header,
-    .tdx-page.tdx-dark .tdx-summary-card span,
-    .tdx-page.tdx-dark .tdx-summary-card p,
     .tdx-page.tdx-dark .tdx-panel-header p,
     .tdx-page.tdx-dark .tdx-list-header {
         color: #cbd5e1 !important;
     }
 
-    body.dark-mode .tdx-summary-card h2,
-    body.dark .tdx-summary-card h2,
-    body.dark-theme .tdx-summary-card h2,
     body.dark-mode .tdx-panel-header h3,
     body.dark .tdx-panel-header h3,
     body.dark-theme .tdx-panel-header h3,

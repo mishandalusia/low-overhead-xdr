@@ -29,39 +29,47 @@
     </div>
 
     <div class="rpt-summary-grid">
-        <div class="rpt-summary-card neutral bento-card featured">
-            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg></div>
+        <div class="rpt-summary-card neutral bento-card featured" style="background: linear-gradient(135deg, #7c3aed, #6d28d9) !important; border: none;">
+            <div class="rpt-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+            </div>
             <div>
-                <span>Total Activities</span>
-                <h2 id="summaryActivity">{{ $totalActivities }}</h2>
-                <p>Detected activities</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Total Activities</span>
+                <h2 id="summaryActivity" style="color: #ffffff !important; font-weight: 900 !important;">{{ $totalActivities }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Detected activities</p>
             </div>
         </div>
 
-        <div class="rpt-summary-card success bento-card">
-            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg></div>
+        <div class="rpt-summary-card success bento-card" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="rpt-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM8.28 8.22a.75.75 0 0 0-1.06 1.06L10.94 13l-3.72 3.72a.75.75 0 1 0 1.06 1.06L12 14.06l3.72 3.72a.75.75 0 1 0 1.06-1.06L13.06 13l3.72-3.72a.75.75 0 0 0-1.06-1.06L12 11.94 8.28 8.22Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Blocked IPs</span>
-                <h2 id="summaryBlocked">{{ $blockedIpCount }}</h2>
-                <p>Suspicious sources blocked</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Blocked IPs</span>
+                <h2 id="summaryBlocked" style="color: #ffffff !important; font-weight: 900 !important;">{{ $blockedIpCount }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Suspicious sources blocked</p>
             </div>
         </div>
 
-        <div class="rpt-summary-card danger bento-card">
-            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+        <div class="rpt-summary-card danger bento-card" style="background: linear-gradient(135deg, #ea580c, #c2410c) !important; border: none;">
+            <div class="rpt-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M9.401 3.003c1.155-2 4.043-2 5.197 0l7.355 12.748c1.154 2-.29 4.5-2.599 4.5H4.645c-2.309 0-3.752-2.5-2.598-4.5L9.4 3.003ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Critical Alerts</span>
-                <h2>{{ $criticalCount }}</h2>
-                <p>Need immediate action</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Critical Alerts</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $criticalCount }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Need immediate action</p>
             </div>
         </div>
 
-        <div class="rpt-summary-card success bento-card">
-            <div class="rpt-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg></div>
+        <div class="rpt-summary-card success bento-card" style="background: linear-gradient(135deg, #059669, #047857) !important; border: none;">
+            <div class="rpt-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Response Success</span>
-                <h2>{{ $responseSuccessRate }}%</h2>
-                <p>Handled response actions</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Response Success</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $responseSuccessRate }}%</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Handled response actions</p>
             </div>
         </div>
     </div>
@@ -121,31 +129,17 @@
                     <line x1="45" y1="180" x2="860" y2="180" class="rpt-grid-line"/>
                     <line x1="45" y1="240" x2="860" y2="240" class="rpt-grid-line"/>
 
-                    <path
-                        d="M70 215 C130 150, 170 140, 215 170 C270 210, 305 130, 350 118 C405 105, 430 205, 480 190 C545 172, 560 88, 625 94 C690 100, 705 42, 755 60 C812 78, 815 145, 850 128 L850 270 L70 270 Z"
-                        class="rpt-area"
-                    />
+                    <!-- Dynamic SVG Path & Area from real Wazuh Threat Data -->
+                    <path d="{{ $svgAreaPath }}" class="rpt-area" fill="url(#rptAreaGradient)" />
+                    <path d="{{ $svgPath }}" class="rpt-line" stroke="url(#rptLineGradient)" stroke-width="4" fill="none" />
 
-                    <path
-                        d="M70 215 C130 150, 170 140, 215 170 C270 210, 305 130, 350 118 C405 105, 430 205, 480 190 C545 172, 560 88, 625 94 C690 100, 705 42, 755 60 C812 78, 815 145, 850 128"
-                        class="rpt-line"
-                    />
-
-                    <circle cx="70" cy="215" r="7" class="rpt-point"/>
-                    <circle cx="215" cy="170" r="7" class="rpt-point"/>
-                    <circle cx="350" cy="118" r="7" class="rpt-point"/>
-                    <circle cx="480" cy="190" r="7" class="rpt-point"/>
-                    <circle cx="625" cy="94" r="7" class="rpt-point"/>
-                    <circle cx="755" cy="60" r="8" class="rpt-point"/>
-                    <circle cx="850" cy="128" r="7" class="rpt-point"/>
-
-                    <text x="60" y="304" class="rpt-chart-label">Mon</text>
-                    <text x="202" y="304" class="rpt-chart-label">Tue</text>
-                    <text x="338" y="304" class="rpt-chart-label">Wed</text>
-                    <text x="468" y="304" class="rpt-chart-label">Thu</text>
-                    <text x="615" y="304" class="rpt-chart-label">Fri</text>
-                    <text x="742" y="304" class="rpt-chart-label">Sat</text>
-                    <text x="838" y="304" class="rpt-chart-label">Sun</text>
+                    <!-- Dynamic Circles at Exact (X, Y) Coordinates for Each Day -->
+                    @foreach ($trendPoints as $dayNum => $pt)
+                        <circle cx="{{ $pt['x'] }}" cy="{{ $pt['y'] }}" r="7" class="rpt-point" data-tip="{{ $pt['day'] }}: {{ $pt['count'] }} activities">
+                            <title>{{ $pt['day'] }}: {{ $pt['count'] }} activities</title>
+                        </circle>
+                        <text x="{{ $pt['x'] - 12 }}" y="295" class="rpt-chart-label" style="font-size: 13px; font-weight: 700; fill: #64748b;">{{ $pt['day'] }}</text>
+                    @endforeach
                 </svg>
 
                 <div class="rpt-chart-info chart-hover-caption">
@@ -155,20 +149,39 @@
                 </div>
             </div>
 
-            <div class="rpt-trend-summary">
-                <div>
-                    <small>Total Activities</small>
-                    <strong id="trendActivity">{{ $dailyTotal }}</strong>
+            <!-- Rich Bento Summary Cards below Activity Trend -->
+            <div class="rpt-trend-summary" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px;">
+                <div class="bento-card" style="padding: 18px 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #7c3aed !important; border: 1px solid rgba(124, 58, 237, 0.18); display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(124, 58, 237, 0.15); display: flex; align-items: center; justify-content: center; color: #7c3aed; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
+                    </div>
+                    <div>
+                        <small style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Total Activities</small>
+                        <strong id="trendActivity" style="font-size: 24px; font-weight: 900; color: #0f172a; display: block; margin-top: 2px;">{{ $totalActivities }}</strong>
+                        <span style="font-size: 11px; font-weight: 800; color: #7c3aed; background: rgba(124, 58, 237, 0.12); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-top: 4px;">Live Monitored</span>
+                    </div>
                 </div>
 
-                <div>
-                    <small>Blocked IPs</small>
-                    <strong id="trendBlocked">{{ $dailyBlocked }}</strong>
+                <div class="bento-card" style="padding: 18px 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(220, 38, 38, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #dc2626 !important; border: 1px solid rgba(220, 38, 38, 0.18); display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(220, 38, 38, 0.15); display: flex; align-items: center; justify-content: center; color: #dc2626; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6.75a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V12.75a3 3 0 0 0-3-3v-3c0-2.9-2.35-5.25-5.25-5.25Zm3.75 8.25v-3a3.75 3.75 0 1 0-7.5 0v3h7.5Z" clip-rule="evenodd"/></svg>
+                    </div>
+                    <div>
+                        <small style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Blocked IPs</small>
+                        <strong id="trendBlocked" style="font-size: 24px; font-weight: 900; color: #0f172a; display: block; margin-top: 2px;">{{ $blockedIpCount }}</strong>
+                        <span style="font-size: 11px; font-weight: 800; color: #dc2626; background: rgba(220, 38, 38, 0.12); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-top: 4px;">Active Defense</span>
+                    </div>
                 </div>
 
-                <div>
-                    <small>Report Mode</small>
-                    <strong id="trendMode">Daily</strong>
+                <div class="bento-card" style="padding: 18px 20px; border-radius: 16px; background: linear-gradient(135deg, rgba(37, 99, 235, 0.08), rgba(255, 255, 255, 0.95)) !important; border-left: 5px solid #2563eb !important; border: 1px solid rgba(37, 99, 235, 0.18); display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(37, 99, 235, 0.15); display: flex; align-items: center; justify-content: center; color: #2563eb; flex-shrink: 0;">
+                        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path fill-rule="evenodd" d="M6.75 2.25A.75.75 0 0 1 7.5 3v1.5h9V3a.75.75 0 0 1 1.5 0v1.5h.75A3.75 3.75 0 0 1 22.5 8.25v10.5A3.75 3.75 0 0 1 18.75 22.5H4.5A3.75 3.75 0 0 1 .75 18.75V8.25A3.75 3.75 0 0 1 4.5 4.5h.75V3a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd"/></svg>
+                    </div>
+                    <div>
+                        <small style="display: block; font-size: 11px; font-weight: 800; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px;">Report Mode</small>
+                        <strong id="trendMode" style="font-size: 24px; font-weight: 900; color: #0f172a; display: block; margin-top: 2px;">Daily</strong>
+                        <span style="font-size: 11px; font-weight: 800; color: #2563eb; background: rgba(37, 99, 235, 0.12); padding: 2px 8px; border-radius: 6px; display: inline-block; margin-top: 4px;">Realtime Synced</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -540,9 +553,9 @@
         height: 24px;
     }
 
-    .rpt-summary-card.neutral .rpt-summary-icon { color: #8b5cf6 !important; background: rgba(139, 92, 246, 0.12) !important; }
-    .rpt-summary-card.success .rpt-summary-icon { color: #059669 !important; background: rgba(5, 150, 105, 0.12) !important; }
-    .rpt-summary-card.danger .rpt-summary-icon { color: #dc2626 !important; background: rgba(220, 38, 38, 0.12) !important; }
+    .rpt-summary-card.neutral .rpt-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .rpt-summary-card.success .rpt-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .rpt-summary-card.danger .rpt-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
 
     .rpt-summary-card span,
     .rpt-summary-card h2,
@@ -552,7 +565,7 @@
     }
 
     .rpt-summary-card span {
-        color: var(--text-body) !important;
+        color: rgba(255,255,255,0.85) !important;
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -561,7 +574,7 @@
 
     .rpt-summary-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading) !important;
+        color: #fff !important;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -569,7 +582,7 @@
 
     .rpt-summary-card p {
         margin: 0;
-        color: #64748b !important;
+        color: rgba(255,255,255,0.75) !important;
         font-size: 13px;
         font-weight: 650;
     }
@@ -582,11 +595,9 @@
         margin-bottom: 24px;
         padding: 22px 24px;
         border-radius: 26px;
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-            rgba(255, 255, 255, 0.92) !important;
-        border: 1px solid rgba(168, 85, 247, 0.18) !important;
-        box-shadow: 0 18px 42px rgba(168, 85, 247, 0.10) !important;
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
     }
 
     .rpt-mode-panel h3 {
@@ -689,16 +700,7 @@
        slides up on hover, vanilla-CSS take on the "Visual3" hover chart card. */
     .chart-hover-grid {
         position: absolute;
-        inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        background-image:
-            linear-gradient(to right, rgba(139, 92, 246, 0.10) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(139, 92, 246, 0.10) 1px, transparent 1px);
-        background-size: 26px 26px;
-        background-position: center;
-        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
-        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+        display: none !important;
     }
 
     .chart-hover-glow {
@@ -889,16 +891,7 @@
     .sev-visual-grid {
         position: absolute;
         inset: 0;
-        z-index: 0;
-        pointer-events: none;
-        opacity: 0.6;
-        background-image:
-            linear-gradient(to right, rgba(139, 92, 246, 0.12) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
-        background-size: 18px 18px;
-        background-position: center;
-        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
-        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, #000 55%, transparent 100%);
+        display: none !important;
     }
 
     .sev-visual-ellipse {
@@ -1293,9 +1286,6 @@
     body.dark-mode .rpt-hero,
     body.dark .rpt-hero,
     body.dark-theme .rpt-hero,
-    body.dark-mode .rpt-summary-card,
-    body.dark .rpt-summary-card,
-    body.dark-theme .rpt-summary-card,
     body.dark-mode .rpt-mode-panel,
     body.dark .rpt-mode-panel,
     body.dark-theme .rpt-mode-panel,
@@ -1303,13 +1293,9 @@
     body.dark .rpt-panel,
     body.dark-theme .rpt-panel,
     .rpt-page.rpt-dark .rpt-hero,
-    .rpt-page.rpt-dark .rpt-summary-card,
     .rpt-page.rpt-dark .rpt-mode-panel,
     .rpt-page.rpt-dark .rpt-panel {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.14), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.12), transparent 35%),
-            linear-gradient(135deg, #111827 0%, #1f1737 58%, #241638 100%) !important;
+        background: #111827 !important;
         border-color: rgba(168, 85, 247, 0.30) !important;
         box-shadow: 0 24px 55px rgba(0, 0, 0, 0.20) !important;
     }

@@ -23,6 +23,9 @@
             'block_status' => $alert['block_status'],
             'recommendations' => $alert['recommendations'],
             'mitre' => $alert['mitre'],
+            'user' => $alert['user'] ?? null,
+            'amount' => $alert['amount'] ?? null,
+            'transaction_status' => $alert['transaction_status'] ?? null,
             'detection_source' => $alert['detection_source'] ?? null,
             'detection_engine' => $alert['detection_engine'] ?? null,
             'prediction' => $alert['prediction'] ?? null,
@@ -46,30 +49,36 @@
     @endif
 
     <div class="inc-summary-grid">
-        <div class="inc-summary-card open bento-card">
-            <div class="inc-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg></div>
+        <div class="inc-summary-card open bento-card" style="background: linear-gradient(135deg, #dc2626, #b91c1c) !important; border: none;">
+            <div class="inc-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Open</span>
-                <h2>{{ $openCount }}</h2>
-                <p>Not yet triaged</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Open</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $openCount }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Not yet triaged</p>
             </div>
         </div>
 
-        <div class="inc-summary-card investigating bento-card">
-            <div class="inc-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM1.5 9a7.5 7.5 0 1 1 13.463 4.546l5.746 5.747a1 1 0 0 1-1.414 1.414l-5.747-5.746A7.5 7.5 0 0 1 1.5 9Z" clip-rule="evenodd"/></svg></div>
+        <div class="inc-summary-card investigating bento-card" style="background: linear-gradient(135deg, #d97706, #b45309) !important; border: none;">
+            <div class="inc-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM1.5 9a7.5 7.5 0 1 1 13.463 4.546l5.746 5.747a1 1 0 0 1-1.414 1.414l-5.747-5.746A7.5 7.5 0 0 1 1.5 9Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Investigating</span>
-                <h2>{{ $investigatingCount }}</h2>
-                <p>Under active review</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Investigating</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $investigatingCount }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Under active review</p>
             </div>
         </div>
 
-        <div class="inc-summary-card resolved bento-card">
-            <div class="inc-summary-icon"><svg viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg></div>
+        <div class="inc-summary-card resolved bento-card" style="background: linear-gradient(135deg, #059669, #047857) !important; border: none;">
+            <div class="inc-summary-icon" style="background: rgba(255,255,255,0.25) !important; color: #ffffff !important;">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="fill: #ffffff !important; color: #ffffff !important;"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd"/></svg>
+            </div>
             <div>
-                <span>Resolved</span>
-                <h2>{{ $resolvedCount }}</h2>
-                <p>Closed incidents</p>
+                <span style="color: #ffffff !important; opacity: 0.95 !important; font-weight: 800 !important;">Resolved</span>
+                <h2 style="color: #ffffff !important; font-weight: 900 !important;">{{ $resolvedCount }}</h2>
+                <p style="color: #ffffff !important; opacity: 0.90 !important; font-weight: 700 !important;">Closed incidents</p>
             </div>
         </div>
     </div>
@@ -98,7 +107,12 @@
                         </div>
                         <strong>{{ $incident['rule'] }}</strong>
                         <small class="mono">Source: {{ $incident['source'] }}</small>
-                        <small>Detected {{ $incident['date'] }} {{ $incident['clock'] }} • Agent: {{ $incident['agent'] }} • Created: {{ $incident['incident_created_at'] ?? '—' }}</small>
+                        <small>
+                            Detected {{ $incident['date'] }} {{ $incident['clock'] }} • Agent: {{ $incident['agent'] }}
+                            @if (!empty($incident['user']) || isset($incident['amount']) || !empty($incident['transaction_status']))
+                                • User: <strong>{{ $incident['user'] ?? '-' }}</strong> • Amount: <strong>{{ isset($incident['amount']) ? (is_numeric($incident['amount']) ? number_format((float)$incident['amount'], 0, ',', '.') : $incident['amount']) : '-' }}</strong> • Status: <strong>{{ $incident['transaction_status'] ?? $incident['prediction'] ?? 'ANOMALY' }}</strong>
+                            @endif
+                        </small>
                     </div>
 
                     <div>
@@ -232,12 +246,12 @@
         height: 24px;
     }
 
-    .inc-summary-card.open .inc-summary-icon { color: #dc2626 !important; }
-    .inc-summary-card.investigating .inc-summary-icon { color: #d97706 !important; }
-    .inc-summary-card.resolved .inc-summary-icon { color: #059669 !important; }
+    .inc-summary-card.open .inc-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .inc-summary-card.investigating .inc-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
+    .inc-summary-card.resolved .inc-summary-icon { color: #fff !important; background: rgba(255,255,255,0.20) !important; }
 
     .inc-summary-card span {
-        color: var(--text-body) !important;
+        color: rgba(255,255,255,0.85) !important;
         font-size: 12px;
         font-weight: 800;
         text-transform: uppercase;
@@ -246,7 +260,7 @@
 
     .inc-summary-card h2 {
         margin: 8px 0 2px;
-        color: var(--text-heading) !important;
+        color: #fff !important;
         font-size: 34px;
         font-weight: 900;
         letter-spacing: -0.5px;
@@ -254,7 +268,7 @@
 
     .inc-summary-card p {
         margin: 0;
-        color: #64748b !important;
+        color: rgba(255,255,255,0.75) !important;
         font-size: 13px;
         font-weight: 650;
     }
@@ -566,27 +580,25 @@
         z-index: 1;
     }
 
-    .inc-summary-card.open .inc-summary-icon {
-        background: rgba(239, 68, 68, 0.12) !important;
+    .inc-summary-card.open .inc-summary-icon,
+    .inc-summary-card.investigating .inc-summary-icon,
+    .inc-summary-card.resolved .inc-summary-icon,
+    .inc-summary-icon {
+        background: rgba(255, 255, 255, 0.25) !important;
+        color: #ffffff !important;
     }
 
-    .inc-summary-card.investigating .inc-summary-icon {
-        background: rgba(217, 119, 6, 0.12) !important;
-    }
-
-    .inc-summary-card.resolved .inc-summary-icon {
-        background: rgba(5, 150, 105, 0.12) !important;
+    .inc-summary-icon svg {
+        fill: #ffffff !important;
+        color: #ffffff !important;
     }
 
     /* Incident List panel lebih hidup — same tinted-wash + faint corner
        icon recipe as the dashboard panels, instead of a flat white box. */
     .inc-panel.inc-panel {
-        background:
-            radial-gradient(circle at top right, rgba(217, 70, 239, 0.10), transparent 34%),
-            radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.10), transparent 36%),
-            rgba(255, 255, 255, 0.96) !important;
-        border-color: rgba(168, 85, 247, 0.16) !important;
-        box-shadow: 0 20px 46px rgba(168, 85, 247, 0.10) !important;
+        background: #ffffff !important;
+        border-color: #e2e8f0 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03) !important;
     }
 
     .inc-panel::before {
