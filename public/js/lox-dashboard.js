@@ -45,3 +45,14 @@ window.addEventListener("load", () => {
         document.body.classList.remove("dashboard-enter");
     }, 1800);
 });
+const sidebar = document.getElementById("sidebar");
+
+if (sidebar) {
+    sidebar.addEventListener("mouseenter", () => {
+        sidebar.classList.remove("collapsed");
+    });
+
+    sidebar.addEventListener("mouseleave", () => {
+        sidebar.classList.add("collapsed");
+    });
+}

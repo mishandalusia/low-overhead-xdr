@@ -10,27 +10,16 @@ class DemoUserSeeder extends Seeder
 {
     public function run(): void
     {
-        // Remove old demo account if it was already created before
+        // Remove old demo/placeholder accounts — this app has a single real login account.
         User::where('email', 'nabila@lox.test')->delete();
+        User::whereIn('email', ['dev@lox.com', 'analyst@lox.com', 'webadmin@lox.com', 'sr7915580@gmail.com'])->delete();
 
         $users = [
             [
-                'name' => 'Project Lead',
-                'email' => 'lead@lox.com',
+                'name' => 'Administrator',
+                'email' => 'suciramadhani@sr15.my.id',
                 'password' => 'admin123',
                 'role' => 'super_admin',
-            ],
-            [
-                'name' => 'Web Admin',
-                'email' => 'webadmin@lox.com',
-                'password' => 'admin123',
-                'role' => 'web_admin',
-            ],
-            [
-                'name' => 'Security Analyst',
-                'email' => 'analyst@lox.com',
-                'password' => 'admin123',
-                'role' => 'security_analyst',
             ],
         ];
 
